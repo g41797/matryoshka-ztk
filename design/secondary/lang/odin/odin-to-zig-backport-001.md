@@ -27,7 +27,7 @@ in DOC 23.
 
 ## What this is for
 
-Read it in one direction only: backporting `matryoshka-tk` to Odin. Every  
+Read it in one direction only: backporting `matryoshka-ztk` to Odin. Every  
 mapping here works both ways, so it doubles as the reverse reference.
 
 The Odin prototype lives at `/home/g41797/dev/root/github.com/g41797/matryoshka/`.

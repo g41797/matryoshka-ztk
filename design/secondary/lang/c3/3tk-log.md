@@ -7,6 +7,50 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-14 — 3TK-77: the rename, finished under `lang/`
+
+**Ran on Sonnet 5 and closed. `037` is spent.** The repo was renamed from
+`matryoshka-tk` to `matryoshka-ztk` on the remote and locally; the owner had
+already replaced `-tk` with `-ztk` across `matryoshka-3tk/`, and this stage
+finished the rest: the live `lang/` hits, and a check of the owner's edit.
+
+**Six live files rewritten**, all under R-1/R-4/R-6, edited in place, one
+sentence changed each — no `backup/` version cut:
+`3tk-status.md`, `3tk-sanitizer-notes-001.md`, `ref/3tk-doc-loop-005.md`,
+`c/ctk-proposal.md`, `odin/odin-to-zig-backport-001.md`. **`3tk-log.md` was not
+touched (R-2, append-only) and `backup/` was not touched (R-3).** The staging
+plan `037` itself was left as written — its `matryoshka-tk` hits are the
+measurement it recorded, not a live self-reference, and rewriting them would
+falsify what was measured.
+
+**The re-measure matched the plan's count**: 11 files under `lang/` held the
+whole word, the same set the plan named. After the rewrite, exactly five
+remain — the log, the plan (as above), and the three `backup/` files R-3 says
+stay untouched.
+
+**`matryoshka-3tk` checked, nothing over-renamed.** No `ztkk`, `3ztk` or
+stray `-ztk-` anywhere in that tree. Two relative links resolve into this
+repo: `3tk-api-005.md`'s link to `3tk-log.md` resolves; `3tk-patterns-004.md`'s
+link to `3tk-staging-plan-019.md` does not — that plan is long spent and gone
+from this folder, same as every other retired plan number, and the break
+predates the rename and is not one of its symptoms. **Reported, not fixed —
+the plan is R-5's kind of item, the owner's.**
+
+**Rule 12's four ported scripts diff at one line each, the `ROOT` line
+alone**: `run-builds.sh`, `run-builds-light.sh`, `run-sanitizers.sh`,
+`preview-docs.sh`. `check-doc-loop.sh`, `move-module-docs.sh` and the two
+LOC scripts are not ported, as the status already records, and were not
+diffed. **The three `.yml` files need nothing** — `linux.yml` and
+`sanitizers.yml` name no repo, and `docs.yml`'s one repo reference is already
+`matryoshka-3tk`. Written into the log as the plan's step 3 asked.
+
+**Every figure held, proving no code moved.** `run-builds.sh` **123 checks**,
+0 failures, four builds green, **146 tests** in each — identical to `3TK-76`.
+`check-doc-loop.sh` **11 labelled blocks, 0 differing, 463 of 463 sentences,
+0 banned words**. `move-module-docs.sh roundtrip` byte-identical over eleven
+blocks. **No `.c3` source changed, so `run-sanitizers.sh` was not re-run**, per
+the plan.
+
 ## 2026-09-10 — 3TK-76: the sweep, and one name off Rule 8's list
 
 **Ran on Opus 5 and closed. `036` is spent.** The last stage of the plan, and the  

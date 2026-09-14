@@ -24,11 +24,17 @@ It is kept short for that reason.**
 
 ## What is live now
 
-**`3TK-76` ran 2026-09-10 on Opus 5 and closed, and `036` is spent with it.  
+**`3TK-77` ran 2026-09-14 on Sonnet 5 and closed, and `037` is spent with it.  
 No stage is queued.** **Only `3TK-50` remains from any earlier plan, and it waits  
-on the owner.** Plans `034` and `036` are spent and still in this folder; `035`  
-and `033` are in `backup/`, and `029` through `032` are gone. **`backup/` is  
-transient, so none of them is a source of truth.**
+on the owner.** Plan `037` is spent and still in this folder; `034` and `036`  
+are gone from it too now, `035` and `033` are in `backup/`, and `029` through  
+`032` are gone. **`backup/` is transient, so none of them is a source of  
+truth.**
+
+**The repo is `matryoshka-ztk` throughout `lang/` now.** `3TK-77` rewrote the  
+six live files that still said `matryoshka-tk`; `3tk-log.md` stays untouched  
+as append-only and `backup/` stays untouched as transient. `matryoshka-3tk`  
+was checked and needed no fix — see the log entry.
 
 **`test/` and `negative/` are on the helper. 94 sites of 117 moved**; the 23 that  
 stayed are white box under Rule 8 and **every one of them now carries its own  
@@ -135,7 +141,7 @@ moved +16 lines above `create`, +18 at `create` and +20 at `release`.
 
 **`matryoshka-3tk/src/` and `matryoshka-3tk/test/` still carry the pre-3TK-74  
 text, and now the pre-3TK-75 text too**, because 3tk `.c3` sources are edited  
-only in `matryoshka-tk`'s copy and the owner copies them across. **What `3TK-75`  
+only in `matryoshka-ztk`'s copy and the owner copies them across. **What `3TK-75`  
 adds to that queue: `src/helper.c3`, `src/mailbox.c3`, `src/pool.c3`,  
 `test/t_helper.c3`, and the two new files `negative/unstamped_inner.c3` and  
 `negative/wrong_type_inner.c3`.** **`run-builds.sh` was ported by both stages and  
@@ -312,7 +318,7 @@ renumbered** — execution order and numeric order differ, deliberately:
 
 **The source LOC is computed on demand, not committed.** `matryoshka-3tk/scripts/count_src_loc.sh`  
 and `inject_src_loc.sh` are the two new scripts (`L-2`, `L-3`) — no  
-`matryoshka-tk` copy, the first 3tk script pair that is not ported.  
+`matryoshka-ztk` copy, the first 3tk script pair that is not ported.  
 `src/mtk.c3`'s module doc block and the reference (`009` now) both carry  
 `[[LOC]]` (`L-5`); `docs.yml` substitutes it in the runner's own checkout,  
 before `c3c docgen` (`L-8`). **`src/*.c3` is 665 lines by `L-1`'s definition**  
@@ -413,7 +419,7 @@ stopped aborting in a checking build. **An internal declaration that has a
 contract keeps a contract-only block — every line a `@` line, no prose** — and  
 `run-builds.sh` now asserts exactly that. **No stage tidies one away.**
 
-**`run-builds.sh` is 123 checks, 0 failures, four builds, 146 tests each, and the doc loop is 463 of 463** — `3TK-75`'s figures, and the current ones. 115, 145 and 458 were `3TK-74`'s; 107 and 443 were `3TK-70`'s through `3TK-73`'s; the two figures moved together because two new negatives run once per build and the helper's three doc blocks grew. The paragraphs below are each stage's own reading at the time it ran.
+**`run-builds.sh` is 123 checks, 0 failures, four builds, 146 tests each, and the doc loop is 463 of 463** — `3TK-75`'s figures, and still the current ones through `3TK-77`, which changed no code. 115, 145 and 458 were `3TK-74`'s; 107 and 443 were `3TK-70`'s through `3TK-73`'s; the two figures moved together because two new negatives run once per build and the helper's three doc blocks grew. The paragraphs below are each stage's own reading at the time it ran.
 
 **`run-builds.sh` was 81 → 89 checks, 0 failures, four builds, 143 tests each.**  
 Three checks were added: the six-name module list (`Part 4.5`, replacing the  
@@ -908,6 +914,7 @@ settled the same way by 3TK-54:**
 | **3TK-74** | **The outer's hooks become required.** Ran 2026-09-09 on Opus 5. `init` and `finish` declared by every outer the helper creates, empty bodies allowed; `destroy` renamed and narrowed from `void?` to `void`; two compile-time `$assert`s in each of `create` and `release`; the module block rewritten and `B-7`'s pool comparison written into the reference. **`3tk-rules-005.md` adds Rule 7 and rewrites Rule 4's last paragraph**; **`3tk-reference-010.md`** replaces `009`; `3tk-decisions-007.md` and `3tk-api-005.md` revised in place with every `helper.c3` citation re-resolved. | **Closed.** **115 checks green** — 107 plus the two new negatives, once per build — 145 tests in each of four builds, doc loop 11 blocks, 0 differing, **458 of 458**, 0 banned words, roundtrip byte-identical, sanitizers 3 of 3. **The sweep was 14 types and 28 hooks, not 12 and 24** (Rule 12: the charter counted binding sites, and three distinct `Holder` types collapse into one). The two negatives are **compile-time, not tier 1**. `B-5`'s exemption needed no code. |
 | **3TK-75** | **The helper stopped writing.** Ran 2026-09-10 on Opus 5. `OuterHelper.inner` verifies the identity instead of stamping it — `mtk::@check` plus `is_mine`, null tolerated — so the read-modify-write of the whole `link` field is gone from the one door that could fire on an outer another thread holds. **`stamp` itself is untouched** (`C-3`), its three callers all being construction-time. `linked` takes an `Inner*` too; the two container sites that kept a raw `to_inner` go through their alias and their exception comments are deleted. Two tests corrected, one added, **two negatives added rather than `C-8`'s one** — a negative program aborts once, so two aborts cannot share a program (Rule 13). **`3tk-rules-006.md` adds Rule 8** and shifts the stage rules 8-13 to 9-14; **`3tk-example-rules-006.md`** names `t_identity.c3` as the file keeping the examples rule's promise; **`3tk-reference-011.md`** replaces `010`; `3tk-decisions-007.md` and `3tk-api-005.md` revised in place, every `helper.c3` citation re-resolved. | **Closed.** **123 checks green** — 115 plus two runtime negatives once per build — **146 tests** in each of four builds, doc loop 11 blocks, 0 differing, **463 of 463**, 0 banned words, roundtrip byte-identical, **sanitizers 3 of 3**, which is the run that mattered. **`C-7` was written here**, so `3TK-76`'s step 4 is spent. |
 | **3TK-76** | **The sweep.** Ran 2026-09-10 on Opus 5. **94 of 117 call sites in `test/` and `negative/` moved off `inner::internal::*` onto `OuterHelper`** — the population was 117, not the plan's 113 (Rule 13). `t_slot.c3` was the exemplar and settled that **the doc block moves with the code**. `t_queue.c3`, `t_mailbox.c3`, `t_pool.c3`, `t_concurrency.c3` and `t_slot.c3` are black box entire; **`t_identity.c3` split 8 and 18**, and **23 white-box sites each gained a sentence**. **`3tk-rules-007.md` replaces `006`, one list corrected and nothing else**: `overwrite_slot` is off Rule 8's bypass-is-the-violation list, its violation being the second `fill` on a full Slot. Numbering did not shift. Step 4 was spent by `3TK-75`; the ten part-1 callers were re-measured and are still ten, still all in `t_identity.c3`. | **Closed.** **Every figure identical to `3TK-75`'s, which is the proof of a relocation stage** — 123 checks green, 146 tests in each of four builds, doc loop 11 blocks, 0 differing, 463 of 463, 0 banned words, roundtrip byte-identical, **sanitizers 3 of 3**. `src/` was not opened. No script or `.yml` changed, so Rule 12's carry is empty. |
+| **3TK-77** | **The rename, finished under `lang/`.** Ran 2026-09-14 on Sonnet 5. `matryoshka-tk` → `matryoshka-ztk` in six live files — `3tk-status.md`, `3tk-sanitizer-notes-001.md`, `ref/3tk-doc-loop-005.md`, `c/ctk-proposal.md`, `odin/odin-to-zig-backport-001.md` — edited in place, R-4. **`3tk-log.md` and `backup/` left untouched** (R-2, R-3); the plan's own quoted measurement left as written. `matryoshka-3tk` checked: no over-renames, four ported scripts (`run-builds.sh`, `run-builds-light.sh`, `run-sanitizers.sh`, `preview-docs.sh`) diff at the `ROOT` line alone, the three `.yml` files need nothing. One dangling link found and reported, not fixed — `3tk-patterns-004.md`'s link to the long-spent `3tk-staging-plan-019.md`, predating the rename. | **Closed.** Every figure identical to `3TK-76`'s — 123 checks green, 146 tests in each of four builds, doc loop 11 blocks, 0 differing, 463 of 463, 0 banned words, roundtrip byte-identical. **No `.c3` source changed, so sanitizers were not re-run.** |
 | **3TK-73** | **The design-folder audit. Ran 2026-09-09 on Opus 5. Closed.** Sixteen documents and one script classified — five stay, two crossed to `matryoshka-3tk/design/`, twelve retired to `backup/`. The capability study trimmed, re-measured and crossed as `c3-capabilities-003.md` with a new Q13 folded in from `3tk-build-dist.md`; `3tk-port-findings-005.md` crossed after `A-7` ruled it a different subject from `3tk-decisions-007.md`, with every 3tk `file:line` re-resolved; `3tk-release-while-busy-001.md` read against the ruling of 2026-08-28 and retired with nothing owed; `ref/3tk-doc-loop-005.md` written. **No code was written**, and every figure is identical to 3TK-72's — `A-11`. | **Findings: `P4` closed by the code, `P3` carried into this file, `_Mbox.has_queued` has no readers, and two items in the shared books are still open.** The full account is the log entry of 2026-09-09. |
 
 **The table is in run order, not numeric order.** `3TK-50` is independent of all  
@@ -1429,7 +1436,7 @@ scripts take an optional directory and exit 2 on a bad one.
   there — every time**, even though `design/` is the default target.
 - **[`matryoshka-3tk/scripts/`](https://github.com/g41797/matryoshka-3tk/tree/main/scripts)
   and `matryoshka-3tk/.github/workflows/`** — **every stage tunes both to what  
-  it changed in `matryoshka-tk`, in the stage.** The four scripts there are  
+  it changed in `matryoshka-ztk`, in the stage.** The four scripts there are  
   byte-identical to this repo's copies but for one line: `ROOT` gains `/..`.  
   Copy, re-apply that line, `diff`, and require the ROOT line to be the only  
   difference. `check-doc-loop.sh` and `move-module-docs.sh` are **not** ported.  
@@ -1566,7 +1573,7 @@ independent of 3TK-58 and does not block it.
 
 ## The stages that have run
 
-**Seventy-seven rows, and the log has an entry for every one.** 3TK-62, 3TK-63 and  
+**Seventy-nine rows, and the log has an entry for every one.** 3TK-62, 3TK-63 and  
 3TK-64 were added by 3TK-pre-65, which found them missing; the four of 2026-09-08  
 were added when 030 was written. **The table is in execution order, so 67, 65, 66,  
 68 sit out of numeric order deliberately.** This table is the list, not the  
@@ -1651,6 +1658,8 @@ record.
 | **3TK-73** | the design-folder audit | 2026-09-09 |
 | **3TK-74** | the outer's hooks become required | 2026-09-09 |
 | **3TK-75** | the helper stopped writing | 2026-09-10 |
+| **3TK-76** | the sweep | 2026-09-10 |
+| **3TK-77** | the rename, finished under `lang/` | 2026-09-14 |
 
 **Seven rows were added on 2026-09-10 by `3TK-75`**, which found the list had  
 stopped at `3TK-68` while seven stages had run past it. The count above was  

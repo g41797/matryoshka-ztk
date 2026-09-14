@@ -24,7 +24,7 @@ in this repo's `ref/`; and the two links to `3tk-staging-plan-016.md` are gone â
 that plan is spent and is not in this folder, so the rule it ruled is stated  
 here rather than pointed at. `004` is in `backup/`, with `003`.
 
-**This file stays in `matryoshka-tk`, and that is a rule rather than an  
+**This file stays in `matryoshka-ztk`, and that is a rule rather than an  
 accident.** It is the procedure for `check-doc-loop.sh` and  
 `move-module-docs.sh`, and those two scripts exist only here â€” they were never  
 ported, deliberately. **A procedure lives with the thing it drives.**
