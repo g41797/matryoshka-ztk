@@ -53,9 +53,9 @@ I/O developers and Process developers often speak *different languages*.
 ---
 
 
-## What Matryoshka-Tk Is For
+## What Matryoshka-Ztk Is For
 
-Matryoshka-Tk
+Matryoshka-Ztk
 
 - is designed for the Process part 
 - does **not** replace an I/O library
@@ -80,7 +80,7 @@ Its goal is
     - workflows
 - instead of low-level details
 
-The funny part is that Matryoshka-Tk was created by an I/O developer.
+The funny part is that Matryoshka-Ztk was created by an I/O developer.
 
 Me.
 
@@ -93,7 +93,7 @@ Me.
 
 
 - I/O _moves_ data.
-- Matryoshka-Tk organizes processing of data.
+- Matryoshka-Ztk organizes processing of data.
 
 ---
 
@@ -102,7 +102,7 @@ Me.
 ---
 
 
-Every Matryoshka-Tk system is built from _four building blocks_:
+Every Matryoshka-Ztk system is built from _four building blocks_:
 
 - **Master** — execution
 - **Item** — state/data/command/...
@@ -120,7 +120,7 @@ You stop talking about:
 - mutexes
 - queues
 
-You start talking on Matryoshka-Tk language:
+You start talking on Matryoshka-Ztk language:
 
 - Masters
 - Items
@@ -135,7 +135,7 @@ A **Master** is
 
 - an _Threaded_ Io _task_
 - created by _concurrent()_
-- follows the Matryoshka-Tk rules
+- follows the Matryoshka-Ztk rules
 - holds its own state
 - works with Items
 - communicate with another Masters and/or application
@@ -184,10 +184,10 @@ You are thinking in terms of:
 
 on API level one of the arguments is _file handle_.
 
-The same is for Matryoshka-Tk API
+The same is for Matryoshka-Ztk API
 
 - you are thinking in terms of _Item_ - Application entity
-- API is working with _ItemHandle_ - Matryoshka-Tk entity
+- API is working with _ItemHandle_ - Matryoshka-Ztk entity
 
 
 ---
@@ -275,4 +275,4 @@ Can you describe your application using only
 If
 
 - **yes** - you are on the right way
-- no - [you still have the chance](https://github.com/g41797/matryoshka-tk){target="_blank" rel="noopener"}
+- no - [you still have the chance](https://github.com/g41797/matryoshka-ztk){target="_blank" rel="noopener"}

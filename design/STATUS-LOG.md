@@ -1,6 +1,48 @@
-# matryoshka-tk Session Log
+# matryoshka-ztk Session Log
 
 Full session history, newest entries at top. Append-only. Read only when explicitly asked (history audit, "what did we do about X") — not routine context-loading. See design/STATUS.md for the rule and current state.
+
+## 2026-09-14 — RENAME: matryoshka-tk becomes matryoshka-ztk. Plan -074.
+
+Run in the fresh clone. Owner's rule: every `-tk` that means the tool kit  
+becomes `-ztk`, case kept. `otk` and `3tk` untouched. Code names unchanged.
+
+**Owner rulings.** The agent moves files with plain `mv`, no git. History rows  
+keep the old name. `design/` docs edited in place, no new versions. Plan links  
+in `api-13-carryover-004.md`, `intr-8-slot-based-creation-003.md` and  
+`item-list-011.md` stay as written.
+
+**A — docs generation.** `kitchen/mkdocs.yml`: `repo_url`, `repo_name`, the  
+notation nav path. No `site_url` added. The docs scripts needed no change; they  
+resolve paths from their own location.
+
+**Moves.** `design/matryoshka-Ztk-diagram-style-guide-003.md`,  
+`kitchen/_logo/matryoshka-ztk-logo.png`, `kitchen/docs/assets/matryoshka-ztk-logo.png`,  
+`kitchen/docs/addendums/matryoshka-ztk-notation.md`.
+
+**B — site text.** `README.md` (logo, four badges, brand, docs URL) and ten  
+`kitchen/docs/` pages. Site built with no warnings; no `-tk` left in `docs/`.
+
+**C — `src/`.** Nine `//!` URL lines only. The generated autodoc source carries  
+the new URLs.
+
+**D — `design/`, in place.** api-reference -042 URLs and brand, `STATUS.md`,  
+`context.md`, style guide, photo-archive story, zig-notes line 10,  
+api-13-book URLs, rules-049 plan name pattern. `check_design.sh`: plan glob  
+matches both prefixes; orphan scan skips `design/secondary/lang/`.
+
+**Gate problems found in the clone, owner's rulings.** 70 orphans under  
+`design/secondary/lang/` — skipped. Ten Superseded versions lines named files  
+not on disk — removed from `context.md`; `matryoshka-concepts-002.md` lost two  
+index lines and three body citations were pointed at api-reference -042 and  
+rules-049. zig-notes link to the Odin backport repointed to  
+`secondary/lang/odin/`. plan-073 fixed in place for the two moved file names.
+
+**Plan -074.** New name prefix `matryoshka-ztk-`. RENAME collapsed to one line.  
+-073 added to Superseded versions. `STATUS.md` NAMED STAGE block removed.
+
+**Post-stage cleanup.** Mechanical rename, no code logic touched. Banned-word  
+scan over changed lines: no hits. Gates listed in the plan line.
 
 ## 2026-09-14 — plan -073: the RENAME stage.
 

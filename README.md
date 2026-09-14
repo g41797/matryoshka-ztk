@@ -1,4 +1,4 @@
-![](kitchen/_logo/matryoshka-tk-logo.png)
+![](kitchen/_logo/matryoshka-ztk-logo.png)
 
 ---
 
@@ -7,10 +7,10 @@
 ---
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Linux](https://github.com/g41797/matryoshka-tk/actions/workflows/linux.yml/badge.svg)](https://github.com/g41797/matryoshka-tk/actions/workflows/linux.yml)
-[![Windows](https://github.com/g41797/matryoshka-tk/actions/workflows/windows.yml/badge.svg)](https://github.com/g41797/matryoshka-tk/actions/workflows/windows.yml)
-[![macOS](https://github.com/g41797/matryoshka-tk/actions/workflows/mac.yml/badge.svg)](https://github.com/g41797/matryoshka-tk/actions/workflows/mac.yml)
-[![Deploy Documentation](https://github.com/g41797/matryoshka-tk/actions/workflows/docs.yml/badge.svg)](https://github.com/g41797/matryoshka-tk/actions/workflows/docs.yml)
+[![Linux](https://github.com/g41797/matryoshka-ztk/actions/workflows/linux.yml/badge.svg)](https://github.com/g41797/matryoshka-ztk/actions/workflows/linux.yml)
+[![Windows](https://github.com/g41797/matryoshka-ztk/actions/workflows/windows.yml/badge.svg)](https://github.com/g41797/matryoshka-ztk/actions/workflows/windows.yml)
+[![macOS](https://github.com/g41797/matryoshka-ztk/actions/workflows/mac.yml/badge.svg)](https://github.com/g41797/matryoshka-ztk/actions/workflows/mac.yml)
+[![Deploy Documentation](https://github.com/g41797/matryoshka-ztk/actions/workflows/docs.yml/badge.svg)](https://github.com/g41797/matryoshka-ztk/actions/workflows/docs.yml)
 
 
 ---
@@ -21,16 +21,16 @@ Software has two worlds.
 - The first moves data.
 - The second processes data.
 
-Matryoshka-Tk is a _toolkit_ for the second world.
+Matryoshka-Ztk is a _toolkit_ for the second world.
 
 
 ---
 
-## What Matryoshka-Tk Is For
+## What Matryoshka-Ztk Is For
 
 ---
 
-Matryoshka-Tk provides
+Matryoshka-Ztk provides
 
 - tools for the code that runs
   - **after** data enters the system
@@ -74,7 +74,7 @@ Today (11 Aug 2026) - **722** LOC
 ---
 
 
-Read this <a href="https://g41797.github.io/matryoshka-tk/" target="_blank" rel="noopener noreferrer">beautiful documentation</a>
+Read this <a href="https://g41797.github.io/matryoshka-ztk/" target="_blank" rel="noopener noreferrer">beautiful documentation</a>
 
 ---
 

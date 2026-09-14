@@ -77,7 +77,7 @@ releasing to them.
 - One event loop watches "a Mailbox message arrived" and "a Pool item became free"
   side by side. A worker returns an item — whoever was waiting resumes.
 
-A worker pool, end to end, in [Matryoshka-Tk notation](../addendums/matryoshka-tk-notation.md):
+A worker pool, end to end, in [Matryoshka-Ztk notation](../addendums/matryoshka-ztk-notation.md):
 
 ```
 [ Worker ]  >>> get() >>>  { Job Processor }

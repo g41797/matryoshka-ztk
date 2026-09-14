@@ -21,10 +21,10 @@
 //! pool deciding.
 //!
 //! Examples:
-//! https://g41797.github.io/matryoshka-tk/examples/pool/
+//! https://g41797.github.io/matryoshka-ztk/examples/pool/
 //!
 //! The three together:
-//! https://g41797.github.io/matryoshka-tk/examples/flow/
+//! https://g41797.github.io/matryoshka-ztk/examples/flow/
 //!
 
 const _doc_stub = void;

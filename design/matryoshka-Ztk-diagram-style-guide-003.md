@@ -1,6 +1,6 @@
-# Matryoshka-Tk Diagram Style Guide
+# Matryoshka-Ztk Diagram Style Guide
 
-> A guide for communicating software architecture using Matryoshka-Tk notation.
+> A guide for communicating software architecture using Matryoshka-Ztk notation.
 
 Change from -002: banned-word pass. `Scalable` replaced with a plain  
 statement of the requirement, and the hold-language pass finished here —  
@@ -34,7 +34,7 @@ The notation should also be readable by
 - maintainers
 - new team members
 
-No previous Matryoshka-Tk knowledge should be required.
+No previous Matryoshka-Ztk knowledge should be required.
 
 ---
 

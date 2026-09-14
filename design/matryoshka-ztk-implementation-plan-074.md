@@ -1,4 +1,8 @@
-# Matryoshka Zig — Implementation Plan (073)
+# Matryoshka Zig — Implementation Plan (074)
+
+Change from -073: RENAME is done and collapses to one line in Completed stages.  
+The file name moves to `matryoshka-ztk-`. The "How to start" and RENAME  
+sections are gone. Nothing forward-looking changed.
 
 Change from -072: the RENAME stage is added and named by the owner, 2026-09-14.  
 The repo and its root folder become `matryoshka-ztk`. Code names stay  
@@ -29,13 +33,13 @@ log, not the originals. Everything from API 12-1 on is exact.
 Current state lives in [STATUS.md](STATUS.md), not here. This file carries  
 forward-looking work and one line per completed stage.
 
-Version note: `-070`, `-071` and `-072` are kept on disk as the historical record. All  
+Version note: `-072` and `-073` are kept on disk as the historical record. Both  
 are listed in the Superseded versions section of [context.md](context.md), so  
 the orphan gate passes without deleting either. That section is the standing  
 resolution of Open Item 14 — it breaks no rule and needs no deletion. `-069` was  
 deleted against Part 0 and is unrecoverable — see STATUS-LOG.md, 2026-08-13.
 
-Last completed stage: INTR 8-3, 2026-08-14.
+Last completed stage: RENAME, 2026-09-14.
 
 **The tree builds.** All four modes 195/195, three cross targets green,  
 `zig build stories` green. The `tests/zig_mechanisms.zig` breakage that blocked  
@@ -43,133 +47,7 @@ INTR 8-1 was fixed on 2026-08-14 with the owner's approval; see STATUS-LOG.md.
 
 INTR 8 is closed. All three sub-stages are done, 2026-08-14.
 
-**RENAME is the named next stage.** Owner's call, 2026-09-14. It runs in the  
-fresh clone `matryoshka-ztk`, after the owner saves, pushes and renames. The  
-audit that ranks the parked work stays parked until RENAME is done.
-
----
-
-## How to start the RENAME stage
-
-The owner does steps 1-3. The agent starts at step 4.
-
-1. Save and push `matryoshka-tk`, including this plan.
-2. Rename the repo on GitHub to `matryoshka-ztk`.
-3. Clone it locally as `/home/g41797/dev/root/github.com/g41797/matryoshka-ztk`.
-4. Start a new session in that folder. Not `/clear` — `/clear` keeps the old
-   working directory.
-   - `cd /home/g41797/dev/root/github.com/g41797/matryoshka-ztk`
-   - `claude`
-   - `/model` → **Opus 5**. The stage is path and script judgment, not typing.
-5. Paste this prompt:
-
-```
-Repo was renamed matryoshka-tk -> matryoshka-ztk; this is the fresh clone.
-Read design/STATUS.md in full, then Part 0 of design/rules-049.md,
-then stage RENAME in design/matryoshka-tk-implementation-plan-073.md.
-Code names (matryoshka) do not change. Docs generation first.
-Show intent and wait for my approval before any edit. Confirm, wait.
-```
-
-6. The agent's first checks:
-   - `pwd` ends in `matryoshka-ztk`.
-   - `git status` is clean.
-   - Agent memory from the old folder does not load. Everything needed is in
-     STATUS.md and this file. That is by design.
-
----
-
-## RENAME — matryoshka-tk becomes matryoshka-ztk
-
-The repo and the root folder are renamed. Sibling ports: otk (Odin), 3tk (C3).  
-The Odin repo went through the same rename first. Its trouble spot was the docs  
-generation scripts.
-
-What does not change:
-- The Zig module name. `build.zig.zon` `.name = .matryoshka`.
-- `@import("matryoshka")`, `matryoshka.*`, every identifier.
-- Frozen material: `design/secondary/`, `kitchen/defer/`, past entries in
-  `STATUS-LOG.md`, superseded doc versions.
-
-### Owner rulings — ask first, before any edit
-
-Ask as numbered plain text.
-
-- **R1 — brand text.** `Matryoshka-Tk` appears in `kitchen/docs/manifesto.md`
-  (9 times), `kitchen/docs/addendums/installation.md`, `kitchen/docs/tools/pool.md` and `kitchen/mkdocs.yml`.  
-  New spelling, or keep it?
-- **R2 — file renames.** The owner does the moves. Candidates:
-  - `design/matryoshka-tk-implementation-plan-*.md` — the next version name.
-  - `design/matryoshka-Ztk-diagram-style-guide-003.md`
-  - `kitchen/docs/addendums/matryoshka-ztk-notation.md`
-  - `kitchen/_logo/matryoshka-tk-logo.png` and its copy under `kitchen/docs/assets/`
-- **R3 — `src/` doc comments.** The nine `//!` URL lines are in the owner-edit
-  zone. Permission to change the URL lines only.
-- **R4 — design notes with history.** `api-13-book-002.md` and the changelog
-  rows of `matryoshka-zig-0.16-notes-003.md`. Change live URLs only, keep  
-  history rows as written?
-- **Ask also:** what exactly broke in the Odin repo's docs scripts. Check the
-  same spots here.
-
-### A — docs generation, first
-
-- `kitchen/mkdocs.yml`
-  - lines 5-6: `repo_url: https://github.com/g41797/Matryoshka-Tk/` and `repo_name`.
-  - line 187: the notation page path, if R2 renames it.
-  - no `site_url` today. Decide whether to add
-    `https://g41797.github.io/matryoshka-ztk/`.
-- Scripts. Read-only grep on 2026-09-14 found no absolute path and no repo name.
-  Each resolves paths from its own location.
-  - `kitchen/tools/build_site.sh`, `preview_site.sh`, `preview_apidocs.sh`
-  - `kitchen/tools/docs_zig.sh`, `gen_examples_docs.sh`, `gen_diagrams.sh`
-  - `kitchen/tools/count_src_loc.sh`, `relink_md.py`, `kitchen/hooks/count_lines.py`
-  - Verify by running them in the clone, not by reading.
-- `.github/workflows/docs.yml` names no repo. GitHub Pages on the renamed repo is
-  the owner's check.
-- Generated output in root `docs/`: rebuild, then grep it for `matryoshka-tk`.
-
-### B — site-facing text
-
-- `README.md`
-  - line 1: logo path.
-  - lines 10-13: four CI badge URLs.
-  - line 77: docs site URL.
-- `kitchen/docs/index.md` line 23: logo asset.
-- `kitchen/docs/addendums/installation.md`: name text, and
-  `zig fetch --save git+https://github.com/g41797/matryoshka-ztk`.
-- `kitchen/docs/manifesto.md`: brand (R1), GitHub link on line 278.
-- `kitchen/docs/tools/pool.md` line 80: notation link (R1, R2).
-
-### C — `src/`, comments only (R3)
-
-- `src/matryoshka.zig` lines 12, 15, 18.
-- `src/polynode.zig` lines 22, 25.
-- `src/mailbox.zig` lines 25, 28.
-- `src/pool.zig` lines 24, 27.
-- `https://g41797.github.io/matryoshka-tk/...` → `.../matryoshka-ztk/...`.
-
-### D — `design/`, versioning rules apply
-
-- `matryoshka-api-reference-042.md`: 11 site URLs. New `-043`, link cascade,
-  `-042` into Superseded versions.
-- `api-13-book-002.md` lines 216, 452: URLs (R4).
-- `matryoshka-zig-0.16-notes-003.md` line 10: name in prose.
-- `STATUS.md`: title, folder tree. In place.
-- Only if R2 renames the plan file:
-  - `rules-049.md` line 103, the plan file name. New rules version.
-  - `kitchen/tools/check_design.sh` line 116, the plan glob.
-
-### Gates
-
-- `kitchen/build_and_test_debug.sh` → `build_and_test_all.sh` →
-  `build_cross_debug.sh`. Output to `zig-out/` logs.
-- `kitchen/tools/build_site.sh`, with the nav check.
-- `kitchen/tools/preview_site.sh`, the rendered-page check. `src/` comments changed.
-- `kitchen/tools/check_design.sh` exit 0.
-- Final grep for `matryoshka-tk` outside frozen areas. Only history rows remain.
-- Banned-word scan, README sync, rules audit.
-- STATUS-LOG.md entry with a Post-stage cleanup row. New plan version.
-- At the end: name the model for the next stage, and say clear or compact.
+RENAME is done, 2026-09-14. Nothing is authorized; the owner names the next stage.
 
 ---
 
@@ -231,7 +109,7 @@ One line each. Full account: `STATUS-LOG.md`, by date.
 - CMPCT 1 — STATUS/plan/log/context de-duplicated; rules-038 "Status file ownership". DONE 2026-08-01 (192/192, doc-only).
 - CMPCT 2 — rules regrouped into rules-039.md: gates first, one topic in one place, dated rationale moved to the log, six stale links fixed. No rule changed meaning. DONE 2026-08-01 (192/192, doc-only).
 - DOC 22 — `design/` compacted to the current picture. Five concept docs merged into [matryoshka-concepts-003.md](matryoshka-concepts-003.md); nine files moved to `design/secondary/` (frozen, indexed by its own `context.md`); eight deleted; `context.md` rewritten; every dead cross-reference repaired. New in [rules-049.md](rules-049.md): where a doc lives, present tense in `design/`, story file layout. DONE 2026-08-02 (192/192, doc-only).
-- DOC 23 — the two large docs split by audience. `matryoshka-tk-0.16-implementation-guide-001.md` retired: its Odin idiom mapping to [secondary/odin-to-zig-backport-001.md](secondary/odin-to-zig-backport-001.md), its still-binding material to [matryoshka-zig-0.16-notes-003.md](matryoshka-zig-0.16-notes-003.md), its walkthroughs of shipped code deleted with owner approval. [matryoshka-architecture-foundation-4-006.md](matryoshka-architecture-foundation-4-006.md) drops the four sections `matryoshka-concepts-003.md` already owns and renames `MayItem` to `Slot`. New gate `kitchen/tools/check_design.sh`. DONE 2026-08-02 (192/192, doc-only).
+- DOC 23 — the two large docs split by audience. `matryoshka-tk-0.16-implementation-guide-001.md` retired: its Odin idiom mapping to [secondary/lang/odin/odin-to-zig-backport-001.md](secondary/lang/odin/odin-to-zig-backport-001.md), its still-binding material to [matryoshka-zig-0.16-notes-003.md](matryoshka-zig-0.16-notes-003.md), its walkthroughs of shipped code deleted with owner approval. [matryoshka-architecture-foundation-4-006.md](matryoshka-architecture-foundation-4-006.md) drops the four sections `matryoshka-concepts-003.md` already owns and renames `MayItem` to `Slot`. New gate `kitchen/tools/check_design.sh`. DONE 2026-08-02 (192/192, doc-only).
 - WEB 1 — the landing page reaches the API docs. `kitchen/docs/index.md`: the `XYZ Lines Of Code` badge is now the link to `apidocs/`, opening in a new tab; the API button above it, hidden by CSS since it was added, is deleted. `kitchen/docs/stylesheets/extra.css`: the badge gains link styling and a per-scheme hover, and the button styling it made dead — `.hero-button`, both `-primary` and `-secondary` scheme pairs, the `display: none` rule, the unused `.hero-buttons` selector — is removed. DONE 2026-08-02 (doc-only, no `src/` change).
 
 - Errors as type IDs — owner's proposal tested and rejected. `@intFromError`
@@ -416,6 +294,8 @@ One line each. Full account: `STATUS-LOG.md`, by date.
   [api-13-carryover-004.md](api-13-carryover-004.md) — 43 rows.  
   `ParentHandle` added to the glossary.  
   DONE 2026-08-13 (195/195).
+
+- **RENAME** — repo and root folder `matryoshka-tk` → `matryoshka-ztk`. Code names unchanged. Site config, site text, README, nine `src/` URL lines, `design/` edited in place by owner ruling, four files moved. `check_design.sh` skips `secondary/lang/`; ten missing superseded entries removed. DONE 2026-09-14 (195/195).
 
 CANDIDATES was dropped, owner's decision. It carried from plan-043 through  
 plan-046 without starting, and `design/candidates/` does not exist on disk.

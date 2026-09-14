@@ -7,12 +7,12 @@ free functions on the module.
 
 
 What Zig 0.16 provides, what it removed, and how cancellation works. The  
-constraints these impose are why `matryoshka-tk` is shaped the way it is.
+constraints these impose are why `matryoshka-ztk` is shaped the way it is.
 
 Replaces the 0.16 implementation guide, a pre-implementation feasibility study.  
 The port shipped, so the block-by-block build instructions went with it; the  
 Odin idiom mapping moved to
-[secondary/odin-to-zig-backport-001.md](secondary/odin-to-zig-backport-001.md).
+[secondary/lang/odin/odin-to-zig-backport-001.md](secondary/lang/odin/odin-to-zig-backport-001.md).
 
 Companion: [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md) — the API surface.\  
 Companion: [rules-049.md](rules-049.md) — the rules these constraints justify.

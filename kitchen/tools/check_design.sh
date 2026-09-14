@@ -100,7 +100,7 @@ while IFS= read -r f; do
         report "  ORPHAN     ${f#$repo_root/}"
         orphans=$((orphans + 1))
     fi
-done < <(find "$design" -type f \( -name '*.md' -o -name '*.png' -o -name '*.zig' \) | sort)
+done < <(find "$design" -path "$design/secondary/lang" -prune -o -type f \( -name '*.md' -o -name '*.png' -o -name '*.zig' \) -print | sort)
 [ "$orphans" -eq 0 ] && echo "  ok"
 
 echo
@@ -113,7 +113,7 @@ while IFS= read -r line; do
     [ -n "$line" ] && { report "  FUTURE     ${line#$repo_root/}"; fw=$((fw + 1)); }
 done < <(grep -rnE "$fwd" --include='*.md' "$design" \
     --exclude-dir=secondary --exclude='STATUS-LOG.md' --exclude='STATUS.md' \
-    --exclude='matryoshka-tk-implementation-plan-*.md' 2>/dev/null)
+    --exclude='matryoshka-*-implementation-plan-*.md' 2>/dev/null)
 [ "$fw" -eq 0 ] && echo "  ok"
 
 echo

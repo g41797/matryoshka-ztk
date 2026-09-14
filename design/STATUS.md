@@ -1,14 +1,4 @@
-# matryoshka-tk STATUS
-
-## NAMED STAGE — RENAME
-
-The repo and its root folder become `matryoshka-ztk`. Owner's call, 2026-09-14.  
-Code names stay `matryoshka`. The stage runs in a fresh clone.
-
-- How to start, and the prompt to paste:
-  [the plan](matryoshka-tk-implementation-plan-073.md), "How to start the RENAME stage".
-- The stage itself: the same file, "RENAME".
-- The parked work below stays parked until RENAME is done.
+# matryoshka-ztk STATUS
 
 ## PARKED WORK — read before naming a stage
 
@@ -20,7 +10,7 @@ still parked:
   10. Steps 2 and 3 have since passed green twice. Detail: Next.
 - 13-4b-3, 13-5 and the `polynode` audit. Candidates, unranked. Detail: Next.
 - Three code-level findings, reported and not actioned. Detail:
-  [the plan](matryoshka-tk-implementation-plan-073.md), "Reported, not actioned".
+  [the plan](matryoshka-ztk-implementation-plan-074.md), "Reported, not actioned".
 - The rendered autodoc page is unviewed. It is the verification for 13-4.
 - `handle` vs `item` in `mailbox.zig` body text is undecided.
 
@@ -35,7 +25,7 @@ date. Nothing listed here is authorized, and this block authorizes nothing.
 1. Read this file in full. It is current state: what is done, what is in
    flight, what is authorized.
 2. Read Part 0 of [rules-049.md](rules-049.md).
-3. Read the plan, [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md),
+3. Read the plan, [matryoshka-ztk-implementation-plan-074.md](matryoshka-ztk-implementation-plan-074.md),
    for the stage the owner names. Not before they name it.
 
 These two files are the entry point. This repo has no auto-loading agent  
@@ -77,7 +67,7 @@ instruction, read this file and ask what to work on.
 - Name the model a stage needs, unasked, at its start and end. Say whether to clear or compact.
 - A trailing `\` at line end in `src/*.zig` doc comments is intentional. Keep it.
 - The embedded node is the inner. The embedding struct is the outer. Never "parent".
-- Agent memory is tied to the folder path and does not survive the rename. This file and the plan carry everything.
+- Agent memory is tied to the folder path. This file and the plan carry everything.
 - Run kitchen/tools/audit_edges.sh after any stage that changes transfer code (send/receive/close/put) or the api doc pages. Compare the four counts against the baseline in audit-recipe-002.md. DISCARDED or unmatched asserts above zero means a rule was skipped. It is not a gate — it always exits 0.
 
 ## Sources of Truth
@@ -92,7 +82,7 @@ instruction, read this file and ask what to work on.
 - Legacy mailbox: /home/g41797/dev/root/github.com/g41797/mailbox/
 - Odin proto: /home/g41797/dev/root/github.com/g41797/matryoshka/
 - tofu (build infra): /home/g41797/dev/root/github.com/g41797/tofu/
-- Plan: matryoshka-tk-implementation-plan-073.md (slim, state-only)
+- Plan: matryoshka-ztk-implementation-plan-074.md (slim, state-only)
 - Rules: rules-049.md
 - API 13 (the book) design note: api-13-book-002.md
 - API 13 carry-over note: api-13-carryover-004.md — what left the book, input for 13-2
@@ -101,7 +91,7 @@ instruction, read this file and ask what to work on.
 - API 12 (real pointers for Mbox/Pool) design note: api-12-real-pointers-005.md
 - ItemList / intrusive safety design: item-list-011.md
 - Patterns: patterns-029.md
-- Diagram style: matryoshka-Tk-diagram-style-guide-003.md
+- Diagram style: matryoshka-Ztk-diagram-style-guide-003.md
 - Session narrative: STATUS-LOG.md
 - Frozen material: secondary/context.md — snapshots, drafts, session logs, unstarted intentions. Includes the Odin idiom mapping and the pointer-switch compiler bug.
 - Markdown hard-break tooling: kitchen/tools/fix_md_hardbreaks.sh, rule documented in rules-049.md
@@ -118,7 +108,7 @@ Three layers: polynode, mailbox, pool. Both mailbox and pool optional.
 
 ## Folder Structure
 ```
-matryoshka-tk/
+matryoshka-ztk/
 ├── build.zig
 ├── build.zig.zon
 ├── README.md
@@ -168,6 +158,10 @@ matryoshka-tk/
 - 13 rare ReleaseSmall race in pool_fan_in (053) — see Session Log 2026-07-03 for full trace. Suspected upstream Zig 0.16 `Io.Threaded` bug, not app code. Not reproducible outside stress loop.
 
 ## Current state
+
+**RENAME is done, 2026-09-14.** The repo and root folder are `matryoshka-ztk`.  
+Code names stay `matryoshka`. `check_design.sh` exits 0 and skips  
+`design/secondary/lang/`. The owner checks GitHub Pages on the renamed repo.
 
 **INTR 8-3 has landed, and INTR 8 is closed.** The documents speak Slot-based  
 creation. `check_design.sh` exits 0.
@@ -279,23 +273,22 @@ what it does.
 documents that contradicted it. The Hold vocabulary in the architecture doc is  
 out of scope by the owner's ruling.
 
-Last completed stage: INTR 8-3, 2026-08-14.  
-Current plan: matryoshka-tk-implementation-plan-073.md.
+Last completed stage: RENAME, 2026-09-14.  
+Current plan: matryoshka-ztk-implementation-plan-074.md.
 
 ## Next
 
 **INTR 8 is closed. 8-1, 8-2 and 8-3 are all done, 2026-08-14.** `src/`, then  
 every caller, then the documents.
 
-**RENAME is the named stage.** Owner's call, 2026-09-14. See the block at the  
-top of this file.
+**RENAME is done, 2026-09-14.** Nothing is authorized; the owner names the stage.
 
 **The audit that ranks the parked work is the recommended next step.** Its input  
 is the PARKED WORK block at the top of this file. Its output is a ruling, which  
 goes into this section and lets that block be deleted. It changes no code.
 
 The candidates, what each costs, and the recommendation on record are in  
-[the plan](matryoshka-tk-implementation-plan-073.md) under "Next". They are a  
+[the plan](matryoshka-ztk-implementation-plan-074.md) under "Next". They are a  
 menu, not a queue. Finishing one does not roll into the next — stop and ask. A  
 heading that reads like an ordering is not an instruction to start.
 

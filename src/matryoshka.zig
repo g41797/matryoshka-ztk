@@ -9,13 +9,13 @@
 //! - pool: item reuse through your hooks
 //!
 //! Full documentation:
-//! https://g41797.github.io/matryoshka-tk/
+//! https://g41797.github.io/matryoshka-ztk/
 //!
 //! Examples:
-//! https://g41797.github.io/matryoshka-tk/examples/
+//! https://g41797.github.io/matryoshka-ztk/examples/
 //!
 //! The three together:
-//! https://g41797.github.io/matryoshka-tk/examples/flow/
+//! https://g41797.github.io/matryoshka-ztk/examples/flow/
 //!
 pub const polynode = @import("polynode.zig");
 pub const mailbox = @import("mailbox.zig");

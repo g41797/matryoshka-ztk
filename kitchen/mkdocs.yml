@@ -1,9 +1,9 @@
 site_name: Be Master of your systems
 docs_dir: ./docs
 site_dir: ../docs
-site_description: Tools for Modular Monoliths in Zig
-repo_url: https://github.com/g41797/Matryoshka-Tk/
-repo_name: Matryoshka-Tk on GitHub
+site_description: Toolkit for Building Background Processes
+repo_url: https://github.com/g41797/matryoshka-ztk/
+repo_name: Matryoshka-Ztk on GitHub
 
 theme:
   name: material
@@ -184,7 +184,7 @@ nav:
       - Mailbox vs TypeErasedQueue: addendums/typeErasedQueue-vs-mailbox.md
       - Handle-Based Programming: addendums/handle-based-programming.md
       - Why Boring: addendums/why-boring.md
-      - Notation: addendums/matryoshka-tk-notation.md
+      - Notation: addendums/matryoshka-ztk-notation.md
       - Installation: addendums/installation.md
 
 hooks:

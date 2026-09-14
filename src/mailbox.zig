@@ -22,10 +22,10 @@
 //! - No free.
 //!
 //! Examples:
-//! https://g41797.github.io/matryoshka-tk/examples/mailbox/
+//! https://g41797.github.io/matryoshka-ztk/examples/mailbox/
 //!
 //! The three together:
-//! https://g41797.github.io/matryoshka-tk/examples/flow/
+//! https://g41797.github.io/matryoshka-ztk/examples/flow/
 //!
 const _doc_stub = void;
 

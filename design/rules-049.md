@@ -100,7 +100,7 @@ Per-stage finish checklist.
 
 New plan version.
 - Create a new plan version after each completed stage or INTR.
-- Plans are new versions of `design/matryoshka-tk-implementation-plan-NNN.md`,
+- Plans are new versions of `design/matryoshka-ztk-implementation-plan-NNN.md`,
   not separate files.
 - Keep active and future stages in full detail.
 - Old plan versions stay as historical record. Do not delete them. They are

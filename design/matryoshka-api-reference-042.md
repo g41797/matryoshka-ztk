@@ -17,7 +17,7 @@ A part learned once is a part learned everywhere.
 Deep dive is not this book's job. For that the reader goes to `src/`, to an  
 example, or to the docs site.
 
-Base of the docs site: `https://g41797.github.io/matryoshka-tk/`.
+Base of the docs site: `https://g41797.github.io/matryoshka-ztk/`.
 
 ---
 
@@ -258,7 +258,7 @@ This is the gap polynode closes. Part 3 starts there.
 
 
 - `tests/zig_mechanisms.zig` — the four scenarios, runnable.
-- [Intrusion and Type erasure](https://g41797.github.io/matryoshka-tk/addendums/intrusion-type-erasure/) — the same terms, one page.
+- [Intrusion and Type erasure](https://g41797.github.io/matryoshka-ztk/addendums/intrusion-type-erasure/) — the same terms, one page.
 - The Zig documentation, for `std.DoublyLinkedList` and `@fieldParentPtr`.
 
 ---
@@ -612,9 +612,9 @@ pub fn destroy(allocator: std.mem.Allocator, slot: *Slot) void
 ### Where to go deeper
 
 - `src/polynode.zig` — the whole layer, with doc comments.
-- [Defining user types, step by step](https://g41797.github.io/matryoshka-tk/api/polynode/manual-definition/) — the seven manual steps, without `PolyHelper`.
-- [PolyHelper](https://g41797.github.io/matryoshka-tk/api/polyhelper/) — the same seven steps, generated, and `create` / `destroy`.
-- [How to... PolyNode](https://g41797.github.io/matryoshka-tk/examples/polynode/) — the examples.
+- [Defining user types, step by step](https://g41797.github.io/matryoshka-ztk/api/polynode/manual-definition/) — the seven manual steps, without `PolyHelper`.
+- [PolyHelper](https://g41797.github.io/matryoshka-ztk/api/polyhelper/) — the same seven steps, generated, and `create` / `destroy`.
+- [How to... PolyNode](https://g41797.github.io/matryoshka-ztk/examples/polynode/) — the examples.
 
 ---
 
@@ -636,10 +636,10 @@ You are thinking in terms of:
 
 on API level one of the arguments is _file handle_.
 
-The same is for Matryoshka-Tk API
+The same is for Matryoshka-Ztk API
 
 - you are thinking in terms of _Item_ - Application entity
-- API is working with _ItemHandle_/_Slot_ - Matryoshka-Tk entity
+- API is working with _ItemHandle_/_Slot_ - Matryoshka-Ztk entity
 
 
 ---
@@ -1035,8 +1035,8 @@ const result = try fut.await(io);
 ### Where to go deeper
 
 - `src/mailbox.zig` — the whole layer, with doc comments.
-- [How to... Mailbox](https://g41797.github.io/matryoshka-tk/examples/mailbox/) — the examples.
-- [Flow — Master compositions](https://g41797.github.io/matryoshka-tk/examples/flow/) — mailbox, pool and polynode running together.
+- [How to... Mailbox](https://g41797.github.io/matryoshka-ztk/examples/mailbox/) — the examples.
+- [Flow — Master compositions](https://g41797.github.io/matryoshka-ztk/examples/flow/) — mailbox, pool and polynode running together.
 
 ---
 
@@ -1499,9 +1499,9 @@ wait. This is a contract, not a deadlock warning.
 - `examples/hooks/CappedPoolHooks.zig` — the reference hook implementation,
   including the shared-state rules above.
 - `examples/hooks/AlwaysCreateHooks.zig` — the simplest hooks that work.
-- [Hook discipline](https://g41797.github.io/matryoshka-tk/api/pool/hooks-discipline/) — the same rules, on one page.
-- [How to... Pool](https://g41797.github.io/matryoshka-tk/examples/pool/) — the examples.
-- [Flow — Master compositions](https://g41797.github.io/matryoshka-tk/examples/flow/) — mailbox, pool and polynode running together.
+- [Hook discipline](https://g41797.github.io/matryoshka-ztk/api/pool/hooks-discipline/) — the same rules, on one page.
+- [How to... Pool](https://g41797.github.io/matryoshka-ztk/examples/pool/) — the examples.
+- [Flow — Master compositions](https://g41797.github.io/matryoshka-ztk/examples/flow/) — mailbox, pool and polynode running together.
 
 ---
 
@@ -2069,7 +2069,7 @@ Key rules:
 
 ### Event sources
 
-See [Io 101](https://g41797.github.io/matryoshka-tk/addendums/io-101/) for the general `Future` → `Io.Select` pattern.
+See [Io 101](https://g41797.github.io/matryoshka-ztk/addendums/io-101/) for the general `Future` → `Io.Select` pattern.
 
 Matryoshka plugs into the same pattern:
 

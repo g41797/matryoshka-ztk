@@ -1,9 +1,9 @@
-# Matryoshka-Tk and Rethinking Patterns
+# Matryoshka-Ztk and Rethinking Patterns
 ## Inspired by ["Rethinking Classical Concurrency Patterns"](https://drive.google.com/file/d/1nPdvhB0PutEJzdCq5ms6UI58dp50fcAN){:target="_blank"}
 
 The paper is written in Go.
 
-Matryoshka-Tk reaches many of the same conclusions.
+Matryoshka-Ztk reaches many of the same conclusions.
 
 But from a different direction.
 
@@ -205,7 +205,7 @@ No guessing.
 # Pattern 9
 ## Cancellation is another channel
 
-Matryoshka-Tk uses three independent paths.
+Matryoshka-Ztk uses three independent paths.
 
 DATA
 

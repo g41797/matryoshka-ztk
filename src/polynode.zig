@@ -19,10 +19,10 @@
 //! `no_create_destroy`. Everything else is identical.
 //!
 //! Examples:
-//! https://g41797.github.io/matryoshka-tk/examples/polynode/
+//! https://g41797.github.io/matryoshka-ztk/examples/polynode/
 //!
 //! The three together:
-//! https://g41797.github.io/matryoshka-tk/examples/flow/
+//! https://g41797.github.io/matryoshka-ztk/examples/flow/
 const _doc_stub = void;
 
 /// Runtime type marker.

@@ -196,7 +196,7 @@ The same architectural pattern applies to many other systems, including video pr
 # PNG is better choice
 
 
-The goal of the document is to explain **Matryoshka-Tk**, not JPEG support in Zig. If readers see "JPEG," some Zig developers may immediately think:
+The goal of the document is to explain **Matryoshka-Ztk**, not JPEG support in Zig. If readers see "JPEG," some Zig developers may immediately think:
 
 > "Wait, Zig std doesn't support JPEG."
 
@@ -225,7 +225,7 @@ Then, in an implementation section or code example:
 
 > This implementation uses `zstbi` to read and write PNG images.
 
-Here is the end-to-end breakdown of the **Photo Archive Pipeline** flow, mapped directly to the **Matryoshka-Tk** architecture as visualized on the whiteboard:
+Here is the end-to-end breakdown of the **Photo Archive Pipeline** flow, mapped directly to the **Matryoshka-Ztk** architecture as visualized on the whiteboard:
 
 ---
 
@@ -331,7 +331,7 @@ From a user's perspective, the process is fast, quiet, and high-quality:
 
 ---
 
-## 2. Developer Point of View (Matryoshka-Tk Architecture)
+## 2. Developer Point of View (Matryoshka-Ztk Architecture)
 
 From an architectural standpoint, the system is a linear, thread-isolated processing pipeline using domain-specific structs (no generic type-erased `Item` terminology on the design board). 
 

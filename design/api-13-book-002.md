@@ -213,7 +213,7 @@ Roots, on the published site.
 | `pool.zig` | `/examples/pool/` |
 | all three together | `/examples/flow/` |
 
-Base is `https://g41797.github.io/matryoshka-tk/`.
+Base is `https://g41797.github.io/matryoshka-ztk/`.
 
 Section 6.6 says what is done with them.
 
@@ -449,7 +449,7 @@ Instead, each module head gets links.
 
 - The shape already exists in `src/matryoshka.zig`.
   - `//! Full documentation:`
-  - `//! https://g41797.github.io/matryoshka-tk/`
+  - `//! https://g41797.github.io/matryoshka-ztk/`
 - Each module points at its own examples root. Section 5.4.
 - **Every** module also points at `/examples/flow/`.
   - Described as where the three run together.

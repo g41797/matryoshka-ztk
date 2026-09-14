@@ -2,18 +2,18 @@
 
 ---
 
-- matryoshka-tk - is name of the project/repository
+- matryoshka-ztk - is name of the project/repository
 - matryoshka - is name of the module
 
 ---
 
 
-Add *Matryoshka-Tk* to build.zig.zon:  
+Add *Matryoshka-Ztk* to build.zig.zon:  
 ```bash
-zig fetch --save git+https://github.com/g41797/matryoshka-tk
+zig fetch --save git+https://github.com/g41797/matryoshka-ztk
 ```
 
-Add *matryoshka-tk* to build.zig:
+Add *matryoshka-ztk* to build.zig:
 
 ```zig title="Add dependency"
     const matryoshka: *build.Dependency = b.dependency("matryoshka", .{

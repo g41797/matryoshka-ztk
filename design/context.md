@@ -21,7 +21,7 @@ drafts, session logs and unstarted intentions live in
 ## State
 
 - [STATUS.md](STATUS.md) — where we are and what is next. Read in full each session.
-- [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md) — forward-looking work + one line per completed stage.
+- [matryoshka-ztk-implementation-plan-074.md](matryoshka-ztk-implementation-plan-074.md) — forward-looking work + one line per completed stage.
 - [STATUS-LOG.md](STATUS-LOG.md) — session narrative, by date. Do not read by default.
 
 ## Sources of truth
@@ -63,7 +63,7 @@ drafts, session logs and unstarted intentions live in
 
 ## Documentation
 
-- [matryoshka-Tk-diagram-style-guide-003.md](matryoshka-Tk-diagram-style-guide-003.md) — diagram notation and style.
+- [matryoshka-Ztk-diagram-style-guide-003.md](matryoshka-Ztk-diagram-style-guide-003.md) — diagram notation and style.
 - [../kitchen/defer/matryoshka-storytelling-003.md](../kitchen/defer/matryoshka-storytelling-003.md) — storytelling rhythm: Discussion, SRS, Translation, Central Insight.
 - [../kitchen/notes.md](../kitchen/notes.md) — running notes on `kitchen/` tooling. Not versioned, edit in place.
 
@@ -80,18 +80,9 @@ section, naming what replaced it. See Decisions in STATUS.md.
 
 Read the current version instead. These are here so nothing is lost.
 
-- [matryoshka-tk-implementation-plan-070.md](matryoshka-tk-implementation-plan-070.md) — superseded by -071.
-- [matryoshka-tk-implementation-plan-071.md](matryoshka-tk-implementation-plan-071.md) — superseded by -072.
 - [matryoshka-tk-implementation-plan-072.md](matryoshka-tk-implementation-plan-072.md) — superseded by -073.
-- [matryoshka-api-reference-041.md](matryoshka-api-reference-041.md) — superseded by -042.
-- [rules-047.md](rules-047.md) — superseded by -048.
-- [rules-048.md](rules-048.md) — superseded by -049.
-- [patterns-028.md](patterns-028.md) — superseded by -029.
+- [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md) — superseded by matryoshka-ztk-implementation-plan-074.md.
 - [matryoshka-concepts-002.md](matryoshka-concepts-002.md) — superseded by -003.
-- [task1-tests-007.md](task1-tests-007.md) — superseded by -008.
-- [task2-tests-003.md](task2-tests-003.md) — superseded by -004.
-- [intr-8-slot-based-creation-001.md](intr-8-slot-based-creation-001.md) — superseded by -003.
-- [intr-8-slot-based-creation-002.md](intr-8-slot-based-creation-002.md) — superseded by -003.
 
 ## Secondary
 
