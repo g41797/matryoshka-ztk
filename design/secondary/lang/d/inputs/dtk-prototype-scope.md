@@ -1,9 +1,9 @@
 # matryoshka-dtk prototype — scope and go/no-go
 
-The porting proposal is right: do not implement the handbook. Prove the model
+The porting proposal is right: do not implement the handbook. Prove the model  
 first.
 
-This document defines the smallest thing that proves it, what each part answers,
+This document defines the smallest thing that proves it, what each part answers,  
 and what "answered" looks like as an observation rather than an impression.
 
 ---
@@ -12,8 +12,8 @@ and what "answered" looks like as an observation rather than an impression.
 
 A throwaway repository or branch. Roughly 1,200 lines. Two to four evenings.
 
-Its only purpose is to convert the open questions into observations. It is not
-the first version of `matryoshka-dtk` and no line of it is expected to survive
+Its only purpose is to convert the open questions into observations. It is not  
+the first version of `matryoshka-dtk` and no line of it is expected to survive  
 into one.
 
 ## What this is not
@@ -32,13 +32,13 @@ Every one of those is deferred deliberately. §6 says when each comes back.
 
 # 1. Three spikes, before anything
 
-Three questions can kill the design, and each is answerable in under an hour by
-a file you delete afterwards. Do these first. If any fails, the prototype's
+Three questions can kill the design, and each is answerable in under an hour by  
+a file you delete afterwards. Do these first. If any fails, the prototype's  
 shape changes before you have written anything worth keeping.
 
 ## S1 — is `core.sync` usable for a heap-allocated Mbox?
 
-The proposal is right that "the Mutex is a class" does not imply "write your
+The proposal is right that "the Mutex is a class" does not imply "write your  
 own". The class problem is about allocation, not usability.
 
 ```d
@@ -58,8 +58,8 @@ void main() @nogc nothrow
 }
 ```
 
-**Answered when you know:** whether `emplace` of `Mutex` and `Condition` into
-policy-allocated storage compiles, whether the `_nothrow` forms are usable from
+**Answered when you know:** whether `emplace` of `Mutex` and `Condition` into  
+policy-allocated storage compiles, whether the `_nothrow` forms are usable from  
 `@nogc nothrow` code, and whether `Condition.wait(Duration)` has an equivalent.
 
 **What each outcome means:**
@@ -91,16 +91,16 @@ void main()
 }
 ```
 
-Then extend it: pass `shared(Box)*` to `core.thread`, to
+Then extend it: pass `shared(Box)*` to `core.thread`, to  
 `std.concurrency.spawn`, and store one in another struct.
 
-**Answered when you know:** whether one `raw()` per public method is sufficient
-or whether casts leak into the body, and whether `shared(Mbox)*` passes
+**Answered when you know:** whether one `raw()` per public method is sufficient  
+or whether casts leak into the body, and whether `shared(Mbox)*` passes  
 `spawn`'s `hasUnsharedAliasing` check without a cast at the call site.
 
 ## S3 — does attribute inference reach through a policy and a function pointer?
 
-This is the Pool question in miniature, which is why Pool itself can be
+This is the Pool question in miniature, which is why Pool itself can be  
 deferred.
 
 ```d
@@ -129,8 +129,8 @@ unittest
 
 Then repeat with a `void function(...)` field instead of a policy method.
 
-**Answered when you know:** whether `@nogc` is inferred through the template,
-and whether an unattributed function pointer field blocks inference for the
+**Answered when you know:** whether `@nogc` is inferred through the template,  
+and whether an unattributed function pointer field blocks inference for the  
 whole struct — which decides whether hooks can stay unattributed.
 
 ---
@@ -164,16 +164,16 @@ One item type. One example. No barrel modules, no package.d, no docs.
 
 Low risk, needed by everything.
 
-**Proves:** the `offsetof` parent cast works and inlines; `reset` inside
-`remove` eliminates the link-clearing hazard; the whole layer infers
+**Proves:** the `offsetof` parent cast works and inlines; `reset` inside  
+`remove` eliminates the link-clearing hazard; the whole layer infers  
 `@nogc nothrow` with no attributes written.
 
-**Watch for:** `@trusted` count. This layer should need exactly one — the
+**Watch for:** `@trusted` count. This layer should need exactly one — the  
 parent-pointer cast.
 
 ## Step 2 — `slot.d`, both variants
 
-Build the plain alias and the strict struct. Write `examples/ping.d` twice,
+Build the plain alias and the strict struct. Write `examples/ping.d` twice,  
 once against each, and read them side by side.
 
 ```d
@@ -184,29 +184,29 @@ alias Slot = PolyNode*;
 @mustuse struct Slot { ... }   // @disable this(this), ~this asserts empty
 ```
 
-**Proves or disproves:** "the Slot is pleasant." This is a killer criterion in
+**Proves or disproves:** "the Slot is pleasant." This is a killer criterion in  
 the proposal and it cannot be settled by argument.
 
-**Decide by:** which `ping.d` you would rather hand to a new user. Not which
+**Decide by:** which `ping.d` you would rather hand to a new user. Not which  
 has better guarantees — that answer is already known and is not the question.
 
-**Watch for:** how often variant B forces `.peek()` where variant A reads
-directly. If the example is dominated by accessor calls, the strict Slot loses
+**Watch for:** how often variant B forces `.peek()` where variant A reads  
+directly. If the example is dominated by accessor calls, the strict Slot loses  
 regardless of what it enforces.
 
 ## Step 3 — `policy.d`, `helper.d`
 
 One item type, both policies.
 
-**Proves:** that Manual and Managed share one implementation. This is the
+**Proves:** that Manual and Managed share one implementation. This is the  
 proposal's killer #2.
 
-**Watch for:** the count of `static if (Policy.managed)`. The claim is three —
-`acquire`, `release`, and hook aliases. Hooks are deferred here, so the
+**Watch for:** the count of `static if (Policy.managed)`. The claim is three —  
+`acquire`, `release`, and hook aliases. Hooks are deferred here, so the  
 prototype's honest number is **two**. A third means the claim is already wrong.
 
-**Also settle here:** whether `TagOf!T` at module scope gives one tag per type
-across both policy instantiations. One `assert(TAG!(Request, Manual) is
+**Also settle here:** whether `TagOf!T` at module scope gives one tag per type  
+across both policy instantiations. One `assert(TAG!(Request, Manual) is  
 TAG!(Request, Managed))` closes it.
 
 ## Step 4 — `sync.d`
@@ -219,12 +219,12 @@ Implement what S1 concluded, and nothing more than `Mutex` and `Condition`.
 
 `send`, `receive` with timeout, `close`, `wakeUpAll`. Nothing else.
 
-**Proves:** that the concurrency model works and that `shared` survives contact
+**Proves:** that the concurrency model works and that `shared` survives contact  
 with a real type.
 
-**Settle here, by writing it both ways:** whether `closed` needs to be atomic.
-Write it as an ordinary field under the mutex first. Only if a use appears that
-must read it outside the lock does it become `shared bool`. The proposal is
+**Settle here, by writing it both ways:** whether `closed` needs to be atomic.  
+Write it as an ordinary field under the mutex first. Only if a use appears that  
+must read it outside the lock does it become `shared bool`. The proposal is  
 right that this was inherited rather than chosen.
 
 ## Step 6 — the measurement pass
@@ -235,7 +235,7 @@ Not a build step. An hour with `grep` and the thresholds below.
 
 # 4. Which open question each step answers
 
-The proposal's §50 lists fifteen questions. Twelve are answerable by this
+The proposal's §50 lists fifteen questions. Twelve are answerable by this  
 prototype; three are not, and should stay open rather than be guessed.
 
 | Question | Answered by | Answered means |
@@ -260,8 +260,8 @@ prototype; three are not, and should stay open rather than be guessed.
 
 # 5. Go / no-go, as numbers
 
-Set these **now**, before writing, so the verdict cannot be retrofitted. The
-values below are proposals — change them if you disagree, but change them
+Set these **now**, before writing, so the verdict cannot be retrofitted. The  
+values below are proposals — change them if you disagree, but change them  
 today, not after you have seen the code.
 
 ```text
@@ -277,12 +277,12 @@ today, not after you have seen the code.
 [ ] a GC-referencing item under Manual fails to compile      yes/no
 ```
 
-The last five are binary. The first five are the ones that will actually decide
-it, because they measure whether the D version reads like D or like Zig wearing
+The last five are binary. The first five are the ones that will actually decide  
+it, because they measure whether the D version reads like D or like Zig wearing  
 a costume.
 
-If `sync.d` exceeds 150 lines, that is not a failure of the prototype — it is
-S1 telling you that a synchronization layer is a project of its own, which is
+If `sync.d` exceeds 150 lines, that is not a failure of the prototype — it is  
+S1 telling you that a synchronization layer is a project of its own, which is  
 exactly the danger the proposal names.
 
 ---
@@ -301,12 +301,12 @@ Documentation       after go. Nothing is worth documenting yet.
 Naming (dtk/ztk)    orthogonal. Decide whenever.
 ```
 
----
+---  
 ---
 
 # Addendum A — reconciliation
 
-Three categories. **Settled** means the language forces it, not that we
+Three categories. **Settled** means the language forces it, not that we  
 preferred it. Everything chosen rather than forced is a hypothesis.
 
 ## Settled — forced by D
@@ -357,12 +357,12 @@ preferred it. Everything chosen rather than forced is a hypothesis.
 
 ## Independent of D
 
-One item belongs to neither list: the Zig `receive` and `get_wait` build their
-timeouts with `.clock = .real`. Wall clock. An NTP step or a manual clock change
-moves every pending timeout in the process. Fix it in `matryoshka-ztk`
+One item belongs to neither list: the Zig `receive` and `get_wait` build their  
+timeouts with `.clock = .real`. Wall clock. An NTP step or a manual clock change  
+moves every pending timeout in the process. Fix it in `matryoshka-ztk`  
 regardless of what happens to the D port.
 
----
+---  
 ---
 
 # Addendum B — errata against the handbook
@@ -371,56 +371,56 @@ Four corrections, plus one framing error.
 
 ## B1 — "Write your own Mutex and Cond" was too fast
 
-**The handbook says:** `core.sync.Mutex` and `Condition` are classes, therefore
+**The handbook says:** `core.sync.Mutex` and `Condition` are classes, therefore  
 write ~60 lines wrapping pthread and Win32.
 
-**Correction:** the class problem is about allocation, not usability.
-`emplace` into policy-allocated storage may resolve it, and druntime provides
-`lock_nothrow`/`unlock_nothrow` and `@nogc`-usable forms. A custom
-synchronization layer is a standing maintenance commitment and should be the
+**Correction:** the class problem is about allocation, not usability.  
+`emplace` into policy-allocated storage may resolve it, and druntime provides  
+`lock_nothrow`/`unlock_nothrow` and `@nogc`-usable forms. A custom  
+synchronization layer is a standing maintenance commitment and should be the  
 outcome of S1, not its premise.
 
-**Where this propagates:** the monotonic-clock argument was bundled into the
-same recommendation. It survives independently — whichever backend wins, the
+**Where this propagates:** the monotonic-clock argument was bundled into the  
+same recommendation. It survives independently — whichever backend wins, the  
 timed wait must use a monotonic clock.
 
 ## B2 — `shared bool closed` was inherited, not chosen
 
-**The handbook says:** `closed` is `shared bool` with `core.atomic` at the
+**The handbook says:** `closed` is `shared bool` with `core.atomic` at the  
 access sites.
 
-**Correction:** that came straight from the Zig, where the atomic exists because
-there is no alternative. In D, if every mailbox field is under the mailbox
-mutex, `closed` can be an ordinary field. Two synchronization mechanisms need a
+**Correction:** that came straight from the Zig, where the atomic exists because  
+there is no alternative. In D, if every mailbox field is under the mailbox  
+mutex, `closed` can be an ordinary field. Two synchronization mechanisms need a  
 reason. Add the atomic when a lock-free read appears, not before.
 
 ## B3 — Manual and betterC were conflated
 
-**The handbook says:** betterC is "reachable" in Manual mode, includes it in
+**The handbook says:** betterC is "reachable" in Manual mode, includes it in  
 the CI matrix, and gates several decisions on it.
 
-**Correction:** `@nogc` and `-betterC` are different targets. betterC removes
-the runtime; `@nogc` removes GC allocation. Manual mode should target `@nogc`
-plus minimal runtime dependency. betterC is a separate compatibility branch
+**Correction:** `@nogc` and `-betterC` are different targets. betterC removes  
+the runtime; `@nogc` removes GC allocation. Manual mode should target `@nogc`  
+plus minimal runtime dependency. betterC is a separate compatibility branch  
 taken after v0.1 exists, and it must not shape the design before then.
 
 ## B4 — the wakeUpAll rationale was overweighted
 
-**The handbook says:** the epoch counter is needed because GC collections cause
+**The handbook says:** the epoch counter is needed because GC collections cause  
 spurious condvar wakeups.
 
-**Correction:** a condition-variable wait must be predicate-based regardless of
-any GC, so the loop structure is not a D-specific requirement. The epoch earns
-its place for a different reason: it lets a receiver distinguish *deliberately
-woken, no item* from *spurious, keep waiting*. Keep the epoch, drop the
+**Correction:** a condition-variable wait must be predicate-based regardless of  
+any GC, so the loop structure is not a D-specific requirement. The epoch earns  
+its place for a different reason: it lets a receiver distinguish *deliberately  
+woken, no item* from *spurious, keep waiting*. Keep the epoch, drop the  
 justification.
 
 ## B5 — "Decisions taken" overstates what happened
 
-The handbook's final section is headed *Decisions taken*. Nothing in it has been
-compiled. They were conclusions reached in conversation, and the proposal is
+The handbook's final section is headed *Decisions taken*. Nothing in it has been  
+compiled. They were conclusions reached in conversation, and the proposal is  
 right to call them hypotheses.
 
-**Read that section as Addendum A's second table**, not as a specification. The
-only genuinely settled items are the ones D forces, and those are in Addendum
+**Read that section as Addendum A's second table**, not as a specification. The  
+only genuinely settled items are the ones D forces, and those are in Addendum  
 A's first table.

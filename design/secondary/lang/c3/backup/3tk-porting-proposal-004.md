@@ -1,12 +1,12 @@
 # The 3tk porting proposal (004)
 
-Stage 3TK-5 of `3tk-staging-plan-001.md`, **accepted by the owner 2026-08-23**
+Stage 3TK-5 of `3tk-staging-plan-001.md`, **accepted by the owner 2026-08-23**  
 after 3TK-6 and 3TK-7 built it. Revised by **3TK-8** of
 [3tk-staging-plan-004.md](backup/3tk-staging-plan-004.md), 2026-08-23.
 
 The C3 shape of Matryoshka. Written from
 [matryoshka-specification-002.md](../common/backup/matryoshka-specification-002.md), the ruled
-review [3tk-drafts-review-001.md](3tk-drafts-review-001.md), and the measured
+review [3tk-drafts-review-001.md](3tk-drafts-review-001.md), and the measured  
 answers of [c3-capabilities-001.md](c3-capabilities-001.md).
 
 Idiomatic C3. Not transliterated Zig.
@@ -15,30 +15,30 @@ Idiomatic C3. Not transliterated Zig.
 
 All sixteen decisions in this file are **accepted by the owner, 2026-08-23**.
 
-Version 001 proposed them. 3TK-6 and 3TK-7 implemented them and produced the
-findings incorporated here. **No accepted decision has changed across four
-versions.** Each version since has changed only the realization, where
-implementation disproved or refined an earlier assumption — and in 004, where a
-review disproved an *argument* while leaving its conclusion standing. D1 is that
-case, and the owner reaffirmed the ruling on 2026-08-23 with a better reason
+Version 001 proposed them. 3TK-6 and 3TK-7 implemented them and produced the  
+findings incorporated here. **No accepted decision has changed across four  
+versions.** Each version since has changed only the realization, where  
+implementation disproved or refined an earlier assumption — and in 004, where a  
+review disproved an *argument* while leaving its conclusion standing. D1 is that  
+case, and the owner reaffirmed the ruling on 2026-08-23 with a better reason  
 than the document had been giving.
 
-Rejected alternatives stay in the text, because the reason a thing was chosen
+Rejected alternatives stay in the text, because the reason a thing was chosen  
 outlives the choosing.
 
 ## What changed in 004
 
-004 answers [`3tk-porting-proposal-003-review.md`](backup/3tk-porting-proposal-003-review.md),
-a review of **design and implementation** rather than of prose. Its 28 items
-were read against `3tk/src/` before any of them was accepted — the discipline
-003 used, and the reason 003 could reject three of the previous review's
+004 answers [`3tk-porting-proposal-003-review.md`](backup/3tk-porting-proposal-003-review.md),  
+a review of **design and implementation** rather than of prose. Its 28 items  
+were read against `3tk/src/` before any of them was accepted — the discipline  
+003 used, and the reason 003 could reject three of the previous review's  
 findings.
 
-**The review's central finding is right, and D1's argument was wrong.** Not its
-ruling. D1 said hiding the container internals must cost Part 11.1's MUST,
-having weighed two shapes. A third exists, and the port now says so. **The owner
-ruled on 2026-08-23:** the ruling stands, no code changes for the sake of
-hiding — *"I don't like wars with language."* That reason is stronger than the
+**The review's central finding is right, and D1's argument was wrong.** Not its  
+ruling. D1 said hiding the container internals must cost Part 11.1's MUST,  
+having weighed two shapes. A third exists, and the port now says so. **The owner  
+ruled on 2026-08-23:** the ruling stands, no code changes for the sake of  
+hiding — *"I don't like wars with language."* That reason is stronger than the  
 one it replaces, and D1 below is rewritten around it.
 
 | Kind | What |
@@ -51,23 +51,23 @@ one it replaces, and D1 below is rewritten around it.
 | Deferred | The `NodeList` mutation core of its §15, with the reason recorded rather than dropped |
 | Confirmed | Five items the code already satisfied, three of them better than the review assumed. They became section 6 rather than changes |
 
-The nine measurements live in D1, folded in from
-`3tk-porting-proposal-addendum-001.md`, which this file supersedes.
-`c3-capabilities-001.md` is **not** amended — it is the 3TK-4 output and records
-what was true when that stage ran. Owner's ruling: one home for the
+The nine measurements live in D1, folded in from  
+`3tk-porting-proposal-addendum-001.md`, which this file supersedes.  
+`c3-capabilities-001.md` is **not** amended — it is the 3TK-4 output and records  
+what was true when that stage ran. Owner's ruling: one home for the  
 measurements, beside the decision they support.
 
 ## What changed in 003
 
-003 answers `3tk-porting-proposal-review.md`. That review read this document
-closely and did not read `3tk/src/`, which is why most of its findings are
+003 answers `3tk-porting-proposal-review.md`. That review read this document  
+closely and did not read `3tk/src/`, which is why most of its findings are  
 places the **text had drifted behind the code** rather than defects in either.
 
-Three of its findings are not corrections to this file at all. They were
-defects in the specification, and they were fixed there:
-**[matryoshka-specification-002.md](../common/backup/matryoshka-specification-002.md)** now
-separates Part 4.2's two conceptual parts from its three fields, states in
-Parts 11.6 and 11.8 that a closed container is empty, and carries that as
+Three of its findings are not corrections to this file at all. They were  
+defects in the specification, and they were fixed there:  
+**[matryoshka-specification-002.md](../common/backup/matryoshka-specification-002.md)** now  
+separates Part 4.2's two conceptual parts from its three fields, states in  
+Parts 11.6 and 11.8 that a closed container is empty, and carries that as  
 **invariant 34**. This file is written against 002.
 
 | Kind | What |
@@ -78,13 +78,13 @@ Parts 11.6 and 11.8 that a closed container is empty, and carries that as
 | Dissolved | The review's `receive_all` precedence question. Invariant 34 makes the state it asks about unreachable |
 | Deferred | Its §20 finding classes and §24 restructure into appendices. Both are large edits to how the document is arranged rather than to what it says |
 
-One code change came out of the review — `Pool.create` now refuses a duplicate
-identity — and one defect came out of building it, which the review could not
-have seen: **a tier 1 negative had never compiled**, and the test harness had
-been reading its compile failure as the abort it was supposed to prove. Both
+One code change came out of the review — `Pool.create` now refuses a duplicate  
+identity — and one defect came out of building it, which the review could not  
+have seen: **a tier 1 negative had never compiled**, and the test harness had  
+been reading its compile failure as the abort it was supposed to prove. Both  
 are in section 8.
 
-**What changed in 002**, kept here because the findings are still the record.
+**What changed in 002**, kept here because the findings are still the record.  
 Only what the code proved wrong, and none of it moved a decision:
 
 | Where | Was | Now | Finding |
@@ -99,14 +99,14 @@ Only what the code proved wrong, and none of it moved a decision:
 | Section 9 | what 3TK-6 would be | what 3TK-6 and 3TK-7 did | — |
 | throughout | `return CLOSED?` | `return mtk::CLOSED~` | G2 |
 
-`3tk-porting-proposal-001.md` and `3tk-porting-proposal-002.md` stay on disk,
+`3tk-porting-proposal-001.md` and `3tk-porting-proposal-002.md` stay on disk,  
 superseded.
 
 ## What this file is not
 
 - Not code. No `.c3` file was written by stage 3TK-5. Later revisions of this
-  file have named code changes and then had them made — 003's duplicate-identity
-  check is one — but the code is always a separate act, and the four builds have
+  file have named code changes and then had them made — 003's duplicate-identity  
+  check is one — but the code is always a separate act, and the four builds have  
   to be green before the revision is finished.
 - Not a schedule. Part 22's order is adopted, not dated.
 - Not a re-derivation. Where the specification already rules, this file cites
@@ -123,25 +123,25 @@ One rule, and most of this document is a consequence of it.
 - **`mtk` owns the inner protocol** — `AnyNode`, `AnyHandle`, `Slot`,
   `NodeList` — and the rules those four obey.
 - **The per-type helper is the only named border** between an application's
-  outer and the toolkit's inner. It is generated per type, and every piece of
+  outer and the toolkit's inner. It is generated per type, and every piece of  
   offset arithmetic in the port is inside it.
 - **Application code never performs the crossing by hand.** Part 7.5 MUST.
 - **A Slot moves a handle without exposing an outer type.** That is why a
   container can carry an item whose type it could not name.
 
-Read the decisions as consequences and they stop being a list. D2 refuses
-`inline` because an implicit conversion is a crossing that appears at no call
-site and so escapes the border. D4 refuses typed handles because the border
-already separates a `Mailbox*` from a `Pool*`, once, instead of at every call
-site. D5 makes the Slot distinct so the compiler can tell a container of a
-handle from a handle. D10 splits the helper in two because create and release
-belong to the border and not every type wants them. Part 17's layering is the
-same rule at file scale: the containers hold only handles and Slots, so they
+Read the decisions as consequences and they stop being a list. D2 refuses  
+`inline` because an implicit conversion is a crossing that appears at no call  
+site and so escapes the border. D4 refuses typed handles because the border  
+already separates a `Mailbox*` from a `Pool*`, once, instead of at every call  
+site. D5 makes the Slot distinct so the compiler can tell a container of a  
+handle from a handle. D10 splits the helper in two because create and release  
+belong to the border and not every type wants them. Part 17's layering is the  
+same rule at file scale: the containers hold only handles and Slots, so they  
 sit above the toolkit rather than inside it.
 
-The four words of Part 10.1 exist to keep the boundary readable in a signature:
-**inner** is the embedded structure, **handle** is a pointer to one, **Slot** is
-a container of one handle or of nothing, **item** is the outer the application
+The four words of Part 10.1 exist to keep the boundary readable in a signature:  
+**inner** is the embedded structure, **handle** is a pointer to one, **Slot** is  
+a container of one handle or of nothing, **item** is the outer the application  
 wrote.
 
 ---
@@ -159,27 +159,27 @@ src/
   mtk.c3      module mtk           the port's identity and reading order
 ```
 
-Seven files. The first four are the toolkit of Part 17.1; `mailbox.c3` and
+Seven files. The first four are the toolkit of Part 17.1; `mailbox.c3` and  
 `pool.c3` are the two optional tools of Part 17.2.
 
-**The containers are submodules on purpose — G1, and the owner accepted it.**
-Part 17.2 says they are built *on* the intrusive layer *with no privileged
-access to it*, and Part 17.3 calls that the test of the design. A C3 submodule
-cannot see its parent's `@private` declarations, so putting them in
-`mtk::mailbox` and `mtk::pool` makes **the core's explicit private boundary
-compiler-enforced** rather than a promise the authors keep. It costs an explicit
-`mtk::` on every fault the containers return, which is exactly what a caller
+**The containers are submodules on purpose — G1, and the owner accepted it.**  
+Part 17.2 says they are built *on* the intrusive layer *with no privileged  
+access to it*, and Part 17.3 calls that the test of the design. A C3 submodule  
+cannot see its parent's `@private` declarations, so putting them in  
+`mtk::mailbox` and `mtk::pool` makes **the core's explicit private boundary  
+compiler-enforced** rather than a promise the authors keep. It costs an explicit  
+`mtk::` on every fault the containers return, which is exactly what a caller  
 from outside pays.
 
-**What it does not prove**, and 002 overstated this: D1 chose public structs
-with public fields, so coupling to the core's *public* surface stays possible.
-The compiler stops `mtk::mailbox` from calling a `@private` declaration of
-`mtk`; it does not stop it reading a public field it has no business reading.
-That half is held by the Part 17.2 layering rule and the check section 7 runs
+**What it does not prove**, and 002 overstated this: D1 chose public structs  
+with public fields, so coupling to the core's *public* surface stays possible.  
+The compiler stops `mtk::mailbox` from calling a `@private` declaration of  
+`mtk`; it does not stop it reading a public field it has no business reading.  
+That half is held by the Part 17.2 layering rule and the check section 7 runs  
 for it — a convention, tested, and honest about being one.
 
-`mtk.c3` is not a front door. C3 needs no re-export: `import mtk` brings in
-everything `module mtk` declares across every file that declares it. The module
+`mtk.c3` is not a front door. C3 needs no re-export: `import mtk` brings in  
+everything `module mtk` declares across every file that declares it. The module  
 is the front door, and the file carries the port's identity and reading order.
 
 The core types:
@@ -198,27 +198,27 @@ alias   AnyHandle = AnyNode*;      // transparent. A handle is a pointer to an i
 typedef Slot      = AnyHandle;     // distinct. A container of one handle, or nothing.
 ```
 
-**Two conceptual parts, three fields.** Part 4.2 of the specification fixes the
-parts — linkage, and stored identity — and leaves the field count to the
-realization. Here linkage is `prev` and `next`, identity is `type`, and the
+**Two conceptual parts, three fields.** Part 4.2 of the specification fixes the  
+parts — linkage, and stored identity — and leaves the field count to the  
+realization. Here linkage is `prev` and `next`, identity is `type`, and the  
 whole inner is three words: 24 bytes on linux-x64.
 
-**That number is an observation, never a requirement.** The invariant is *two
-pointer links and one identity value*; the size follows from the target. No
-code in the port depends on `sizeof(AnyNode) == 24` and none may be added that
-does — a port on another target will measure something else and be just as
+**That number is an observation, never a requirement.** The invariant is *two  
+pointer links and one identity value*; the size follows from the target. No  
+code in the port depends on `sizeof(AnyNode) == 24` and none may be added that  
+does — a port on another target will measure something else and be just as  
 correct.
 
-The distinction matters because D3 turns on it. What Part 4.2 guards is not the
-number three; it is **a further per-item field**, of any kind, that every item
-in the program would pay for. D3 refuses an allocator on exactly that test, and
-the refusal would read as arithmetic if the parts and the fields were the same
+The distinction matters because D3 turns on it. What Part 4.2 guards is not the  
+number three; it is **a further per-item field**, of any kind, that every item  
+in the program would pay for. D3 refuses an allocator on exactly that test, and  
+the refusal would read as arithmetic if the parts and the fields were the same  
 thing.
 
 ## The Slot's surface
 
-`Slot` is distinct, so it cannot be read with the language's bare null test —
-Part 9.9 predicted that cost. These five are the replacement, and they are
+`Slot` is distinct, so it cannot be read with the language's bare null test —  
+Part 9.9 predicted that cost. These five are the replacement, and they are  
 ordinary functions on `Slot`, not macros. `any.c3`:
 
 ```c3
@@ -232,26 +232,26 @@ fn void      Slot.fill(&self, AnyHandle h)      // place; refuses to overwrite. 
 Four things about them are load-bearing:
 
 - **`peek` does not clear and `take` does.** Every transfer in the port is a
-  `take` on one side and a `fill` on the other, and the pair is where Part 9.2
+  `take` on one side and a `fill` on the other, and the pair is where Part 9.2  
   rule 5 lives.
 - **Only a `Slot*` moves ownership.** `is_full` and `peek` are questions; the
   two that change the Slot both take it by reference.
 - **`fill` carries rule 1**, once, for the whole toolkit. It is the single
   most-repeated contract in the port and it is written in one place.
 - **They are not crossings.** They interpret a Slot as the handle it holds,
-  which is bookkeeping inside one layer. The **outer ↔ inner** crossing — the
-  one Part 7.5 confines to a single file — is only ever the helper's. D5's
+  which is bookkeeping inside one layer. The **outer ↔ inner** crossing — the  
+  one Part 7.5 confines to a single file — is only ever the helper's. D5's  
   friction is at that border, not at these five.
 
 ## `AnyHandle` and null
 
-`AnyHandle` is a plain nullable pointer, and the port uses null for exactly one
-thing: **the natural "no item" answer of an operation that cannot fail.**
-`NodeList.pop_front`, `pop_back`, `front` and `back` return null on an empty
+`AnyHandle` is a plain nullable pointer, and the port uses null for exactly one  
+thing: **the natural "no item" answer of an operation that cannot fail.**  
+`NodeList.pop_front`, `pop_back`, `front` and `back` return null on an empty  
 list, because Part 19.4 says no list operation has an outcome to report.
 
-Everywhere absence is part of an outcome contract, it is a fault and never a
-null — `EMPTY`, `TIMEOUT`, `NOT_AVAILABLE`, `NOT_CREATED`. So the four states a
+Everywhere absence is part of an outcome contract, it is a fault and never a  
+null — `EMPTY`, `TIMEOUT`, `NOT_AVAILABLE`, `NOT_CREATED`. So the four states a  
 reader has to keep apart are:
 
 | State | Means |
@@ -271,19 +271,19 @@ alias msg_from_any = mtk::helper::from_any{Msg};
 alias msg_to_any   = mtk::helper::to_any{Msg};
 ```
 
-A generic module instantiates per declaration, not as a whole — F4. A type that
-wants the full surface writes nine aliases, or instantiates inline at the call
+A generic module instantiates per declaration, not as a whole — F4. A type that  
+wants the full surface writes nine aliases, or instantiates inline at the call  
 site as `owned.c3` does.
 
 ---
 
 # 2. The decision register
 
-Sixteen decisions. The eight carried by `c3-capabilities-001.md`, the eleven of
-the conflict register so far as they remain open, and the ten of Part 20.
+Sixteen decisions. The eight carried by `c3-capabilities-001.md`, the eleven of  
+the conflict register so far as they remain open, and the ten of Part 20.  
 Overlapping, so sixteen rows and not twenty-nine.
 
-All sixteen are **accepted**. The table gives the ruling; the sections after it
+All sixteen are **accepted**. The table gives the ruling; the sections after it  
 give the argument and the alternative each one rejects.
 
 | # | Decision | Ruling | Source |
@@ -305,17 +305,17 @@ give the argument and the alternative each one rejects.
 | D15 | The outcome mechanism — Part 20 decision 7 | **C3 faults.** `faultdef`, matching the stdlib | Part 19 |
 | D16 | The pre-lock fast path — Part 20 decision 9 | **Kept**, with the mandatory re-check | Part 15.4 |
 
-Part 20 decision 10 — where the O(n) insert check lives on a port with no build
+Part 20 decision 10 — where the O(n) insert check lives on a port with no build  
 modes — does not arise. C3 has build modes. D6 places it.
 
 The rest of this section argues each one.
 
 ## D1 — Hiding the container internals
 
-**Ruling: public struct, public fields. Reaffirmed by the owner 2026-08-23,
+**Ruling: public struct, public fields. Reaffirmed by the owner 2026-08-23,  
 with a different reason than 003 gave.**
 
-Read this section as two things kept apart, because 003 ran them together and
+Read this section as two things kept apart, because 003 ran them together and  
 that is what the review caught:
 
 - **Can** the container internals be hidden without breaking Part 11.1? **Yes.**
@@ -325,18 +325,18 @@ that is what the review caught:
 
 ### What 003 claimed, and why it was wrong
 
-003 weighed two shapes and concluded that hiding *necessarily* costs Part 11.1's
+003 weighed two shapes and concluded that hiding *necessarily* costs Part 11.1's  
 MUST:
 
 - Option 1, a comment saying internal, is ztk. It claims nothing and gains
   nothing.
 - Option 2, `typedef Pool = void`, buys real hiding and sells a MUST for a
-  SHOULD. Part 11.1 MUST says the two containers **are themselves items**. A
-  `typedef Pool = void` embeds nothing; the property has to be re-established
-  through `PoolImpl`, and the type the application names is no longer the type
+  SHOULD. Part 11.1 MUST says the two containers **are themselves items**. A  
+  `typedef Pool = void` embeds nothing; the property has to be re-established  
+  through `PoolImpl`, and the type the application names is no longer the type  
   the toolkit describes.
 
-Option 2's reasoning still holds — *for option 2*. The error was treating it as
+Option 2's reasoning still holds — *for option 2*. The error was treating it as  
 the only way to hide. A third shape exists:
 
 ```c3
@@ -348,9 +348,9 @@ struct Pool
 }
 ```
 
-`Pool` is still the type the application names. It still embeds `AnyNode`, still
-crosses through `mtk::helper{Pool}`, still sits on a `NodeList`, still travels
-through a mailbox. **Part 11.1 is satisfied literally.** Only the operational
+`Pool` is still the type the application names. It still embeds `AnyNode`, still  
+crosses through `mtk::helper{Pool}`, still sits on a `NodeList`, still travels  
+through a mailbox. **Part 11.1 is satisfied literally.** Only the operational  
 state moves.
 
 The review states the confusion precisely, and the statement is worth keeping:
@@ -363,10 +363,10 @@ It has none. **Hiding costs an indirection. It does not cost Part 11.1.**
 
 ### What C3 0.8.3 actually permits — measured, not inferred
 
-Nine probes, against `c3c` 0.8.3, git `1d155ee`, LLVM 22.1.8, linux-x64 — the
-toolchain of `c3-capabilities-001.md`, so these extend Q1 to Q12 rather than
-restating them. Q13 to Q17 were measured for this decision; M1 to M5 came from
-the owner's questions of the same day and are folded in from
+Nine probes, against `c3c` 0.8.3, git `1d155ee`, LLVM 22.1.8, linux-x64 — the  
+toolchain of `c3-capabilities-001.md`, so these extend Q1 to Q12 rather than  
+restating them. Q13 to Q17 were measured for this decision; M1 to M5 came from  
+the owner's questions of the same day and are folded in from  
 `3tk-porting-proposal-addendum-001.md`.
 
 | # | Question | Answer |
@@ -382,24 +382,24 @@ the owner's questions of the same day and are folded in from
 | **M4** | May a method attach to a pointer alias? | **No.** *"Methods can not be associated with 'Node*'"* — see D5 |
 | **M5** | Is there field-level privacy? | **No, at any price.** `@private` on a field is refused outright; on a struct it hides the *type name* only; `inline` makes it worse |
 
-**M5 is the one that decides this section**, and it came from the owner asking
-the sharpest version of the question: restrict *fields* without restricting
-*functions*. The shape was a `@private` fields-only struct, `inline` inside the
-public container — transparent to `mtk`'s own methods, closed to an application.
-Six probes say C3 0.8.3 does not deliver it. Another module still reads, writes
-and takes the address of every field, and the write lands. `inline` is worse
-than a named field, because it lifts the hidden members into the outer's own
-namespace: `mb.closed` needs no `.guts` at all. And `inline` must be the *first*
+**M5 is the one that decides this section**, and it came from the owner asking  
+the sharpest version of the question: restrict *fields* without restricting  
+*functions*. The shape was a `@private` fields-only struct, `inline` inside the  
+public container — transparent to `mtk`'s own methods, closed to an application.  
+Six probes say C3 0.8.3 does not deliver it. Another module still reads, writes  
+and takes the address of every field, and the write lands. `inline` is worse  
+than a named field, because it lifts the hidden members into the outer's own  
+namespace: `mb.closed` needs no `.guts` at all. And `inline` must be the *first*  
 field, which puts it in competition with `AnyNode node` for position.
 
-So there is no shape that hides container state **while leaving it inside the
-object**. Every mechanism that works — the `Impl*` pointer, the opaque
+So there is no shape that hides container state **while leaving it inside the  
+object**. Every mechanism that works — the `Impl*` pointer, the opaque  
 `char[N]` — works by moving the state out.
 
 ### The ruling, and its reason
 
-**Owner, 2026-08-23:** *"I don't like wars with language. If it does not support
-the feature + I need additional allocation — better not change code and add
+**Owner, 2026-08-23:** *"I don't like wars with language. If it does not support  
+the feature + I need additional allocation — better not change code and add  
 comment and update docs."*
 
 That is the decision and it is the whole argument:
@@ -407,109 +407,109 @@ That is the decision and it is the whole argument:
 - C3 0.8.3 **enforces no field privacy at any price** (M5). Whatever the port
   builds, an application that wants to reach `pool._closed` will reach it.
 - The shapes that *would* hide the state each cost **one extra allocation, one
-  extra pointer, two-level destruction, a partial-creation state and one
+  extra pointer, two-level destruction, a partial-creation state and one  
   dereference per access** — per container.
 - Paying that for a boundary the language will not keep is a bad trade. The port
   does not make it.
 
-**Part 11.11 is skipped, and Part 0 requires the reason to be stated. This is
-it:** not that C3 makes hiding impossible — it does not — but that hiding costs
-an allocation and a lifetime rule per container, and buys a convention rather
+**Part 11.11 is skipped, and Part 0 requires the reason to be stated. This is  
+it:** not that C3 makes hiding impossible — it does not — but that hiding costs  
+an allocation and a lifetime rule per container, and buys a convention rather  
 than an enforcement.
 
 What the port does instead, and it is not nothing:
 
 - Every internal free function and macro carries `@private`. That is
-  declaration-level visibility, which C3 *does* have. **It does not extend to
-  methods**: the compiler says so out loud — *"'@private' modifiers are ignored
-  for method declarations"* — which is why `NodeList.unlink_no_repair` is named
+  declaration-level visibility, which C3 *does* have. **It does not extend to  
+  methods**: the compiler says so out loud — *"'@private' modifiers are ignored  
+  for method declarations"* — which is why `NodeList.unlink_no_repair` is named  
   for what it leaves undone and documented rather than hidden.
 - The mutex, the condition variable and the closed flag are named with a leading
   underscore.
 - **The fields are grouped by role** — item identity, synchronization, lifetime,
-  container state — with a comment on each group. Owner's instruction: since the
-  language will not enforce the boundary, the comment *is* the boundary, and it
-  is where an application author looks. It also makes a future split
+  container state — with a comment on each group. Owner's instruction: since the  
+  language will not enforce the boundary, the comment *is* the boundary, and it  
+  is where an application author looks. It also makes a future split  
   representation legible.
 - No public method reads a field the application could not have derived.
 
-An application that reads `pool.in_pool` has not broken an invariant. It has
+An application that reads `pool.in_pool` has not broken an invariant. It has  
 read a stale hint — which is what Part 12.4 says that number is even to a hook.
 
 ### What the helper border does and does not do
 
-003 said *the helper border does the work*. The review is right that this
-overstates it, and the correction matters because the two boundaries solve
+003 said *the helper border does the work*. The review is right that this  
+overstates it, and the correction matters because the two boundaries solve  
 different problems:
 
 - **The helper border protects the polymorphic representation boundary.** It is
-  the only place `outer ↔ inner` arithmetic happens, and Part 7.5 MUST puts it
+  the only place `outer ↔ inner` arithmetic happens, and Part 7.5 MUST puts it  
   in one file. That is real and it is enforced.
 - **It does not hide container operational state**, and was never able to. An
-  application cannot legally cross `outer → AnyNode` by hand, but it can read
+  application cannot legally cross `outer → AnyNode` by hand, but it can read  
   `Pool._buckets` — because C3 has no field privacy, M5.
 
-The helper border is not a substitute for information hiding. It solves the
-crossing problem, completely. This section's subject is a different problem,
+The helper border is not a substitute for information hiding. It solves the  
+crossing problem, completely. This section's subject is a different problem,  
 solved by convention.
 
 ### The rejected alternative, kept because the reason outlives the choosing
 
-**Split representation.** Public `Mailbox`/`Pool` embedding `AnyNode` and owning
+**Split representation.** Public `Mailbox`/`Pool` embedding `AnyNode` and owning  
 the allocator, pointing at a private `MailboxImpl`/`PoolImpl`:
 
 - **Preserves** Part 11.1, the `AnyNode` embedding, `helper{Mailbox}`,
-  `helper{Pool}`, every public operation, the Slot semantics and all observable
+  `helper{Pool}`, every public operation, the Slot semantics and all observable  
   behaviour. Q13 confirms C3 permits the shape.
 - **Costs** one pointer, one allocation, two-level destruction, a
-  partial-creation state, one dereference per access — per container. And with
-  M5 in hand, it buys a convention, not an enforcement: the `_impl` field itself
+  partial-creation state, one dereference per access — per container. And with  
+  M5 in hand, it buys a convention, not an enforcement: the `_impl` field itself  
   stays assignable from outside (Q15).
 - **Rejected on that trade**, by the owner, 2026-08-23. Not on Part 11.1.
 
-If it is ever adopted, the allocator belongs in the **public** struct and not in
-the `Impl` — the review's §22, and it is right: outer lifetime state belongs to
+If it is ever adopted, the allocator belongs in the **public** struct and not in  
+the `Impl` — the review's §22, and it is right: outer lifetime state belongs to  
 the outer, which is the same principle D3 already applies to application items.
 
-**Opaque public storage**, `char[N]` with the private module treating it as
-`PoolImpl` — **rejected**, for the reasons the review's §7 gives against it:
-size and alignment become the public contract, changing the implementation
-breaks users, placement construction by hand, and the public type still exposes
-mysterious storage. Q17's opaque-typedef variant is the same family and is
+**Opaque public storage**, `char[N]` with the private module treating it as  
+`PoolImpl` — **rejected**, for the reasons the review's §7 gives against it:  
+size and alignment become the public contract, changing the implementation  
+breaks users, placement construction by hand, and the public type still exposes  
+mysterious storage. Q17's opaque-typedef variant is the same family and is  
 forgeable besides.
 
 ## D2 — A plain inner field, not `inline`
 
-**Ruling: `AnyNode node;`, at whatever offset the outer's author likes. No
+**Ruling: `AnyNode node;`, at whatever offset the outer's author likes. No  
 `inline`.**
 
-Both compile (Q3). The argument is Part 7.5 and Part 10.1, and the capability
+Both compile (Q3). The argument is Part 7.5 and Part 10.1, and the capability  
 study is the first document in this folder to state it:
 
 - `inline` makes `outer -> inner` an implicit conversion. The crossing then
-  does not appear at the call site, and it does not appear in `helper.c3`
+  does not appear at the call site, and it does not appear in `helper.c3`  
   either. It appears nowhere.
 - Part 7.5 MUST: *every crossing goes through the helper*, and that is *what
   makes the arithmetic auditable: it appears in one file*.
 - Part 10.1: the four words — inner, handle, Slot, item — exist so a reader of
-  a signature knows which side of the border they are on. An implicit
+  a signature knows which side of the border they are on. An implicit  
   conversion erases the border at exactly the place the reader is looking.
 
-The cost of the ruling is one call, `msg::to_any(m)`, where `inline` would have
-written nothing. Part 7.2 requires that function to exist regardless. So the
+The cost of the ruling is one call, `msg::to_any(m)`, where `inline` would have  
+written nothing. Part 7.2 requires that function to exist regardless. So the  
 cost is a call site, not a line of library code.
 
-The gain beyond auditability: with no `inline`, `Msg` may embed its inner at
-any offset, and the port never has to reason about what an implicit conversion
+The gain beyond auditability: with no `inline`, `Msg` may embed its inner at  
+any offset, and the port never has to reason about what an implicit conversion  
 does in an overload or a generic context.
 
 ## D3 — Allocators
 
-**Ruling, as one principle:** *a released object gets the allocator from its
-own lifetime state, so no release call in the port takes an allocator
+**Ruling, as one principle:** *a released object gets the allocator from its  
+own lifetime state, so no release call in the port takes an allocator  
 parameter.*
 
-Where that state lives differs by what the object is, and that is the whole of
+Where that state lives differs by what the object is, and that is the whole of  
 the decision:
 
 | Object | Keeps the allocator in | Released by |
@@ -518,28 +518,28 @@ the decision:
 | An owning application item | its own **outer** | `mtk::owned::release` |
 | A plain application item | nowhere. It has no toolkit release | the application's own code |
 
-The inner is on none of those rows, and that is the sharp end: **the allocator
+The inner is on none of those rows, and that is the sharp end: **the allocator  
 belongs to whatever owns the allocation, never to the polymorphic inner.**
 
 The three parts, argued:
 
 1. **`Mailbox` and `Pool` keep an `Allocator` and release with it.** Part 13.1
-   in full, including its sharp clause. Q8 verified the shape:
-   `alloc::free(self.alloc, self)`, no parameter. This is the half the
-   specification already settles, and ztk's mismatch (Part 13.3) does not exist
+   in full, including its sharp clause. Q8 verified the shape:  
+   `alloc::free(self.alloc, self)`, no parameter. This is the half the  
+   specification already settles, and ztk's mismatch (Part 13.3) does not exist  
    in the port.
 2. **The inner does not grow an allocator field.** Part 4.2 MUST: a further
-   per-item field is added only with a reason written down, because *every item
-   pays for it*. An allocator in `AnyNode` is 16 bytes on an interface value,
-   added to a 24-byte inner, on every item in the program, to serve the subset
-   of items the toolkit allocates. Refused — and refused as an **additional
-   per-item field**, which is the test Part 4.2 actually sets, not as "a third
+   per-item field is added only with a reason written down, because *every item  
+   pays for it*. An allocator in `AnyNode` is 16 bytes on an interface value,  
+   added to a 24-byte inner, on every item in the program, to serve the subset  
+   of items the toolkit allocates. Refused — and refused as an **additional  
+   per-item field**, which is the test Part 4.2 actually sets, not as "a third  
    field" in a struct that already has three.
 3. **An item that wants a release with no allocator parameter keeps the
-   allocator in its own outer, and takes the `owned` helper.** This is the new
+   allocator in its own outer, and takes the `owned` helper.** This is the new  
    part, and it is what makes 1 and 2 compatible.
 
-`mtk::owned <Type>` is the create-and-release variant of D10. It discovers two
+`mtk::owned <Type>` is the create-and-release variant of D10. It discovers two  
 fields by compile-time reflection, not one:
 
 ```c3
@@ -554,13 +554,13 @@ fn void create(Allocator a, Slot* slot);   // Part 9.8: creation fills a Slot
 fn void release(Slot* slot);               // Part 13.1: no allocator parameter
 ```
 
-`create` writes the allocator into the outer's field and the identity into the
-inner. `release` reads the allocator back out of the outer, frees, and clears
+`create` writes the allocator into the outer's field and the identity into the  
+inner. `release` reads the allocator back out of the outer, frees, and clears  
 the Slot — a no-op on an empty Slot, Part 9.2 rule 6.
 
-**The order inside `create` is a contract, not an implementation detail.** An
-item reaches a Slot only once it is wholly a valid item, because Part 9.2 rule
-4 says a failing acquisition leaves the Slot unchanged, and a half-built item
+**The order inside `create` is a contract, not an implementation detail.** An  
+item reaches a Slot only once it is wholly a valid item, because Part 9.2 rule  
+4 says a failing acquisition leaves the Slot unchanged, and a half-built item  
 in a Slot would be a full Slot the caller has no way to use:
 
 1. allocate the outer — `alloc::new_try`, not `alloc::new`, because the plain
@@ -569,64 +569,64 @@ in a Slot would be a full Slot the caller has no way to use:
 3. initialize the inner — links cleared, identity written, Part 5.4;
 4. **only then** fill the Slot with the handle.
 
-A failure at step 1 returns the fault with the Slot untouched. Steps 2 to 4
+A failure at step 1 returns the fault with the Slot untouched. Steps 2 to 4  
 cannot fail.
 
-The `$assert` message names the alternative, which is the whole point of Part
-7.4's *the message names the offending type*: a type that does not want to pay
+The `$assert` message names the alternative, which is the whole point of Part  
+7.4's *the message names the offending type*: a type that does not want to pay  
 the pointer is told, at build time, which helper it should have taken.
 
-So Part 20 decision 2 is answered **per type, at the type's own choice**, and
-not once for the whole port. That is better than the binary the specification
-frames, and it costs one extra `$assert` and one extra offset lookup in a
+So Part 20 decision 2 is answered **per type, at the type's own choice**, and  
+not once for the whole port. That is better than the binary the specification  
+frames, and it costs one extra `$assert` and one extra offset lookup in a  
 module that is generated anyway.
 
-**This answers C7 and the first open question of `3tk-status.md` together**, as
+**This answers C7 and the first open question of `3tk-status.md` together**, as  
 the review required.
 
-*If the owner overrides* to "no application item keeps an allocator":
-`mtk::owned` loses its second `$assert` and gains an `Allocator` parameter on
-`release`, and Part 13.1's clause is knowingly broken for application items
+*If the owner overrides* to "no application item keeps an allocator":  
+`mtk::owned` loses its second `$assert` and gains an `Allocator` parameter on  
+`release`, and Part 13.1's clause is knowingly broken for application items  
 only. The two containers are unaffected either way.
 
 ## D4 — One handle type
 
 **Ruling: no `MboxHandle`, no `PoolHandle`. One `AnyHandle`.**
 
-Q9's second negative probe priced it: a distinct handle type does not convert,
+Q9's second negative probe priced it: a distinct handle type does not convert,  
 so every Slot-shaped call site writes `(AnyHandle*)&h`.
 
-Part 7.5 MUST says application code never performs the crossing by hand and the
-arithmetic appears in one file. A cast at every call site is the exact opposite
-shape, and it is a cast the compiler cannot check — `(AnyHandle*)` on the wrong
+Part 7.5 MUST says application code never performs the crossing by hand and the  
+arithmetic appears in one file. A cast at every call site is the exact opposite  
+shape, and it is a cast the compiler cannot check — `(AnyHandle*)` on the wrong  
 thing compiles.
 
-Part 11.1 is the second argument and the stronger one. The containers are
+Part 11.1 is the second argument and the stronger one. The containers are  
 ordinary items with ordinary crossings. A `PoolHandle` says they are special.
 
-What N4 wanted — static separation of the mailbox API from the pool API — is
-delivered by the *typed pointer*, which is where C3 already delivers it.
-`mbox::from_any(h)` returns a `Mailbox*` or nothing, and a `Mailbox*` cannot be
-passed to a pool function. The separation is at the border, once, rather than
+What N4 wanted — static separation of the mailbox API from the pool API — is  
+delivered by the *typed pointer*, which is where C3 already delivers it.  
+`mbox::from_any(h)` returns a `Mailbox*` or nothing, and a `Mailbox*` cannot be  
+passed to a pool function. The separation is at the border, once, rather than  
 at every call site.
 
 ## D5 — A distinct Slot
 
 **Ruling: `typedef Slot = AnyHandle`. Distinct, not an alias.**
 
-This pairs with D4 and does not contradict it. The cast cost that sinks typed
-*handles* does not arise for the Slot, because the Slot is the port's own
+This pairs with D4 and does not contradict it. The cast cost that sinks typed  
+*handles* does not arise for the Slot, because the Slot is the port's own  
 currency and every function that takes one takes `Slot*` by design — Part 9.3.
 
-**Where the friction is, precisely.** Reading a Slot as the handle it holds is
-handled by the five Slot primitives of section 1, and they are ordinary code
-that any layer may call — the containers do, and an application may. That is
+**Where the friction is, precisely.** Reading a Slot as the handle it holds is  
+handled by the five Slot primitives of section 1, and they are ordinary code  
+that any layer may call — the containers do, and an application may. That is  
 not a crossing and it is not confined to `helper.c3`.
 
-The only thing Part 7.5 confines is the **outer/item ↔ inner/handle** crossing,
-and that stays in the per-type helper, all of it. The distinction is worth the
-sentence because the two are easy to blur: a reader who takes "every conversion
-involving a Slot lives in the helper" from this section will be contradicted by
+The only thing Part 7.5 confines is the **outer/item ↔ inner/handle** crossing,  
+and that stays in the per-type helper, all of it. The distinction is worth the  
+sentence because the two are easy to blur: a reader who takes "every conversion  
+involving a Slot lives in the helper" from this section will be contradicted by  
 the port's own `mailbox.c3` on the next page.
 
 What it buys, from Q9, verified in both directions:
@@ -634,35 +634,35 @@ What it buys, from Q9, verified in both directions:
 - An `AnyHandle` cannot be passed where a `Slot` is wanted.
 - A `Slot*` cannot be passed where an `AnyHandle*` is wanted.
 
-So Part 9.2 rule 1 — never overwrite a full Slot — gains a compile-time ally:
+So Part 9.2 rule 1 — never overwrite a full Slot — gains a compile-time ally:  
 the two-star confusion that four drafts fell into (C4) does not typecheck.
 
-A zero-initialized `Slot` is null, so rule 2 — a Slot starts empty — is the
+A zero-initialized `Slot` is null, so rule 2 — a Slot starts empty — is the  
 default state of the language, with no initializer to forget.
 
-The cost Part 9.9 predicts is real: reading a distinct Slot needs
-`(AnyHandle)slot`, not the bare null test. The port supplies five functions on
-`Slot` — `is_empty`, `is_full`, `peek`, `take`, `fill`, listed with their
-signatures in section 1 — and the reading shape is then better than the bare
-null test, not worse, because `s.is_empty()` says which of the four absences of
+The cost Part 9.9 predicts is real: reading a distinct Slot needs  
+`(AnyHandle)slot`, not the bare null test. The port supplies five functions on  
+`Slot` — `is_empty`, `is_full`, `peek`, `take`, `fill`, listed with their  
+signatures in section 1 — and the reading shape is then better than the bare  
+null test, not worse, because `s.is_empty()` says which of the four absences of  
 section 1 is meant and `!ptr` does not.
 
-**C4 is settled by the word, not by the type.** The Slot is the container. The
-Slot is not `AnyHandle*`; `AnyHandle*` is a *pointer to* a Slot. In this port
-that distinction is enforced by the compiler, so the four drafts' usage is now
+**C4 is settled by the word, not by the type.** The Slot is the container. The  
+Slot is not `AnyHandle*`; `AnyHandle*` is a *pointer to* a Slot. In this port  
+that distinction is enforced by the compiler, so the four drafts' usage is now  
 unwritable.
 
 ## D6 — The assert policy
 
-**Ruling: three tiers. A plain `assert` never guards a contract violation.
+**Ruling: three tiers. A plain `assert` never guards a contract violation.  
 **
 
-Q11 found the trap: at `--safe=no` with optimization, a plain C3 `assert` is
-not a removed check, it is an *assumption the optimizer may act on*. A violated
-contract then produces undefined behaviour rather than a missed diagnostic. The
+Q11 found the trap: at `--safe=no` with optimization, a plain C3 `assert` is  
+not a removed check, it is an *assumption the optimizer may act on*. A violated  
+contract then produces undefined behaviour rather than a missed diagnostic. The  
 probe segfaulted having printed nothing.
 
-ztk's model — an assert either fires or is gone — does not survive the port. So
+ztk's model — an assert either fires or is gone — does not survive the port. So  
 the port does not use the mechanism that breaks it.
 
 | Tier | Spelling | Where | Behaviour in a fast build |
@@ -671,7 +671,7 @@ the port does not use the mechanism that breaks it.
 | 2 | `mtk::@check(cond, msg)` | every other contract violation | **Compiled out entirely, so the condition is not evaluated.** Not an assumption |
 | 3 | `$if env::COMPILER_SAFE_MODE:` block | Part 8.6's walk | Not compiled at all |
 
-Tier 2 is one port macro, and it is the reason this decision is a design
+Tier 2 is one port macro, and it is the reason this decision is a design  
 contribution rather than a table:
 
 ```c3
@@ -683,38 +683,38 @@ macro @check(#cond, $msg)
 }
 ```
 
-Two corrections from the code. It is **not** `@private`: C3's `@private` does
-not reach a submodule, so `mtk::helper` could not see it — and Part 17.2 makes
-that right anyway, since an application writing its own Slot-shaped call is
-entitled to the same check (F3). And the message is a **compile-time** string,
-because `always_assert` takes one (F5). The clause is carried to the abort
+Two corrections from the code. It is **not** `@private`: C3's `@private` does  
+not reach a submodule, so `mtk::helper` could not see it — and Part 17.2 makes  
+that right anyway, since an application writing its own Slot-shaped call is  
+entitled to the same check (F3). And the message is a **compile-time** string,  
+because `always_assert` takes one (F5). The clause is carried to the abort  
 intact:
 
 ```
 ERROR: 'Violated assert '#cond': Part 8.6 walk: the item is already on this list'
 ```
 
-In a safe build it is `always_assert`, which aborts and names the message. In
-`--safe=no` it expands to nothing — the condition is not evaluated, and nothing
-is handed to the optimizer as a promise. That is ztk's model, restored, on a
+In a safe build it is `always_assert`, which aborts and names the message. In  
+`--safe=no` it expands to nothing — the condition is not evaluated, and nothing  
+is handed to the optimizer as a promise. That is ztk's model, restored, on a  
 language whose `assert` does not provide it.
 
-**The rule that follows, and it binds every call site:** *an expression passed
-to `mtk::@check` must have no required side effect.* It may not mutate state,
-allocate, release, perform I/O, or do anything the program needs done. `@check`
+**The rule that follows, and it binds every call site:** *an expression passed  
+to `mtk::@check` must have no required side effect.* It may not mutate state,  
+allocate, release, perform I/O, or do anything the program needs done. `@check`  
 is observational, and
 
 ```c3
 mtk::@check(self.drain(), "...");     // WRONG: drains in a safe build only
 ```
 
-is a program that behaves differently in the two build families — the exact
-class of bug the three tiers exist to prevent, reintroduced by the mechanism
-meant to prevent it. Tier 3's `$if` blocks carry the same rule for the same
+is a program that behaves differently in the two build families — the exact  
+class of bug the three tiers exist to prevent, reintroduced by the mechanism  
+meant to prevent it. Tier 3's `$if` blocks carry the same rule for the same  
 reason, one level up: the block is not compiled at all in a fast build.
 
-`NodeList.contains` is the port's one interesting case. It is a real function
-with a real O(n) cost and no side effect, which is exactly why it is legal
+`NodeList.contains` is the port's one interesting case. It is a real function  
+with a real O(n) cost and no side effect, which is exactly why it is legal  
 inside a tier 3 block.
 
 The site list:
@@ -729,22 +729,22 @@ The site list:
 | A hook returning an item of the wrong identity | 12.2 | 2 |
 | An asserting crossing on a mismatch | 6.3 | 2 |
 
-Part 8.9's pair is not softened: the assert is tier 2 and compiles out, and the
-early return is ordinary code and does not. The specification says exactly this,
+Part 8.9's pair is not softened: the assert is tier 2 and compiles out, and the  
+early return is ordinary code and does not. The specification says exactly this,  
 and it is the one place where the port keeps both.
 
-Every *runtime condition* — closed, timeout, nothing available — is a fault and
+Every *runtime condition* — closed, timeout, nothing available — is a fault and  
 never an assert, in every build mode. Part 15.5, and D15.
 
 ## D7 — The timed wait
 
-**Ruling: `wait_timeout` does not appear in the port.** Closer to a finding
-than a decision, and 3TK-7 proved it by sabotage — see the note at the end of
+**Ruling: `wait_timeout` does not appear in the port.** Closer to a finding  
+than a decision, and 3TK-7 proved it by sabotage — see the note at the end of  
 this section.
 
-Q7 read the stdlib: `wait_timeout` computes `time::now() + ms` on **every
-call**. A retry loop built on it restarts the full timeout at every spurious
-wakeup, without bound. That is precisely Part 2.5 MUST and invariant 4, and it
+Q7 read the stdlib: `wait_timeout` computes `time::now() + ms` on **every  
+call**. A retry loop built on it restarts the full timeout at every spurious  
+wakeup, without bound. That is precisely Part 2.5 MUST and invariant 4, and it  
 fails silently — the call simply never times out under load.
 
 The one shape, written once and used at every waiting site:
@@ -769,17 +769,17 @@ while (true)
 }
 ```
 
-Four MUSTs are in those lines and the port writes them once: 2.4 the re-check,
+Four MUSTs are in those lines and the port writes them once: 2.4 the re-check,  
 2.5 the anchor, 2.6 the hand-off, 15.3 the flag read under the mutex.
 
-`3tk-poc.md` row P7 is the draft that got this wrong. It is the only draft that
+`3tk-poc.md` row P7 is the draft that got this wrong. It is the only draft that  
 touched the code path.
 
-**Proved by sabotage, 3TK-7.** The trouble with this MUST is that a wrong
-implementation passes every ordinary timeout test. `wait_until(deadline)` was
-swapped for `wait_timeout(timeout)` in `Mailbox.receive` and the suite reported
-`FAILED: 70 passed, 1 failed`, naming Part 2.5. The sabotage was reverted. A
-test for an invariant of this shape is worth nothing until it has been seen to
+**Proved by sabotage, 3TK-7.** The trouble with this MUST is that a wrong  
+implementation passes every ordinary timeout test. `wait_until(deadline)` was  
+swapped for `wait_timeout(timeout)` in `Mailbox.receive` and the suite reported  
+`FAILED: 70 passed, 1 failed`, naming Part 2.5. The sabotage was reverted. A  
+test for an invariant of this shape is worth nothing until it has been seen to  
 fail.
 
 ## D8 — The names
@@ -798,12 +798,12 @@ fail.
 | The containers | `Mailbox`, `Pool` | Unchanged |
 | The hooks | `PoolHooks` | An interface. Q5 |
 
-Two hazards Q1 found, carried as rules: **a struct name that is all uppercase
-does not compile**, and `Any` is available as a *type* name but unusable as a
+Two hazards Q1 found, carried as rules: **a struct name that is all uppercase  
+does not compile**, and `Any` is available as a *type* name but unusable as a  
 *module* name.
 
-`C3` — the review's third conflict — is closed by that pair: `3tk-porting-notes.md`
-was right that `Any` works as a type, `3tk-additions.md` was right about the
+`C3` — the review's third conflict — is closed by that pair: `3tk-porting-notes.md`  
+was right that `Any` works as a type, `3tk-additions.md` was right about the  
 keyword and wrong about what follows from it.
 
 `C11` is closed for the type names here, and for the file names by section 1.
@@ -812,31 +812,31 @@ keyword and wrong about what follows from it.
 
 **Ruling: Part 2.9 is not implemented.**
 
-Part 2.9 is a SHOULD whose own text says: *on a port with no such mechanism,
-this outcome is dropped and the timeout outcome stays*. Q7 measured C3: there is
-no interruptible condition wait. `INTERRUPTED` exists for `sleep` and for
+Part 2.9 is a SHOULD whose own text says: *on a port with no such mechanism,  
+this outcome is dropped and the timeout outcome stays*. Q7 measured C3: there is  
+no interruptible condition wait. `INTERRUPTED` exists for `sleep` and for  
 `TimedMutex.lock_timeout` on `EINTR`, and nowhere else.
 
-Building it — a per-waiter flag plus a broadcast — is possible and is not free:
-it is a field per waiter, a second reason to wake, and a second cause to keep
-distinct from closed at every wait site. Part 2.10 then applies as well, and
+Building it — a per-waiter flag plus a broadcast — is possible and is not free:  
+it is a field per waiter, a second reason to wake, and a second cause to keep  
+distinct from closed at every wait site. Part 2.10 then applies as well, and  
 every give-back path has to be proved uninterruptible.
 
-The port drops it, and the outcome sets of Part 19 lose exactly one value in
-two rows: `receive` and `get with waiting`. Nothing else changes. Part 16 rows
+The port drops it, and the outcome sets of Part 19 lose exactly one value in  
+two rows: `receive` and `get with waiting`. Nothing else changes. Part 16 rows  
 11 and 12 were already going.
 
-*If the owner overrides:* Part 11.5's counter mechanism is the model to copy —
-a counter, captured before the wait, compared after every wakeup — and Part
+*If the owner overrides:* Part 11.5's counter mechanism is the model to copy —  
+a counter, captured before the wait, compared after every wakeup — and Part  
 2.10 becomes a review item for every path in `pool.c3`.
 
 ## D10 — Two generic modules
 
 **Ruling: `mtk::helper <Type>` and `mtk::owned <Type>`.**
 
-Part 7.3's distinction is real and portable: not every type wants create and
-release. ztk spells it with a marker constant and a branching generator, and
-pays 110 duplicated lines. Q1 found there is no `has_tag` property to branch
+Part 7.3's distinction is real and portable: not every type wants create and  
+release. ztk spells it with a marker constant and a branching generator, and  
+pays 110 duplicated lines. Q1 found there is no `has_tag` property to branch  
 on in C3 anyway.
 
 Two modules, with `owned` composing `helper` rather than copying it:
@@ -850,58 +850,58 @@ fn void create(Allocator a, Slot* slot)  { ... }
 fn void release(Slot* slot)              { ... }
 ```
 
-An application writes one alias for a plain type and one for an owning type,
-and the two spell the same surface. No duplication, no marker constant, no
+An application writes one alias for a plain type and one for an owning type,  
+and the two spell the same surface. No duplication, no marker constant, no  
 branch.
 
 ## D11 — The order
 
 **Ruling: Part 22 as written. The list is step 5.**
 
-C8 records two true reasons pointing opposite ways. Part 22's reason wins on a
-mechanical point: the list *speaks in handles* (Part 8.3) and two of its
-operations *take Slots* (Part 8.2). It cannot be written, let alone tested,
+C8 records two true reasons pointing opposite ways. Part 22's reason wins on a  
+mechanical point: the list *speaks in handles* (Part 8.3) and two of its  
+operations *take Slots* (Part 8.2). It cannot be written, let alone tested,  
 before `AnyHandle` and `Slot` exist.
 
-The drafts' reason — that both containers depend on the list — is satisfied
+The drafts' reason — that both containers depend on the list — is satisfied  
 anyway, since the list is step 5 and the containers are 6 and 7.
 
-One amendment from Q1: **the helper needs no prototyping step of its own.** It
-was prototyped in 3TK-4, for two outer types, with the whole of Part 7.2
+One amendment from Q1: **the helper needs no prototyping step of its own.** It  
+was prototyped in 3TK-4, for two outer types, with the whole of Part 7.2  
 exercised. Step 3 starts from working code.
 
 ## D12 to D16, briefly
 
-**D12 — the link test's blind spot is accepted.** Part 8.7 prices the
-alternative at a field per item, and D3 already refused **an additional
-per-item allocator field** in the inner for a stronger reason. (003 said "a
-third field" here; the inner already has three. What Part 4.2 guards is a
-*further* per-item field of any kind, not the number three. Section 1.) The blind spot is documented at the link test and
-in `NodeList`'s header comment, as Part 8.7 requires. The walk of Part 8.6 is
+**D12 — the link test's blind spot is accepted.** Part 8.7 prices the  
+alternative at a field per item, and D3 already refused **an additional  
+per-item allocator field** in the inner for a stronger reason. (003 said "a  
+third field" here; the inner already has three. What Part 4.2 guards is a  
+*further* per-item field of any kind, not the number three. Section 1.) The blind spot is documented at the link test and  
+in `NodeList`'s header comment, as Part 8.7 requires. The walk of Part 8.6 is  
 what covers it in checking builds.
 
-**D13 — both a receive and a poll.** Part 20 decision 5 notes a zero-timeout
-receive has the same reach. The two are kept apart because they report the
-empty case differently — `poll` reports `EMPTY`, a receive at a zero deadline
-reports `TIMEOUT` — and Part 19.1 lists both. One is not a special case of the
+**D13 — both a receive and a poll.** Part 20 decision 5 notes a zero-timeout  
+receive has the same reach. The two are kept apart because they report the  
+empty case differently — `poll` reports `EMPTY`, a receive at a zero deadline  
+reports `TIMEOUT` — and Part 19.1 lists both. One is not a special case of the  
 other to a caller reading outcomes.
 
-**D14 — out-of-band is kept**, one level, not a queue, with the anchor at the
-last out-of-band item so the insert stays O(1) and the anchor cleared when that
+**D14 — out-of-band is kept**, one level, not a queue, with the anchor at the  
+last out-of-band item so the insert stays O(1) and the anchor cleared when that  
 item is taken. Part 11.3, invariant 22.
 
-**D15 — outcomes are C3 faults.** `faultdef CLOSED, TIMEOUT, NOT_AVAILABLE,
-NOT_CREATED, EMPTY, WOKEN;`, returned as `void?` or `Type?`. It is what the
-stdlib does — `thread::WAIT_TIMEOUT` is a fault (Q7) — and `if (catch f = ...)`
-is the language's own reading shape. Part 19's set is fixed; this is the
-spelling. Note that these are *runtime conditions*, never defects: D6 keeps
+**D15 — outcomes are C3 faults.** `faultdef CLOSED, TIMEOUT, NOT_AVAILABLE,  
+NOT_CREATED, EMPTY, WOKEN;`, returned as `void?` or `Type?`. It is what the  
+stdlib does — `thread::WAIT_TIMEOUT` is a fault (Q7) — and `if (catch f = ...)`  
+is the language's own reading shape. Part 19's set is fixed; this is the  
+spelling. Note that these are *runtime conditions*, never defects: D6 keeps  
 them out of the assert tiers entirely.
 
-**D16 — the pre-lock fast path is kept**, as `Atomic{bool}`, with the
-acquire-outside / relaxed-inside / release-on-store ordering Part 15.4
-specifies, and with the re-read under the lock. Part 15.4's prohibition is
-respected literally: the port may not drop the re-check while keeping the fast
-read. Q10 verified the orderings exist with contracts rejecting invalid
+**D16 — the pre-lock fast path is kept**, as `Atomic{bool}`, with the  
+acquire-outside / relaxed-inside / release-on-store ordering Part 15.4  
+specifies, and with the re-read under the lock. Part 15.4's prohibition is  
+respected literally: the port may not drop the re-check while keeping the fast  
+read. Q10 verified the orderings exist with contracts rejecting invalid  
 combinations.
 
 ---
@@ -922,14 +922,14 @@ Measured, not estimated.
 | Hand-written cleanup at every exit | Part 9.7's fallback | `defer`. Q6 |
 | The allocator parameter on both release calls | Part 13.3's ztk mismatch | D3, Q8 |
 
-And one thing C3 *adds* that ztk cannot have: Part 6.5's dispatch may be a
-`switch` on `typeid`, because a `typeid` is a compile-time-known constant and a
-ztk tag is a linker-assigned address. Q2 verified it compiles. The port
-provides the table — handlers registered at runtime is the general case — and
+And one thing C3 *adds* that ztk cannot have: Part 6.5's dispatch may be a  
+`switch` on `typeid`, because a `typeid` is a compile-time-known constant and a  
+ztk tag is a linker-assigned address. Q2 verified it compiles. The port  
+provides the table — handlers registered at runtime is the general case — and  
 documents the `switch` as available where the handler set is fixed.
 
-Not deleted, and deliberately: Part 8.1's list. `std::collections::linkedlist`
-allocates a node per element, and `anylist` copies. Neither is intrusive. Part
+Not deleted, and deliberately: Part 8.1's list. `std::collections::linkedlist`  
+allocates a node per element, and `anylist` copies. Neither is intrusive. Part  
 8.5 required the port to write the checking layer regardless.
 
 ---
@@ -989,8 +989,8 @@ MAY elements are in section 6. EXCLUDED elements are in section 3.
 | 5.4 Stored, not computed | MUST | `AnyNode.type`, written by the initializer, read by the walker |
 | 5.5 The uninitialized identity | SHOULD | `mtk::helper::init` writes it, and `owned::create` calls `init`. A stack item still needs `init` called, and the doc says so |
 
-Part 5.5 is the one place C3 gives no more than Zig: there is no required
-constructor. The mitigation is that a zeroed `typeid` matches no type, so the
+Part 5.5 is the one place C3 gives no more than Zig: there is no required  
+constructor. The mitigation is that a zeroed `typeid` matches no type, so the  
 first crossing refuses rather than mis-claiming.
 
 ## 5.3 Parts 6 and 7 — the crossings and the helper
@@ -1008,10 +1008,10 @@ first crossing refuses rather than mis-claiming.
 | 7.4 Validation of the type | SHOULD | `$assert` over `$Type::members`, at build time, and **the message names the type**. Q12, verified |
 | 7.5 The border, named once | MUST | **D2 and D4 both exist to protect this.** All arithmetic is in `helper.c3` |
 
-**Part 7.2's seven clauses are nine members.** Two of its bullets each name a
-pair — *checking and asserting* crossings from a handle, and the same pair from
-a Slot — so the required surface is seven clauses wide and nine functions deep.
-The port adds nothing to it and omits nothing from it. All nine were compiled
+**Part 7.2's seven clauses are nine members.** Two of its bullets each name a  
+pair — *checking and asserting* crossings from a handle, and the same pair from  
+a Slot — so the required surface is seven clauses wide and nine functions deep.  
+The port adds nothing to it and omits nothing from it. All nine were compiled  
 and exercised in 3TK-4.
 
 | Member | Signature | Part 7.2 clause |
@@ -1026,20 +1026,20 @@ and exercised in 3TK-4.
 | The way back | `fn AnyHandle to_any(Type* item)` | 6 — the way back, cannot fail |
 | The initializer | `fn void init(Type* item)` | 7 — the initializer |
 
-One more member exists and is not on the list: `const usz OFF`, the offset of
-the inner in the outer. It is the arithmetic itself rather than a member Part
-7.2 asks for, and Part 7.4's build-time validation runs inside the macro that
+One more member exists and is not on the list: `const usz OFF`, the offset of  
+the inner in the outer. It is the arithmetic itself rather than a member Part  
+7.2 asks for, and Part 7.4's build-time validation runs inside the macro that  
 computes it.
 
-**Why `TYPE` exists** when `Type::typeid` is available at every call site: it is
-the helper's stable spelling of the identity, so that a call site says
-`msg::TYPE` and not `Msg::typeid`, and reflection syntax stays inside the
-border along with the arithmetic. It also gives the containers something to
-name — `pool::TYPE`, `mailbox::TYPE` — without either of them naming a
+**Why `TYPE` exists** when `Type::typeid` is available at every call site: it is  
+the helper's stable spelling of the identity, so that a call site says  
+`msg::TYPE` and not `Msg::typeid`, and reflection syntax stays inside the  
+border along with the arithmetic. It also gives the containers something to  
+name — `pool::TYPE`, `mailbox::TYPE` — without either of them naming a  
 reflection operator. It is a `const`, so it costs nothing at runtime.
 
-The moving crossing is the one with two postconditions, and 3TK-4 verified
-both: on a match the pointer is returned **and** the Slot is cleared; on a
+The moving crossing is the one with two postconditions, and 3TK-4 verified  
+both: on a match the pointer is returned **and** the Slot is cleared; on a  
 mismatch nothing is returned **and the Slot is untouched** — Part 9.2 rule 4.
 
 ## 5.4 Part 8 — the list
@@ -1082,17 +1082,17 @@ Names are the port's business; these are the port's.
 | Move another list onto this one | `fn void append_list(&self, NodeList* other)` |
 | Is it on this list | `fn bool NodeList.contains(&self, AnyHandle h)` |
 
-Sixteen, counted. `contains` is the sixteenth and 002 left it off the table
-while claiming the total — it is the O(n) walk of Part 8.6, public because a
-tier 3 block in `list.c3` calls it and because Part 8.7's blind spot leaves an
+Sixteen, counted. `contains` is the sixteenth and 002 left it off the table  
+while claiming the total — it is the O(n) walk of Part 8.6, public because a  
+tier 3 block in `list.c3` calls it and because Part 8.7's blind spot leaves an  
 application no other way to ask the question.
 
-`pop_front`, `pop_back`, `front` and `back` return a null handle on an empty
-list. That is Part 8.2's *both may find the list empty*, and it is not a fault —
+`pop_front`, `pop_back`, `front` and `back` return a null handle on an empty  
+list. That is Part 8.2's *both may find the list empty*, and it is not a fault —  
 Part 19.4, no operation on the list can fail.
 
-**The count invariant.** `len` is O(1) because the list keeps a `count` field,
-and that field is state, which means it can be wrong in ways the link
+**The count invariant.** `len` is O(1) because the list keeps a `count` field,  
+and that field is state, which means it can be wrong in ways the link  
 invariants would not catch:
 
 - `NodeList.count` equals the number of items currently linked into the list.
@@ -1101,9 +1101,9 @@ invariants would not catch:
 - `append_list` transfers both counts and leaves the source at zero.
 - `is_empty` and `len` both read it, so the two can never disagree.
 
-The field is `count`; `len()` is the operation Part 8.2 names. Keeping it is
-what lets Part 11.7 hand a per-identity number to a hook without a walk —
-`PoolBucket` therefore keeps no count of its own, and Part 11.7 asks for one
+The field is `count`; `len()` is the operation Part 8.2 names. Keeping it is  
+what lets Part 11.7 hand a per-identity number to a hook without a walk —  
+`PoolBucket` therefore keeps no count of its own, and Part 11.7 asks for one  
 only where the list's length is not O(1).
 
 `append_list` carries Part 8.9's pair.
@@ -1143,7 +1143,7 @@ Msg* m = msg::must_from_slot(&slot);
 ...
 ```
 
-Rule 6 is what makes the `defer` safe on the path where `get` failed and the
+Rule 6 is what makes the `defer` safe on the path where `get` failed and the  
 Slot was never filled.
 
 ## 5.7 Part 10 — the synonyms
@@ -1166,17 +1166,17 @@ Slot was never filled.
 | 11.6 The give-back rule | MUST | Every path returns items to a caller. The doc names the mistake: discarding the list `close` returns drops items that keep their links, and a later send then refuses them |
 | 11.6 A closed mailbox is empty | MUST | Invariant 34. `close` drains the queue in one step under the mutex, and `send` re-checks the flag under that same mutex. Tested by `a_closed_mailbox_is_empty` |
 
-**There is no closed-versus-available precedence rule, because there is no such
-choice.** Invariant 34 of the specification — added in 002, on this port's
-evidence — makes a closed mailbox empty: `close` takes the whole queue in one
-step under the mutex, and a send after the flag is set is refused under that
-same mutex, so no item can be sitting in a closed mailbox. A `receive`, a `poll`
-or a `receive_all` on a closed mailbox therefore reports `CLOSED` on an empty
+**There is no closed-versus-available precedence rule, because there is no such  
+choice.** Invariant 34 of the specification — added in 002, on this port's  
+evidence — makes a closed mailbox empty: `close` takes the whole queue in one  
+step under the mutex, and a send after the flag is set is refused under that  
+same mutex, so no item can be sitting in a closed mailbox. A `receive`, a `poll`  
+or a `receive_all` on a closed mailbox therefore reports `CLOSED` on an empty  
 queue, and never has to decide between an item and the closed state.
 
-A reader who takes Part 19.1's outcome rows as a priority list — item *or*
-closed, when both look applicable — has invented a state this design does not
-have. The port's `close` is the only drain, and it hands everything to the
+A reader who takes Part 19.1's outcome rows as a priority list — item *or*  
+closed, when both look applicable — has invented a state this design does not  
+have. The port's `close` is the only drain, and it hands everything to the  
 caller. The pool is the same shape, with the hook in the caller's place.
 
 ## 5.9 Part 11.7 to 11.12 and Part 12 — the pool
@@ -1196,7 +1196,7 @@ caller. The pool is the same shape, with the hook in the caller's place.
 | 12.4 The count is a hint | MUST | Passed by value, read under the lock, documented as stale. After removal on get, before addition on put |
 | 12.5 The extra list on put | SHOULD | A second `NodeList*` parameter on `on_put`. Each item added the same way, with the same checks |
 
-**The bucket set, in full.** G4 chose the representation; these are the rules
+**The bucket set, in full.** G4 chose the representation; these are the rules  
 that make it a design rather than a performance note:
 
 - The set is fixed at `pool::create` and never changes. No bucket is added or
@@ -1204,10 +1204,10 @@ that make it a design rather than a performance note:
 - Each configured identity appears **exactly once**. Creation refuses an empty
   set, and refuses a duplicate.
 - A duplicate has to be refused rather than tolerated, because `bucket_for`
-  returns the *first* match: a second bucket for an identity that already has
-  one can never be found, so every put lands in the first and the second stays
-  empty forever. Nothing fails and nothing is reported — the pool quietly holds
-  half of what its creator asked for. It is a tier 2 check, since the identity
+  returns the *first* match: a second bucket for an identity that already has  
+  one can never be found, so every put lands in the first and the second stays  
+  empty forever. Nothing fails and nothing is reported — the pool quietly holds  
+  half of what its creator asked for. It is a tier 2 check, since the identity  
   set is the caller's to get right.
 - Lookup is a linear scan of the fixed array, and it happens **under the pool
   mutex**, as does every mutation of a bucket's list.
@@ -1216,16 +1216,16 @@ that make it a design rather than a performance note:
 - The only pool work outside the mutex is the hook call, and by then the state
   the hook needs has been detached from the buckets.
 
-**A note on Part 11.9 and its conflicting sources.** ztk's book states twice
-that the waiting get calls the creation hook. ztk's code does not call it. The
-specification follows the code, Part 11.9, and so does this port. The rule the
-port applies when sources disagree is worth stating once, because it will come
-up again: **the running code is the evidence, the specification is the
-authority, and prose that contradicts both is superseded.** The ztk book still
-needs the fix, and that is a job for the ztk line rather than this one —
+**A note on Part 11.9 and its conflicting sources.** ztk's book states twice  
+that the waiting get calls the creation hook. ztk's code does not call it. The  
+specification follows the code, Part 11.9, and so does this port. The rule the  
+port applies when sources disagree is worth stating once, because it will come  
+up again: **the running code is the evidence, the specification is the  
+authority, and prose that contradicts both is superseded.** The ztk book still  
+needs the fix, and that is a job for the ztk line rather than this one —  
 `ztk-audit-001.md` section 5.2.
 
-The three hooks, as the specification requires them and as Q5 compiled them —
+The three hooks, as the specification requires them and as Q5 compiled them —  
 **not** as `3tk-additions.md` proposed:
 
 ```c3
@@ -1238,24 +1238,24 @@ interface PoolHooks
 ```
 
 - `on_get` gets an empty Slot and the wanted identity. Leaving it empty is the
-  `NOT_CREATED` outcome. Returning an item of another identity is a defect —
+  `NOT_CREATED` outcome. Returning an item of another identity is a defect —  
   tier 2.
 - `on_put` gets a Slot carrying all four of Part 12.2's outcomes: emptied means
   released, full means kept, full with a different item means replaced.
 - **G5: that is not the caller's Slot.** `Pool.put` clears the caller's Slot at
-  the moment it accepts the item — Part 9.4, cleared means kept — and then hands
-  the hook a Slot of its own. A port that passes the caller's through lets a
-  hook that *keeps* the item leave the caller's Slot full, which reads as
+  the moment it accepts the item — Part 9.4, cleared means kept — and then hands  
+  the hook a Slot of its own. A port that passes the caller's through lets a  
+  hook that *keeps* the item leave the caller's Slot full, which reads as  
   *refused*.
 
-**`Pool.put` has two Slot domains, and the order between them is the contract.**
-The caller reads its own Slot to learn what happened, so the moment the pool
+**`Pool.put` has two Slot domains, and the order between them is the contract.**  
+The caller reads its own Slot to learn what happened, so the moment the pool  
 commits has to be fixed and has to be before the hook can influence it:
 
 1. The caller's Slot is checked, and holds the offered item. An empty one is a
    no-op.
 2. Under the mutex, the pool decides whether it accepts — closed, or an
-   identity it was not created with, are the two refusals, and both return with
+   identity it was not created with, are the two refusals, and both return with  
    the caller's Slot **untouched**.
 3. **The commit.** The item is taken out of the caller's Slot, and from this
    line on the caller's Slot is empty and the pool owns the item.
@@ -1264,14 +1264,14 @@ commits has to be fixed and has to be before the hook can influence it:
 6. `on_put` runs on the hook-local Slot, and may empty it, leave it, or replace
    its contents. Part 12.2's four outcomes.
 7. The mutex is retaken. A full hook-local Slot means an item is kept and it
-   goes to its bucket; every item on `extra` is added the same way, with the
+   goes to its bucket; every item on `extra` is added the same way, with the  
    same checks — Part 12.5.
 
-**After step 3 the caller's Slot stays empty whatever the hook does.** That is
-the invariant, and it is the reason the two Slots exist: *the caller's
-observable result does not depend on the hook's decision.* The pool accepted the
-item; what policy then does with it is between the pool and its hooks. A hook
-that releases the item does not thereby hand it back to the caller, because the
+**After step 3 the caller's Slot stays empty whatever the hook does.** That is  
+the invariant, and it is the reason the two Slots exist: *the caller's  
+observable result does not depend on the hook's decision.* The pool accepted the  
+item; what policy then does with it is between the pool and its hooks. A hook  
+that releases the item does not thereby hand it back to the caller, because the  
 caller no longer has it.
 - `on_close` gets the list of what remained, is called **once**, **outside the
   mutex**, **after the flag is set**, and owns every item in it.
@@ -1291,13 +1291,13 @@ caller no longer has it.
 | wake every waiter | `fn void? wake_all(&self)` | done; `CLOSED` — see below |
 | release | `fn void release(&self)` | **Tier 1 assert if open.** No allocator parameter |
 
-**Why `wake_all` reports `CLOSED`.** It is the outcome Part 19.1 gives it —
-*wake every waiter: done; closed* — and the port does not narrow a specified
-outcome set. The reason behind the specification's choice is that `wake_all` is
-defined as acting on an **open** mailbox: it bumps the wake generation and
-broadcasts, which is a state change, and Part 11.5 says the mailbox stays open
-afterwards. On a closed mailbox there is nothing to wake — `close` broadcast
-already — so the call has no work to do and says so. Reporting success would
+**Why `wake_all` reports `CLOSED`.** It is the outcome Part 19.1 gives it —  
+*wake every waiter: done; closed* — and the port does not narrow a specified  
+outcome set. The reason behind the specification's choice is that `wake_all` is  
+defined as acting on an **open** mailbox: it bumps the wake generation and  
+broadcasts, which is a state change, and Part 11.5 says the mailbox stays open  
+afterwards. On a closed mailbox there is nothing to wake — `close` broadcast  
+already — so the call has no work to do and says so. Reporting success would  
 claim a wake that did not happen.
 
 `Pool`, in `mtk::pool`. Created with `pool::create(a, tags, hooks)`:
@@ -1313,16 +1313,16 @@ claim a wake that did not happen.
 
 `enum GetMode { AVAILABLE_OR_NEW, NEW_ONLY, AVAILABLE_ONLY }`.
 
-The faults are `mtk::CLOSED`, `mtk::TIMEOUT`, `mtk::EMPTY`, `mtk::WOKEN`,
-`mtk::NOT_AVAILABLE`, `mtk::NOT_CREATED`. The return spelling is `~` and not
+The faults are `mtk::CLOSED`, `mtk::TIMEOUT`, `mtk::EMPTY`, `mtk::WOKEN`,  
+`mtk::NOT_AVAILABLE`, `mtk::NOT_CREATED`. The return spelling is `~` and not  
 `?` — `return mtk::CLOSED~;` — because `?` marks the optional type. G2.
 
-Part 19.3's asymmetry, kept: `NOT_AVAILABLE` comes only from `AVAILABLE_ONLY`,
-`NOT_CREATED` only from a hook that produced nothing, and `get_wait` reports
+Part 19.3's asymmetry, kept: `NOT_AVAILABLE` comes only from `AVAILABLE_ONLY`,  
+`NOT_CREATED` only from a hook that produced nothing, and `get_wait` reports  
 `TIMEOUT` where `AVAILABLE_ONLY` would report `NOT_AVAILABLE`.
 
-`put` and `put_all` return `void`, not `void?`. Part 19.2 — put cannot fail —
-and Part 9.4 — the Slot is the answer, not the outcome. This is the shape the
+`put` and `put_all` return `void`, not `void?`. Part 19.2 — put cannot fail —  
+and Part 9.4 — the Slot is the answer, not the outcome. This is the shape the  
 whole idiom exists for, and the port does not soften it into a fault.
 
 ## 5.11 Parts 13 to 15
@@ -1348,7 +1348,7 @@ whole idiom exists for, and the port does not soften it into a fault.
 | 17.1 One tool is required | MUST | `any.c3`, `helper.c3`, `owned.c3`, `list.c3`. Usable with neither container |
 | 17.2 Two are optional | SHOULD | `mailbox.c3` and `pool.c3` import `mtk` and use only public entry points |
 
-17.2's second clause is two claims with two different kinds of proof, and 002
+17.2's second clause is two claims with two different kinds of proof, and 002  
 ran them together:
 
 | Claim | Held by |
@@ -1356,28 +1356,28 @@ ran them together:
 | The containers cannot call a `@private` declaration of the core | **The compiler.** They are submodules; the declarations are not in scope. Nothing to test |
 | The containers do not reach around the core's public surface | **A source check**, because D1 made the fields public. A convention, and the script enforces it by name |
 
-The source check is narrow on purpose, and naming what it forbids is the only
-way it means anything: it rejects any reference in `mailbox.c3` or `pool.c3` to
-`unlink_no_repair` or `@guard_insert` — the two `NodeList` internals that would
-let a container relink an item without the checks of Part 8.6 and the repair of
-Part 8.8. "Reads a field" as a blanket rule would be useless, since the
+The source check is narrow on purpose, and naming what it forbids is the only  
+way it means anything: it rejects any reference in `mailbox.c3` or `pool.c3` to  
+`unlink_no_repair` or `@guard_insert` — the two `NodeList` internals that would  
+let a container relink an item without the checks of Part 8.6 and the repair of  
+Part 8.8. "Reads a field" as a blanket rule would be useless, since the  
 containers necessarily read public values through the surface all day.
 
-What the two together establish is Part 17.2's real claim: **every crossing the
+What the two together establish is Part 17.2's real claim: **every crossing the  
 containers perform is one an application could write.** Section 7 runs both.
 
 ---
 
 # 6. The implementation invariants
 
-Six rules the port already obeys and no document stated. They are here because
-an unstated invariant is one refactor away from being lost: every one of them
-looks like an inefficiency or an oversight to a reader who does not know why it
+Six rules the port already obeys and no document stated. They are here because  
+an unstated invariant is one refactor away from being lost: every one of them  
+looks like an inefficiency or an oversight to a reader who does not know why it  
 is there, and each would be easy to "improve" into a defect.
 
-They came out of `3tk-porting-proposal-003-review.md`, which asked for most of
-them as changes. Read against `3tk/src/`, five were already true. Writing them
-down is the whole of the work, and it is the most durable thing in this
+They came out of `3tk-porting-proposal-003-review.md`, which asked for most of  
+them as changes. Read against `3tk/src/`, five were already true. Writing them  
+down is the whole of the work, and it is the most durable thing in this  
 revision.
 
 ## 6.1 The pre-lock atomic is a hint, never an authorization
@@ -1389,20 +1389,20 @@ outside the lock   the atomic may refuse the call
 inside the lock    the mutex-protected state is authoritative, always
 ```
 
-No path may do `if (!closed_fast) { mutate }`. Every caller that reads `false`
-re-reads `_closed` under the mutex, because close may fire between the two.
-`Mailbox.@closed_fast` and `Pool.@closed_fast` are pure early rejections today
-and must stay so. Part 15.4 forbids keeping the fast read without the re-check,
+No path may do `if (!closed_fast) { mutate }`. Every caller that reads `false`  
+re-reads `_closed` under the mutex, because close may fire between the two.  
+`Mailbox.@closed_fast` and `Pool.@closed_fast` are pure early rejections today  
+and must stay so. Part 15.4 forbids keeping the fast read without the re-check,  
 and this is the implementation half of that prohibition.
 
 ## 6.2 Creation is a transaction
 
-Every creation path that can fail after its first allocation undoes exactly what
-succeeded before it. `defer catch`, in the shape `std::threads::channel` uses
+Every creation path that can fail after its first allocation undoes exactly what  
+succeeded before it. `defer catch`, in the shape `std::threads::channel` uses  
 for the same problem.
 
-Nothing partially constructed is ever returned, and nothing partially
-constructed is ever observable. A caller that receives a fault from `create` has
+Nothing partially constructed is ever returned, and nothing partially  
+constructed is ever observable. A caller that receives a fault from `create` has  
 no object and no obligation.
 
 **This was not true until 3TK-8.** Section 9.
@@ -1415,54 +1415,54 @@ close      changes container state, hands back or hands on what is held,
 release    ends the object's lifetime. Callable once, and only after close
 ```
 
-They are never merged. A closed container is **still an item**: it has its inner
-and its identity, it can still sit on a list, and its outer may still need to
-transfer or release it. Part 11.12's tier 1 assert enforces the order and is one
+They are never merged. A closed container is **still an item**: it has its inner  
+and its identity, it can still sit on a list, and its outer may still need to  
+transfer or release it. Part 11.12's tier 1 assert enforces the order and is one  
 of only two `always_assert` sites in the port.
 
 ## 6.4 The hook boundary, and what survives it
 
-Part 12.3: the pool unlocks, calls the hook, relocks. The implementation
+Part 12.3: the pool unlocks, calls the hook, relocks. The implementation  
 contract around that:
 
-**Before the unlock** — every invariant another thread could observe already
-holds; the item is in neither the caller's Slot nor a pool list unless the
+**Before the unlock** — every invariant another thread could observe already  
+holds; the item is in neither the caller's Slot nor a pool list unless the  
 operation intends it; the hook-local Slot holds the only temporary ownership.
 
-**After the relock** — everything read before the unlock is **stale**. Counts,
-list lengths, emptiness, the closed flag: all of it is re-read. The hook's
+**After the relock** — everything read before the unlock is **stale**. Counts,  
+list lengths, emptiness, the closed flag: all of it is re-read. The hook's  
 result is fresh input and is checked like any other input.
 
-`Pool.put`'s two Slots — `mine` for the item, `extra` for the parts — fix the
-*caller's* semantics. They do not by themselves make arbitrary application code
+`Pool.put`'s two Slots — `mine` for the item, `extra` for the parts — fix the  
+*caller's* semantics. They do not by themselves make arbitrary application code  
 safe, and this section is the half that does.
 
 ## 6.5 No reference into bucket storage survives a hook call
 
-The bucket array is fixed at creation, but its **contents** are mutable and a
+The bucket array is fixed at creation, but its **contents** are mutable and a  
 hook runs with the mutex released.
 
-**The rule: after any call into application code, look the bucket up again by
-identity.** The lookup is linear over a small fixed set, and correctness beats
-preserving a pointer across code the toolkit does not control. `Pool.put` does
-exactly this — `take_back_handle` re-resolves — and it must not be "optimized"
+**The rule: after any call into application code, look the bucket up again by  
+identity.** The lookup is linear over a small fixed set, and correctness beats  
+preserving a pointer across code the toolkit does not control. `Pool.put` does  
+exactly this — `take_back_handle` re-resolves — and it must not be "optimized"  
 into hoisting the lookup out of the hook boundary.
 
-**One deliberate exception**, and it is safe for a reason that is a property of
-creation rather than of the loop: `Pool.get_wait` holds a `PoolBucket*` across
-`wait_until`, which releases the mutex. The slice is allocated once in `create`
-and never grown, moved or reallocated, so the address is valid for the pool's
-life. Only the contents change, and they are re-read every turn of the loop.
+**One deliberate exception**, and it is safe for a reason that is a property of  
+creation rather than of the loop: `Pool.get_wait` holds a `PoolBucket*` across  
+`wait_until`, which releases the mutex. The slice is allocated once in `create`  
+and never grown, moved or reallocated, so the address is valid for the pool's  
+life. Only the contents change, and they are re-read every turn of the loop.  
 No application code runs in that window. The comment at the site says so.
 
 ## 6.6 The lock order is a statement about today
 
-**No current toolkit path holds one container mutex while acquiring another.**
+**No current toolkit path holds one container mutex while acquiring another.**  
 Therefore the toolkit has no inter-container lock order.
 
-That is narrower than 003's *"no path takes two locks, so there is no ordering
-to state"*, and deliberately. It holds because hooks run outside the lock, and
-because no operation coordinates a Mailbox and a Pool. An operation that ever
+That is narrower than 003's *"no path takes two locks, so there is no ordering  
+to state"*, and deliberately. It holds because hooks run outside the lock, and  
+because no operation coordinates a Mailbox and a Pool. An operation that ever  
 does will need an order, and this sentence is where it goes.
 
 ## 6.7 The `AnyHandle` / `Slot` signature rule
@@ -1473,16 +1473,16 @@ takes   Slot*        it may consume, fill, or preserve a transfer location
 takes   AnyHandle    it observes or links a handle already owned per its contract
 ```
 
-Sharper than "the Slot is distinct", because it is checkable. **Every public
+Sharper than "the Slot is distinct", because it is checkable. **Every public  
 signature in `3tk/src/` was audited against it and none violates it.**
 
-The rule also has a leg in the language, which is worth knowing before anyone
-proposes to make the two symmetrical. **M4: a method cannot attach to a pointer
-alias.** `alias AnyHandle = AnyNode*` can carry no methods at all; the distinct
-`typedef Slot` can, and does — `fill`, `take`, `peek`, `is_empty`, `is_full`.
-So a Slot reads like an object and a handle reads like a value partly because
-C3 will only let one of them be an object. D5 chose the distinct type for the
-compiler's sake; M4 says the choice also bought the only place behaviour could
+The rule also has a leg in the language, which is worth knowing before anyone  
+proposes to make the two symmetrical. **M4: a method cannot attach to a pointer  
+alias.** `alias AnyHandle = AnyNode*` can carry no methods at all; the distinct  
+`typedef Slot` can, and does — `fill`, `take`, `peek`, `is_empty`, `is_full`.  
+So a Slot reads like an object and a handle reads like a value partly because  
+C3 will only let one of them be an object. D5 chose the distinct type for the  
+compiler's sake; M4 says the choice also bought the only place behaviour could  
 live.
 
 ---
@@ -1500,7 +1500,7 @@ Beyond section 3's excluded surface.
 | The union-returning calls, Part 9.5 | MAY | Its stated purpose is a select mechanism. There is none, and Part 1.2 refuses to add one |
 | The `interrupted` outcome, Part 19 | — | Follows from D9. Two rows lose one value |
 
-Six drops. Two SHOULDs with written reasons, three MAYs whose conditions are
+Six drops. Two SHOULDs with written reasons, three MAYs whose conditions are  
 not met, and one consequence.
 
 ---
@@ -1509,7 +1509,7 @@ not met, and one consequence.
 
 ## 8.1 The project
 
-One `project.json`. C9 is closed by writing a third shape rather than choosing
+One `project.json`. C9 is closed by writing a third shape rather than choosing  
 between two that were never compiled.
 
 ```json
@@ -1525,18 +1525,18 @@ between two that were never compiled.
 }
 ```
 
-`3tk-build-dist.md` B2 claims C3 library packaging is early alpha and `c3c dist`
-incomplete. **Unverified, and this stage did not verify it.** It affects
-distribution, not the port. The proposal ships source, as B6 suggests, and the
+`3tk-build-dist.md` B2 claims C3 library packaging is early alpha and `c3c dist`  
+incomplete. **Unverified, and this stage did not verify it.** It affects  
+distribution, not the port. The proposal ships source, as B6 suggests, and the  
 question is a tooling stage's.
 
 ## 8.2 The four builds
 
-**Every build runs every test applicable to that build, and the matrix covers
-all four.** D6's whole point is that the tiers behave differently across them,
-and a port that runs one build has exercised one tier. But "every test in every
-build" would be the wrong promise: a tier 3 check is *not compiled* in a fast
-build, so a test that asserts it fires has nothing to assert there. Section 8.3
+**Every build runs every test applicable to that build, and the matrix covers  
+all four.** D6's whole point is that the tiers behave differently across them,  
+and a port that runs one build has exercised one tier. But "every test in every  
+build" would be the wrong promise: a tier 3 check is *not compiled* in a fast  
+build, so a test that asserts it fires has nothing to assert there. Section 8.3  
 says which is which.
 
 | Build | Flags | What it proves |
@@ -1546,80 +1546,80 @@ says which is which.
 | Fast, unoptimized | `--safe=no -O0` | Tier 1 still aborts. Tiers 2 and 3 are gone |
 | **Fast, optimized** | `--safe=no -O3` | **The one that segfaulted in Q11's probe.** Proves the port has no plain `assert` guarding a contract |
 
-The fourth is not optional. It is the build in which C3's own `assert` becomes
+The fourth is not optional. It is the build in which C3's own `assert` becomes  
 undefined behaviour, and the reason D6 exists.
 
-**F1, and version 001 had this wrong.** 001 spelled the second build `-O3`.
-Measured on c3c 0.8.3, **`-O2` and above set `SAFE_MODE=false`**: `-O3` alone is
-the fast build under another name, and a suite run under it tests nothing the
-fast build has not already tested. The first run of `run-builds.sh` caught it —
+**F1, and version 001 had this wrong.** 001 spelled the second build `-O3`.  
+Measured on c3c 0.8.3, **`-O2` and above set `SAFE_MODE=false`**: `-O3` alone is  
+the fast build under another name, and a suite run under it tests nothing the  
+fast build has not already tested. The first run of `run-builds.sh` caught it —  
 five negatives reported *did NOT abort in a checking build*.
 
-**Never infer the build mode from the `-O` level.** Both sides are explicit,
+**Never infer the build mode from the `-O` level.** Both sides are explicit,  
 `--safe=yes` or `--safe=no`, in every build this port runs.
 
 ## 8.3 The tests
 
 Grouped by what they establish, not by file.
 
-**The invariants.** Part 18's thirty-four, each with at least one test naming
-its number. Twelve of them appear in no draft in this folder — the review's
-section 8 — so they are written from the specification and not from any prior
+**The invariants.** Part 18's thirty-four, each with at least one test naming  
+its number. Twelve of them appear in no draft in this folder — the review's  
+section 8 — so they are written from the specification and not from any prior  
 C3 text.
 
-**The six Slot rules.** One test each. Rule 4 — a failing acquisition leaves the
-Slot unchanged — needs a failure induced at every acquiring entry point, not
+**The six Slot rules.** One test each. Rule 4 — a failing acquisition leaves the  
+Slot unchanged — needs a failure induced at every acquiring entry point, not  
 just one.
 
-**The double check.** Part 8.6's two cases, and the proof that neither alone
-suffices: a list of exactly one member, which only the walk catches, and an
-item on a *different* list, which only the link test catches. **Safe builds
-only, by construction** — the walk is tier 3 and is not compiled in a fast
-build, so there is nothing there to provoke. That is not a gap in the matrix; it
-is the tier doing what it was designed to do, and 7.2's opening sentence is
+**The double check.** Part 8.6's two cases, and the proof that neither alone  
+suffices: a list of exactly one member, which only the walk catches, and an  
+item on a *different* list, which only the link test catches. **Safe builds  
+only, by construction** — the walk is tier 3 and is not compiled in a fast  
+build, so there is nothing there to provoke. That is not a gap in the matrix; it  
+is the tier doing what it was designed to do, and 7.2's opening sentence is  
 worded to permit it.
 
-**The deadline.** D7's anchor, tested the way Q7 tested the primitive: a wait
-woken spuriously several times must still time out at roughly the original
-deadline. A `wait_timeout`-based loop passes every naive timeout test and fails
+**The deadline.** D7's anchor, tested the way Q7 tested the primitive: a wait  
+woken spuriously several times must still time out at roughly the original  
+deadline. A `wait_timeout`-based loop passes every naive timeout test and fails  
 this one.
 
-**The give-back rules.** Part 11.6 and 11.8, including the two named mistakes:
-discarding the list `close` returns, and a mid-batch `put_all` refusal leaving
+**The give-back rules.** Part 11.6 and 11.8, including the two named mistakes:  
+discarding the list `close` returns, and a mid-batch `put_all` refusal leaving  
 the rest with the caller at the front of their list.
 
-**Close before release.** Tier 1, in all four builds, including the fast
+**Close before release.** Tier 1, in all four builds, including the fast  
 optimized one. The only test that asserts on an abort.
 
-**The layering.** Section 5.12's claim, as a grep in the test script:
-`mailbox.c3` and `pool.c3` reference no `@private` name from the core four.
+**The layering.** Section 5.12's claim, as a grep in the test script:  
+`mailbox.c3` and `pool.c3` reference no `@private` name from the core four.  
 Part 17.3 calls this the test of the design, so the port makes it one.
 
-**A closed container is empty.** Invariant 34, both containers. Close one that
-is *holding* items, then assert it kept none and that every acquisition reports
-`CLOSED` with the Slot untouched. The pre-existing tests closed an empty
+**A closed container is empty.** Invariant 34, both containers. Close one that  
+is *holding* items, then assert it kept none and that every acquisition reports  
+`CLOSED` with the Slot untouched. The pre-existing tests closed an empty  
 container, which cannot tell invariant 34 from its absence.
 
-**Concurrency.** Many producers and many consumers on one mailbox; hooks
-running in parallel on different threads; a `close` racing a `release`. Run
-under the four builds, and under a thread sanitizer where the toolchain offers
+**Concurrency.** Many producers and many consumers on one mailbox; hooks  
+running in parallel on different threads; a `close` racing a `release`. Run  
+under the four builds, and under a thread sanitizer where the toolchain offers  
 one.
 
-**Allocation failure**, added by 3TK-8 and living in `test/t_alloc.c3` — its own
-file, on the owner's instruction, because `common.c3` is the shared fixture that
-every other test compiles against and an allocator that fails on purpose does
-not belong in it. Two allocators: one that counts outstanding blocks, one that
-wraps it and refuses after a budget. The assertion is always the same — after a
+**Allocation failure**, added by 3TK-8 and living in `test/t_alloc.c3` — its own  
+file, on the owner's instruction, because `common.c3` is the shared fixture that  
+every other test compiles against and an allocator that fails on purpose does  
+not belong in it. Two allocators: one that counts outstanding blocks, one that  
+wraps it and refuses after a budget. The assertion is always the same — after a  
 failed creation, nothing is outstanding.
 
-**On what those tests can and cannot reach.** `Pool.create`'s bucket allocation
-is provokable and is provoked: budget 1 lets the `Pool` through and fails the
-array, which is the exact shape that leaked. `Mailbox.create` performs only one
-acquisition through the caller's allocator — its later failure points,
-`_mu.init()` and `_cv.init()`, allocate through the platform — so its cleanup is
-**correct by construction and untested**. The sabotage run says so plainly:
-removing the mailbox's `defer catch` pair leaves every test green, while
-removing the pool's fails one. That is written at the test site rather than left
+**On what those tests can and cannot reach.** `Pool.create`'s bucket allocation  
+is provokable and is provoked: budget 1 lets the `Pool` through and fails the  
+array, which is the exact shape that leaked. `Mailbox.create` performs only one  
+acquisition through the caller's allocator — its later failure points,  
+`_mu.init()` and `_cv.init()`, allocate through the platform — so its cleanup is  
+**correct by construction and untested**. The sabotage run says so plainly:  
+removing the mailbox's `defer catch` pair leaves every test green, while  
+removing the pool's fails one. That is written at the test site rather than left  
 for a reader to discover.
 
 ## 8.4 What the numbers mean
@@ -1636,48 +1636,48 @@ The suite counts two different things and 002 reported them in one sentence.
 | Layering checks | 3, once | source, not a build |
 
 - **"59 checks"** is the number of pass/fail lines the script prints: 14 per
-  build × 4 builds, plus the 3 layering checks that are not per-build. **3TK-8
-  does not change this number** — it added tests, and the suite is one check
+  build × 4 builds, plus the 3 layering checks that are not per-build. **3TK-8  
+  does not change this number** — it added tests, and the suite is one check  
   however many tests it contains.
 - **"77 tests"** is the number of `@test` functions in the suite. They run in
-  each of the four builds, and the suite as a whole is one of the 14 checks.
-  The 73 do not include the negatives; a negative is a separate program, and
+  each of the four builds, and the suite as a whole is one of the 14 checks.  
+  The 73 do not include the negatives; a negative is a separate program, and  
   its whole point is that it must not run to completion.
 - **3TK-8 took it from 73 to 77**, all four in `test/t_alloc.c3`: three
-  creation-failure tests and one whole-life test that proves the counting
-  allocator reaches zero on the ordinary path, so that a zero on a failure path
+  creation-failure tests and one whole-life test that proves the counting  
+  allocator reaches zero on the ordinary path, so that a zero on a failure path  
   means something.
 - The 7 runtime negatives are **not** among the 73, and each is judged
-  differently in a safe build than in a fast one — one program, two expected
+  differently in a safe build than in a fast one — one program, two expected  
   behaviours, both required.
 
-**A negative program is compiled and run as two separately judged steps**, and
-that is not fussiness. `compile-run` reports a compile failure the same way it
-reports a `SIGABRT`: a non-zero exit. A negative that stopped compiling would
-therefore be read as a negative that aborted, and would pass forever having
+**A negative program is compiled and run as two separately judged steps**, and  
+that is not fussiness. `compile-run` reports a compile failure the same way it  
+reports a `SIGABRT`: a non-zero exit. A negative that stopped compiling would  
+therefore be read as a negative that aborted, and would pass forever having  
 proved nothing. Section 9 records the one that did.
 
 ## 8.5 What the kitchen gate needs
 
-`kitchen/tools/check_design.sh` exits 1 today, before this stage and after it.
-**63 problems after 3TK-8, up from 43** — and the whole rise is orphans, 29 to
-49, because `design/secondary/context.md` lists no `lang/` subfolder at all, so
-every file under it counts as one. 3TK-8 added two files and moved three into
+`kitchen/tools/check_design.sh` exits 1 today, before this stage and after it.  
+**63 problems after 3TK-8, up from 43** — and the whole rise is orphans, 29 to  
+49, because `design/secondary/context.md` lists no `lang/` subfolder at all, so  
+every file under it counts as one. 3TK-8 added two files and moved three into  
 `backup/`; each move is a new path and therefore a new orphan row.
 
-**The 14 dead links are unchanged**, all in `design/context.md`, all naming
-documents that predate this line of work. That number is the one that would
+**The 14 dead links are unchanged**, all in `design/context.md`, all naming  
+documents that predate this line of work. That number is the one that would  
 signal a regression, and it did not move.
 
-It is drift in `context.md`, not in this line of work, and it is not fixed here.
+It is drift in `context.md`, not in this line of work, and it is not fixed here.  
 Recorded with both numbers so the rise is not mistaken for damage.
 
 ---
 
 # 8.6 The words this document uses
 
-The port is terminology-heavy by design — Part 10.1 exists so a reader of a
-signature knows which side of a border they are on. The risk is that a prose
+The port is terminology-heavy by design — Part 10.1 exists so a reader of a  
+signature knows which side of a border they are on. The risk is that a prose  
 distinction gets read as an API distinction. These are the pairs worth pinning:
 
 | Use | Not | Because |
@@ -1694,7 +1694,7 @@ distinction gets read as an API distinction. These are the pairs worth pinning:
 
 # 9. The conflict register, closed
 
-Every conflict of `3tk-drafts-review-001.md` section 9, with its state after
+Every conflict of `3tk-drafts-review-001.md` section 9, with its state after  
 this stage.
 
 | # | Subject | State |
@@ -1711,7 +1711,7 @@ this stage.
 | C10 | Typed handles | **Closed here. D4** — no |
 | C11 | `polynode` or `AnyNode` naming | **Closed here. D8** — `AnyNode`, and `NodeList` not `AnyList` |
 
-Eleven closed, four of them by 3TK-4 and seven here. All seven accepted by the
+Eleven closed, four of them by 3TK-4 and seven here. All seven accepted by the  
 owner, 2026-08-23.
 
 ---
@@ -1723,108 +1723,108 @@ Both stages are done and this section is a record rather than a plan.
 - **3TK-6** wrote steps 2 to 5 — `any.c3`, `helper.c3`, `owned.c3`, `list.c3`.
   The toolkit of Part 17.1. Nine findings, in `3tk-toolkit-notes-001.md`.
 - **3TK-7** wrote steps 6 and 7 — `mailbox.c3`, `pool.c3`. The two optional
-  tools of Part 17.2, depending on nothing in the first beyond its public
+  tools of Part 17.2, depending on nothing in the first beyond its public  
   surface. Six findings, in `3tk-containers-notes-001.md`.
 - **3TK-8** answered `3tk-porting-proposal-003-review.md`. It rewrote D1's
-  argument without moving its ruling, added section 6, fixed one real defect in
+  argument without moving its ruling, added section 6, fixed one real defect in  
   both creation paths, and added `test/t_alloc.c3`. This file is its output.
 
-**All four builds green: 59 checks, 0 failures.** **77** tests in each of four
-builds, 7 runtime negatives, 2 tier 1 negatives, 3 compile-time refusals, 3
+**All four builds green: 59 checks, 0 failures.** **77** tests in each of four  
+builds, 7 runtime negatives, 2 tier 1 negatives, 3 compile-time refusals, 3  
 layering checks. Section 8.4 says what each number counts. `3tk/run-builds.sh`.
 
-**Part 18 is complete: all thirty-four invariants are accounted for.**
-Twenty-nine are directly tested or deliberately provoked. Five are structural or
-documented, because their nature does not admit an independent runtime test, and
-each says which it is. *Complete* here means accounted for — it does not mean
+**Part 18 is complete: all thirty-four invariants are accounted for.**  
+Twenty-nine are directly tested or deliberately provoked. Five are structural or  
+documented, because their nature does not admit an independent runtime test, and  
+each says which it is. *Complete* here means accounted for — it does not mean  
 thirty-four executable tests.
 
-Invariant 34 is the new one. It did not exist when 3TK-7 finished; this revision
+Invariant 34 is the new one. It did not exist when 3TK-7 finished; this revision  
 put it in the specification and then in the suite.
 
-Sixteen decisions, sixteen exercised, sixteen survived. No decision has moved
+Sixteen decisions, sixteen exercised, sixteen survived. No decision has moved  
 across three versions.
 
 ## What 3TK-8 found in the code
 
-The review that produced this version was written about the *design*, and read
-`3tk/src/` only through the proposal. So its 28 items were re-audited against
-the source before any of them was accepted, and the audit changed most of the
+The review that produced this version was written about the *design*, and read  
+`3tk/src/` only through the proposal. So its 28 items were re-audited against  
+the source before any of them was accepted, and the audit changed most of the  
 verdicts.
 
-**One real defect, and the review could not have seen it.** Its §20 asks for
-`Pool.create` to be made transactional, reasoning about a design it thought
-might exist. Read against the code, the defect was real and **broader than its
+**One real defect, and the review could not have seen it.** Its §20 asks for  
+`Pool.create` to be made transactional, reasoning about a design it thought  
+might exist. Read against the code, the defect was real and **broader than its  
 own framing** — neither creation path cleaned up after a partial failure:
 
 - `Pool.create` allocated the `Pool`, then initialized a mutex, then a
-  condition variable, then the bucket array. A failure at any of the last three
-  propagated straight out and **leaked everything already built**. The bucket
-  allocation is the largest and the likeliest to fail, and by then there was a
+  condition variable, then the bucket array. A failure at any of the last three  
+  propagated straight out and **leaked everything already built**. The bucket  
+  allocation is the largest and the likeliest to fail, and by then there was a  
   live `Pool`, a live mutex and a live condition variable to lose.
 - `Mailbox.create` had the identical shape, one step shorter.
 
-Both are now transactions — `defer catch`, undoing exactly what succeeded, in
-the shape `std::threads::channel` uses for the same problem. Section 6.2 states
+Both are now transactions — `defer catch`, undoing exactly what succeeded, in  
+the shape `std::threads::channel` uses for the same problem. Section 6.2 states  
 it as an invariant so it is not lost again.
 
-**Two stages and two reviews walked past it.** It is worth asking why, because
-the answer is not carelessness. The leak is in an error path that an ordinary
-test never takes: on Linux with an ordinary allocator, `new_try` does not fail.
-Nothing in the suite could reach it, so nothing in the suite complained. The
-port had no way to make an allocator fail — which is why 3TK-8 built one, in
+**Two stages and two reviews walked past it.** It is worth asking why, because  
+the answer is not carelessness. The leak is in an error path that an ordinary  
+test never takes: on Linux with an ordinary allocator, `new_try` does not fail.  
+Nothing in the suite could reach it, so nothing in the suite complained. The  
+port had no way to make an allocator fail — which is why 3TK-8 built one, in  
 `test/t_alloc.c3`, and why the file is the durable half of this fix.
 
-**And the test was checked by sabotage, not by passing.** Removing the pool's
-`defer catch` lines turns the suite red on `pool_create_fails_at_the_buckets`.
-Removing the mailbox's leaves it green, because that path cannot be provoked
-through the caller's allocator at all. Both facts are written at the test site.
-A test whose failure is impossible is worse than no test, and saying which is
+**And the test was checked by sabotage, not by passing.** Removing the pool's  
+`defer catch` lines turns the suite red on `pool_create_fails_at_the_buckets`.  
+Removing the mailbox's leaves it green, because that path cannot be provoked  
+through the caller's allocator at all. Both facts are written at the test site.  
+A test whose failure is impossible is worse than no test, and saying which is  
 which is the only honest way to ship one.
 
-**Five items the code already satisfied**, three of them in better shape than
-the review assumed — the pre-lock atomic was already a hint, `close` was already
-not `destroy`, and `Pool.put` already re-resolved its bucket by identity after
-the hook rather than carrying a pointer across the unlock. Those became section
-6 instead of changes. That section is the most valuable thing in this revision:
+**Five items the code already satisfied**, three of them in better shape than  
+the review assumed — the pre-lock atomic was already a hint, `close` was already  
+not `destroy`, and `Pool.put` already re-resolved its bucket by identity after  
+the hook rather than carrying a pointer across the unlock. Those became section  
+6 instead of changes. That section is the most valuable thing in this revision:  
 five invariants that were true only by habit are now true on purpose.
 
-**One correction that is a document defect, not a code defect.** D1's argument
-was wrong for three versions. The ruling it defended was right the whole time,
+**One correction that is a document defect, not a code defect.** D1's argument  
+was wrong for three versions. The ruling it defended was right the whole time,  
 which is exactly why nobody checked the argument.
 
 ## What the 003 revision found in the code
 
 Two things, and the second is the one worth remembering.
 
-**`Pool.create` accepted a duplicate identity.** The review asked whether it
-should, the owner ruled that it should not, and it now refuses — tier 2, with a
-negative program that provokes it. Section 5.9 has the reasoning. The
-specification does not require this: Part 11.7 asks only that the set be fixed
-and not empty, so refusing duplicates is a port addition, made because the
+**`Pool.create` accepted a duplicate identity.** The review asked whether it  
+should, the owner ruled that it should not, and it now refuses — tier 2, with a  
+negative program that provokes it. Section 5.9 has the reasoning. The  
+specification does not require this: Part 11.7 asks only that the set be fixed  
+and not empty, so refusing duplicates is a port addition, made because the  
 failure it prevents is silent.
 
-**A tier 1 negative had never compiled, and the harness could not tell.**
-`release_open_pool.c3` spelled a type's identity `Msg.typeid`, which c3c 0.8.3
-rejects — the working spelling is the helper's `TYPE` const. The program had
-therefore never run. It was reported green in every build for the whole life of
-the suite, because the harness ran `compile-run` and read *any* non-zero exit as
+**A tier 1 negative had never compiled, and the harness could not tell.**  
+`release_open_pool.c3` spelled a type's identity `Msg.typeid`, which c3c 0.8.3  
+rejects — the working spelling is the helper's `TYPE` const. The program had  
+therefore never run. It was reported green in every build for the whole life of  
+the suite, because the harness ran `compile-run` and read *any* non-zero exit as  
 the abort it was looking for. A compile failure is a non-zero exit.
 
-So the port's sharpest claim — Part 11.12, close before release, *the one
-precondition the specification refuses to soften*, the only site that aborts in
+So the port's sharpest claim — Part 11.12, close before release, *the one  
+precondition the specification refuses to soften*, the only site that aborts in  
 all four builds — was resting on a program that never ran, on the pool side.
 
-The fix is in two parts: the spelling, and the harness, which now compiles and
-runs as separately judged steps and fails loudly on a negative that will not
-build. The general lesson is D7's, arrived at from the other direction: **a test
-for an invariant is worth nothing until it has been seen to fail.** The
-duplicate-tag check was sabotaged and the suite went red in both checking builds
-before the sabotage was reverted; the same treatment is what would have caught
+The fix is in two parts: the spelling, and the harness, which now compiles and  
+runs as separately judged steps and fails loudly on a negative that will not  
+build. The general lesson is D7's, arrived at from the other direction: **a test  
+for an invariant is worth nothing until it has been seen to fail.** The  
+duplicate-tag check was sabotaged and the suite went red in both checking builds  
+before the sabotage was reverted; the same treatment is what would have caught  
 this years earlier.
 
-What is still not done is listed in `3tk-containers-notes-001.md`: no sanitizer
-run, the signal hand-off test is a race run twenty times, and linux-x64 is the
+What is still not done is listed in `3tk-containers-notes-001.md`: no sanitizer  
+run, the signal hand-off test is a race run twenty times, and linux-x64 is the  
 only target built. Packaging was never in this line of work.
 
 ---

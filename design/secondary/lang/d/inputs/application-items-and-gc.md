@@ -4,8 +4,8 @@ GC, no GC, or does Matryoshka not care?
 
 Short answer: it does not care.
 
-Longer answer: it does not care about *allocation*, and that is almost the whole
-question. There are three places where it does care, and two of them are one
+Longer answer: it does not care about *allocation*, and that is almost the whole  
+question. There are three places where it does care, and two of them are one  
 sentence each.
 
 The third is the pool.
@@ -33,7 +33,7 @@ A mailbox cannot allocate an item, because it does not know the type.
 
 A pool does not allocate one either. Your hook does.
 
-So the allocator is the application's choice, and it stays the application's
+So the allocator is the application's choice, and it stays the application's  
 choice:
 
 ```d
@@ -61,7 +61,7 @@ theAllocator.make!Request   std.experimental.allocator
 
 An item in flight is reachable **only** through the toolkit's list nodes.
 
-Between `send` and `receive`, the item sits in a mailbox's intrusive list. No
+Between `send` and `receive`, the item sits in a mailbox's intrusive list. No  
 application stack, no application struct, no application global holds it.
 
 ```text
@@ -73,11 +73,11 @@ Slot ── null    ──►   [item] [item]   ──►   Slot ── null
               the only reference in the program
 ```
 
-For a GC that scans stacks and registered ranges, that reference is invisible
+For a GC that scans stacks and registered ranges, that reference is invisible  
 unless the mailbox itself sits in scanned memory.
 
-If items are GC-allocated and the mailbox is `malloc`'d, the collector can free
-an item that is queued and waiting. Type erasure makes it unfixable from inside
+If items are GC-allocated and the mailbox is `malloc`'d, the collector can free  
+an item that is queued and waiting. Type erasure makes it unfixable from inside  
 the toolkit — `GC.addRange` needs a `TypeInfo` the mailbox does not have.
 
 **The rule:**
@@ -85,8 +85,8 @@ the toolkit — `GC.addRange` needs a `TypeInfo` the mailbox does not have.
 > Either the mailbox and pool live in GC-scanned memory, or transported items
 > are not GC-allocated.
 
-That is the only allocation-related constraint the toolkit imposes. It follows
-from "the queue owns the handle while it is in flight," which is a design
+That is the only allocation-related constraint the toolkit imposes. It follows  
+from "the queue owns the handle while it is in flight," which is a design  
 invariant, not an allocator choice.
 
 Three ways to satisfy it:
@@ -106,17 +106,17 @@ Three ways to satisfy it:
 
 **Threads druntime does not know about.**
 
-If a thread is created outside druntime — by your reactor, by a C library, by
-`pthread_create` directly — its stack is not scanned and it cannot be suspended
-for a collection. A `PolyNode*` held only in that thread's frame is collectable,
+If a thread is created outside druntime — by your reactor, by a C library, by  
+`pthread_create` directly — its stack is not scanned and it cannot be suspended  
+for a collection. A `PolyNode*` held only in that thread's frame is collectable,  
 and the collection itself may hang.
 
-`thread_attachThis()` on entry, `thread_detachThis()` on exit. Only you know
+`thread_attachThis()` on entry, `thread_detachThis()` on exit. Only you know  
 where those threads are created.
 
 **Collections cause spurious condvar wakeups.**
 
-druntime suspends threads with a signal. A thread blocked in
+druntime suspends threads with a signal. A thread blocked in  
 `pthread_cond_timedwait` can return early because of it.
 
 Your retry loop already handles this, and the anchored deadline is why:
@@ -131,18 +131,18 @@ while (!haveItem)
 }
 ```
 
-A naive loop that passes the original `timeout` on every iteration would have
-its deadline restarted by every collection in the process. Under a GC-using
+A naive loop that passes the original `timeout` on every iteration would have  
+its deadline restarted by every collection in the process. Under a GC-using  
 application that is not a rare event.
 
-This is the same reason the Zig version anchors the deadline before the loop. In
+This is the same reason the Zig version anchors the deadline before the loop. In  
 D there is one more thing that can wake you.
 
 ---
 
 ## The pool is where the choice becomes visible
 
-Everywhere else the toolkit moves handles. The pool is the one place it calls
+Everywhere else the toolkit moves handles. The pool is the one place it calls  
 *into* application code that allocates.
 
 ```text
@@ -162,11 +162,11 @@ free item available   →  slot filled by the pool  →  hook may keep or replac
 none available        →  slot empty               →  hook creates, or leaves empty
 ```
 
-An empty slot on return means "not created". Backpressure, reported as
+An empty slot on return means "not created". Backpressure, reported as  
 `Status.notCreated`.
 
-The hook decides how the item comes into existence. `new`, `malloc`, an arena,
-a freelist of your own — the pool cannot tell and does not check, beyond
+The hook decides how the item comes into existence. `new`, `malloc`, an arena,  
+a freelist of your own — the pool cannot tell and does not check, beyond  
 asserting that the tag matches what was requested.
 
 ### on_put
@@ -180,19 +180,19 @@ released           slot cleared, hook freed the item
 replaced           slot holds a different item, hook freed the original
 ```
 
-A non-null slot on return means one thing: an item is kept. Original or
+A non-null slot on return means one thing: an item is kept. Original or  
 replacement, the pool does not care.
 
-This is also where a composite item gives its parts back — parts in the returned
+This is also where a composite item gives its parts back — parts in the returned  
 list, parent in the slot.
 
-Note for the D port: the Zig signature returns `?ItemList`, and "null" and
-"empty list" already mean the same thing. Return `ItemList` and test
+Note for the D port: the Zig signature returns `?ItemList`, and "null" and  
+"empty list" already mean the same thing. Return `ItemList` and test  
 `isEmpty()`. One fewer nullable, no behaviour change.
 
 ### on_close
 
-The pool collects every item from every per-tag free list, clears itself, and
+The pool collects every item from every per-tag free list, clears itself, and  
 hands the whole list to the hook.
 
 ```text
@@ -227,7 +227,7 @@ Two D-specific additions.
 
 This is not negotiable, and it is not a style preference.
 
-Zig has no exceptions, so a `void`-returning hook cannot fail in a way that
+Zig has no exceptions, so a `void`-returning hook cannot fail in a way that  
 unwinds. D can.
 
 Look at what a throwing `on_close` costs:
@@ -243,8 +243,8 @@ close():
     every remaining item lost, silently, with no report
 ```
 
-The pool has emptied itself before the hook runs. There is no second reference
-and no way back. `put_all` has a milder version of the same problem: an
+The pool has emptied itself before the hook runs. There is no second reference  
+and no way back. `put_all` has a milder version of the same problem: an  
 exception mid-loop leaves the caller's list partly transferred and says nothing.
 
 So:
@@ -253,7 +253,7 @@ So:
 alias OnClose = void function(void* ctx, ref ItemList list) nothrow;
 ```
 
-`nothrow` on every hook type. A hook that needs to report a problem does it
+`nothrow` on every hook type. A hook that needs to report a problem does it  
 through `ctx`, not through the stack.
 
 ### @nogc on hook types is a real decision
@@ -267,35 +267,35 @@ So you cannot have both of these:
 
 Three options:
 
-**(a) Attribute the hooks `@nogc nothrow`.**
-The pool is `@nogc` end to end, compiler-verified. GC-using applications must
-cast their hook to a `@nogc` pointer — a known D escape hatch, and their
+**(a) Attribute the hooks `@nogc nothrow`.**  
+The pool is `@nogc` end to end, compiler-verified. GC-using applications must  
+cast their hook to a `@nogc` pointer — a known D escape hatch, and their  
 problem. Consistent with a no-GC toolkit; unwelcoming to (b)-style users.
 
-**(b) Leave `@nogc` off the hook types.**
-Pool methods carry no `@nogc`. The pool still allocates nothing, ever — it is
+**(b) Leave `@nogc` off the hook types.**  
+Pool methods carry no `@nogc`. The pool still allocates nothing, ever — it is  
 GC-free in fact, just not attribute-verified. Both worlds supply hooks freely.
 
-**(c) Template the pool on its hooks type.**
-D infers attributes for templates. `Pool!NoGcHooks` comes out `@nogc`;
+**(c) Template the pool on its hooks type.**  
+D infers attributes for templates. `Pool!NoGcHooks` comes out `@nogc`;  
 `Pool!GcHooks` does not. One implementation, both guarantees, no casting.
 
-(c) is the only option with no trade-off, but it needs one line of care: each
-instantiation would otherwise get its own `PolyTag`, so a pool would stop having
+(c) is the only option with no trade-off, but it needs one line of care: each  
+instantiation would otherwise get its own `PolyTag`, so a pool would stop having  
 a single type ID. Put the tag at module scope:
 
 ```d
 private __gshared PolyTag _poolTag;   // one type ID for every Pool!H
 ```
 
-Then a pool transported through a mailbox is still recognisably a pool,
+Then a pool transported through a mailbox is still recognisably a pool,  
 whichever hooks type it was built with.
 
 ---
 
 ## Mixed applications
 
-The interesting case is an application that is mostly GC, with a no-GC hot path.
+The interesting case is an application that is mostly GC, with a no-GC hot path.  
 This works, with one discipline.
 
 Per-tag, not per-pool:
@@ -305,10 +305,10 @@ Request   →  malloc'd, hot path, high rate
 Config    →  GC'd, cold path, holds a string[] and a delegate
 ```
 
-A single pool can hold both, because the hooks dispatch on tag and each tag's
+A single pool can hold both, because the hooks dispatch on tag and each tag's  
 hook uses its own allocator. The pool never learns the difference.
 
-What you must not do is let a `malloc`'d item hold the only reference to GC
+What you must not do is let a `malloc`'d item hold the only reference to GC  
 memory:
 
 ```d
@@ -325,7 +325,7 @@ The item is not scanned, so the slice's target is collectable. Two fixes:
 - `GC.addRange` in `on_get` and `GC.removeRange` in `on_put`/`on_close` — your
   hook knows the concrete type, so unlike the toolkit, it *can* do this
 
-The hook is the right place for that call precisely because the type erasure
+The hook is the right place for that call precisely because the type erasure  
 ends there.
 
 ---

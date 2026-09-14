@@ -271,7 +271,7 @@ stage that ran without a real gate. Not repeated here.
   kitchen scripts.
 - **INTR 8-3** — documents. Gate: `check_design.sh`, `build_site.sh`.
 
-Detail for each: [matryoshka-tk-implementation-plan-072.md](matryoshka-tk-implementation-plan-072.md).
+Detail for each: [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md).
 
 ## Rules this stage changes
 

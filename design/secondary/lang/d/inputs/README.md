@@ -1,23 +1,23 @@
 # d/inputs — raw material, no force
 
-Seventeen `.md` and one book, written in earlier sessions by different AIs,
+Seventeen `.md` and one book, written in earlier sessions by different AIs,  
 before the portable specification existed and before the owner ruled the scope.
 
-**None of it binds.** Nothing here is a design of record, nothing here has been
+**None of it binds.** Nothing here is a design of record, nothing here has been  
 measured against
 [the specification](../../common/matryoshka-specification-005.md), and some of it
 contradicts the rest. It is here to be mined, not obeyed.
 
-Where an input conflicts with the scope in [`../dtk-status.md`](../dtk-status.md),
-**the scope wins.** Where two inputs conflict with each other, neither wins until
+Where an input conflicts with the scope in [`../dtk-status.md`](../dtk-status.md),  
+**the scope wins.** Where two inputs conflict with each other, neither wins until  
 a stage measures both.
 
-They moved here from `design/secondary/lang/` on 2026-08-23, where they were
+They moved here from `design/secondary/lang/` on 2026-08-23, where they were  
 loose files, so that `lang/` holds only port folders and `common/`.
 
 ## The map
 
-Descriptive only. Each line says what the document *argues*, never that it is
+Descriptive only. Each line says what the document *argues*, never that it is  
 right.
 
 ### Design of the port
@@ -38,8 +38,8 @@ right.
 | `slot-idiom-d-porting-notes.md` | 344 | *"D has neither, so the Slot is a struct."* |
 | `matryoshka-zig-to-d.md` | — | `alias Slot = PolyNode*` — a third position again. |
 
-**They contradict each other, and the contradiction is load-bearing.** 3tk found
-the Slot needs five operations with a refuse-to-overwrite rule, which a bare
+**They contradict each other, and the contradiction is load-bearing.** 3tk found  
+the Slot needs five operations with a refuse-to-overwrite rule, which a bare  
 pointer cannot enforce. Unresolved here on purpose.
 
 ### Memory, GC, betterC
@@ -52,8 +52,8 @@ pointer cannot enforce. Unresolved here on purpose.
 | `matryoshka-memory-policy.md` | 484 | **Conflicts with the ruled scope.** Proposes two modes, Manual and Managed, selected at compile time. |
 | `matryoshka-comptime-policy-emb-desk.md` | 479 | **Conflicts with the ruled scope.** The same two-mode design under the names Embedded and Desktop. |
 
-The last two propose a dual-mode toolkit. The owner has ruled **one** mode:
-`@nogc`, Linux only, not betterC yet. Their machinery for *selecting* a policy is
+The last two propose a dual-mode toolkit. The owner has ruled **one** mode:  
+`@nogc`, Linux only, not betterC yet. Their machinery for *selecting* a policy is  
 out of scope; their observations about what `@nogc` costs are still worth reading.
 
 ### Toolchain, verification, scope
@@ -74,10 +74,10 @@ out of scope; their observations about what `@nogc` costs are still worth readin
 
 ## How a stage should use this folder
 
-The same way 3tk used its seven drafts: **measure them, once, in one stage,
-against the specification** — producing a review that says which claims hold,
-which conflict, and which the owner must rule on. Every later stage reads the
+The same way 3tk used its seven drafts: **measure them, once, in one stage,  
+against the specification** — producing a review that says which claims hold,  
+which conflict, and which the owner must rule on. Every later stage reads the  
 review. The drafts are not re-read, and they are not source of truth.
 
-That is [`../../common/port-flow-001.md`](../../common/port-flow-001.md), tier 1,
+That is [`../../common/port-flow-001.md`](../../common/port-flow-001.md), tier 1,  
 *"raw drafts are input, never source of truth"*.

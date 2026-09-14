@@ -747,7 +747,7 @@ Note also the order inside `release`.
 
 It frees, then empties the Slot.
 
-A `release` that frees and forgets leaves a Slot pointing at dead memory, and
+A `release` that frees and forgets leaves a Slot pointing at dead memory, and  
 the next check says the pointer is still there.
 
 ---
@@ -990,7 +990,7 @@ The destructor does not release.
 
 It cannot.
 
-The Slot does not know whether the object came from `malloc`, from a pool, or
+The Slot does not know whether the object came from `malloc`, from a pool, or  
 from somewhere that still owns it.
 
 That is the same knowledge the transfer code does not have either.

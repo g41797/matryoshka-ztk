@@ -21,7 +21,7 @@ drafts, session logs and unstarted intentions live in
 ## State
 
 - [STATUS.md](STATUS.md) — where we are and what is next. Read in full each session.
-- [matryoshka-tk-implementation-plan-072.md](matryoshka-tk-implementation-plan-072.md) — forward-looking work + one line per completed stage.
+- [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md) — forward-looking work + one line per completed stage.
 - [STATUS-LOG.md](STATUS-LOG.md) — session narrative, by date. Do not read by default.
 
 ## Sources of truth
@@ -82,6 +82,7 @@ Read the current version instead. These are here so nothing is lost.
 
 - [matryoshka-tk-implementation-plan-070.md](matryoshka-tk-implementation-plan-070.md) — superseded by -071.
 - [matryoshka-tk-implementation-plan-071.md](matryoshka-tk-implementation-plan-071.md) — superseded by -072.
+- [matryoshka-tk-implementation-plan-072.md](matryoshka-tk-implementation-plan-072.md) — superseded by -073.
 - [matryoshka-api-reference-041.md](matryoshka-api-reference-041.md) — superseded by -042.
 - [rules-047.md](rules-047.md) — superseded by -048.
 - [rules-048.md](rules-048.md) — superseded by -049.

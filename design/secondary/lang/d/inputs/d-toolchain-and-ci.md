@@ -6,7 +6,7 @@ For a source-distributed Matryoshka with a compile-time memory policy.
 
 ## Part 1 — The axis you did not list
 
-Your three axes were OS, build mode, and memory policy. The missing one is
+Your three axes were OS, build mode, and memory policy. The missing one is  
 larger than any of them.
 
 **D has three compilers.**
@@ -21,25 +21,25 @@ They are not interchangeable for this project, for one specific reason:
 
 > This design depends on **attribute inference** for templates.
 
-That is frontend behaviour. DMD and LDC ship different frontend versions at any
-given moment, and GDC ships an older one still. A `Mbox!Manual` that infers
+That is frontend behaviour. DMD and LDC ship different frontend versions at any  
+given moment, and GDC ships an older one still. A `Mbox!Manual` that infers  
 `@nogc` on LDC and fails to on GDC is a bug you will only see if you build both.
 
-Minimum: **DMD and LDC**. DMD because it is the reference and catches
+Minimum: **DMD and LDC**. DMD because it is the reference and catches  
 frontend-version drift early; LDC because it is what anyone ships.
 
-GDC is optional, and belongs in a nightly job rather than in the matrix. Add it
+GDC is optional, and belongs in a nightly job rather than in the matrix. Add it  
 only if you want distribution packaging to work.
 
 ### Compiler version is a second axis
 
 D has no LTS release. DMD ships monthly, LDC follows.
 
-Pick a floor version, document it, and test **floor and latest**. Not the range
+Pick a floor version, document it, and test **floor and latest**. Not the range  
 between them.
 
-The floor is where `__traits`, `static if` edge cases, and attribute inference
-behaviour actually differ. Everything above the floor is the same language for
+The floor is where `__traits`, `static if` edge cases, and attribute inference  
+behaviour actually differ. Everything above the floor is the same language for  
 your purposes.
 
 ---
@@ -58,10 +58,10 @@ your purposes.
 }
 ```
 
-`sourceLibrary` builds nothing. Your `.d` files are compiled into the consumer's
+`sourceLibrary` builds nothing. Your `.d` files are compiled into the consumer's  
 binary. Same model as Zig's `addModule`, same as an Odin collection.
 
-For this project it is close to mandatory — most of the toolkit is templates, so
+For this project it is close to mandatory — most of the toolkit is templates, so  
 a static library would emit almost nothing anyway.
 
 ### Editors and language server
@@ -74,13 +74,13 @@ dfmt             formatter. Configure once, commit the config.
 dscanner         static analysis. serve-d runs it inline.
 ```
 
-One honest note, since you use JetBrains IDEs: **D support in IntelliJ is
-noticeably weaker than what you are used to.** The community D plugin is behind
-and lightly maintained. For D specifically, VS Code with `code-d` and `serve-d`
-is the better environment, and Visual Studio with Visual D is better still on
+One honest note, since you use JetBrains IDEs: **D support in IntelliJ is  
+noticeably weaker than what you are used to.** The community D plugin is behind  
+and lightly maintained. For D specifically, VS Code with `code-d` and `serve-d`  
+is the better environment, and Visual Studio with Visual D is better still on  
 Windows.
 
-That is a real downgrade from your Zig and Odin setups. Worth knowing before you
+That is a real downgrade from your Zig and Odin setups. Worth knowing before you  
 commit to the port rather than after.
 
 ### Debuggers
@@ -93,11 +93,11 @@ Windows    LDC -g emits PDB. WinDbg or Visual Studio works.
            mago-debugger (ships with Visual D) understands D types best.
 ```
 
-Practical guidance: debug on Linux with LDC and GDB. Reproduce elsewhere, but do
+Practical guidance: debug on Linux with LDC and GDB. Reproduce elsewhere, but do  
 not expect to debug a template-heavy stack trace comfortably on macOS.
 
-For this codebase specifically, print-debugging a mailbox under contention is
-usually more effective than a breakpoint anyway — a breakpoint changes the
+For this codebase specifically, print-debugging a mailbox under contention is  
+usually more effective than a breakpoint anyway — a breakpoint changes the  
 timing you are trying to observe.
 
 ### Sanitizers — LDC only
@@ -109,8 +109,8 @@ ldc2 -g -fsanitize=thread   ...
 
 ThreadSanitizer is the single highest-value tool in this whole document.
 
-You have a mutex, a condition variable, an atomic `closed` flag, a `wake_epoch`
-counter, and hooks that run with the lock released. TSan finds the ordering bugs
+You have a mutex, a condition variable, an atomic `closed` flag, a `wake_epoch`  
+counter, and hooks that run with the lock released. TSan finds the ordering bugs  
 in that shape that no test will find reliably by luck.
 
 Run it. Not once — in CI, on every push.
@@ -133,7 +133,7 @@ adrdox    much better output, single static site, no config
 ddox      JSON-driven, integrates with dub
 ```
 
-You already run MkDocs/Material for Tofu. Keep it, and use `adrdox` output as a
+You already run MkDocs/Material for Tofu. Keep it, and use `adrdox` output as a  
 separate API reference rather than trying to make MkDocs consume ddoc.
 
 ---
@@ -149,15 +149,15 @@ dub test
 dub test --build=unittest-cov     # with coverage
 ```
 
-Always add `-checkaction=context`. It turns a bare assert failure into one that
+Always add `-checkaction=context`. It turns a bare assert failure into one that  
 shows the compared values:
 
 ```json
 "dflags": ["-checkaction=context"]
 ```
 
-**Keep tests out of `sourcePaths`.** In source mode, anything in `sourcePaths`
-is compiled into the consumer's binary — including your unittest blocks, if they
+**Keep tests out of `sourcePaths`.** In source mode, anything in `sourcePaths`  
+is compiled into the consumer's binary — including your unittest blocks, if they  
 build with `-unittest`.
 
 ```json
@@ -170,16 +170,16 @@ build with `-unittest`.
 
 ### Consider unit-threaded
 
-For a concurrency library, `unit-threaded` earns its keep: named tests,
-filtering by name, parallel execution, and `@Serial` for the ones that must not
+For a concurrency library, `unit-threaded` earns its keep: named tests,  
+filtering by name, parallel execution, and `@Serial` for the ones that must not  
 run concurrently.
 
-It is a test-only dependency, so it never reaches a consumer and never has to
+It is a test-only dependency, so it never reaches a consumer and never has to  
 satisfy `-betterC`.
 
 ### Invariants — use them, Zig has no equivalent
 
-D structs support `invariant`, checked at every public method boundary in
+D structs support `invariant`, checked at every public method boundary in  
 non-release builds.
 
 `Mbox` has invariants you currently defend with scattered asserts:
@@ -193,15 +193,15 @@ invariant
 }
 ```
 
-`Pool` has more: per-tag count matches per-tag list length, and every stored
+`Pool` has more: per-tag count matches per-tag list length, and every stored  
 item is unlinked from every other list.
 
-This is free coverage. Every test you already have starts checking these on
-every call, and the failure points at the method that broke the invariant rather
+This is free coverage. Every test you already have starts checking these on  
+every call, and the failure points at the method that broke the invariant rather  
 than at the method that later tripped over it.
 
-One caveat: the invariant runs on public method entry and exit, so it must hold
-at those boundaries. If a method legitimately breaks and restores an invariant
+One caveat: the invariant runs on public method entry and exit, so it must hold  
+at those boundaries. If a method legitimately breaks and restores an invariant  
 internally, that is fine — only the boundaries are checked.
 
 ### The `@nogc` verification test
@@ -224,15 +224,15 @@ The most important test in Manual mode is not a test of behaviour.
 }
 ```
 
-There is nothing to assert. The attribute on the unittest is the assertion, and
+There is nothing to assert. The attribute on the unittest is the assertion, and  
 the compiler evaluates it against the whole call graph.
 
-Write one of these per public entry point: `send`, `send_oob`, `receive`,
+Write one of these per public entry point: `send`, `send_oob`, `receive`,  
 `try_receive`, `receive_batch`, `close`, `get`, `get_wait`, `put`, `put_all`.
 
 ### GC stress — the Managed-mode equivalent
 
-Manual mode gets compile-time verification. Managed mode needs a runtime job,
+Manual mode gets compile-time verification. Managed mode needs a runtime job,  
 because the failure it guards against is invisible.
 
 Run a background thread that collects while messages are in flight:
@@ -261,8 +261,8 @@ Managed    GC.stats before and after. Growth across many iterations
            still holding items.
 ```
 
-Add the outstanding-item counter to `Pool` regardless of mode. Incremented on
-`get`, decremented on `put`. `close` reporting `outstanding != 0` is the only
+Add the outstanding-item counter to `Pool` regardless of mode. Incremented on  
+`get`, decremented on `put`. `close` reporting `outstanding != 0` is the only  
 leak detector an application will ever get, and it costs one integer.
 
 ### betterC tests are separate executables
@@ -277,7 +277,7 @@ extern(C) int main()
 }
 ```
 
-One small program per area. They prove betterC compatibility in a way nothing
+One small program per area. They prove betterC compatibility in a way nothing  
 compiled with druntime can.
 
 ### Concurrency test shapes worth having
@@ -318,16 +318,16 @@ Run all of these under TSan. That is where they pay.
 
 Two of these need justification.
 
-**Build type is not two values, it is three.** `-release` removes asserts and
-turns off bounds checks in `@system`/`@trusted` code. Your design is
-assert-dense, and `ItemList._holds` is an O(n) walk that only runs under safety.
-So `release` exercises genuinely different code from `debug`, and
-`release-nobounds` differs again. All three, or you are shipping an untested
+**Build type is not two values, it is three.** `-release` removes asserts and  
+turns off bounds checks in `@system`/`@trusted` code. Your design is  
+assert-dense, and `ItemList._holds` is an O(n) walk that only runs under safety.  
+So `release` exercises genuinely different code from `debug`, and  
+`release-nobounds` differs again. All three, or you are shipping an untested  
 configuration.
 
-**Architecture matters because of atomics and alignment.** x86_64 has a strong
-memory model that hides missing acquire/release. aarch64 does not. A missing
-barrier in the `closed` flag or `wake_epoch` passes on x86 and fails on Apple
+**Architecture matters because of atomics and alignment.** x86_64 has a strong  
+memory model that hides missing acquire/release. aarch64 does not. A missing  
+barrier in the `closed` flag or `wake_epoch` passes on x86 and fails on Apple  
 silicon or an ARM server.
 
 ### Pruning
@@ -357,8 +357,8 @@ Fast, and catches most compile-time and logic breakage.
 | linux-x64 | ldc latest | release-nobounds | managed, manual | 2 jobs |
 | linux-x64 | ldc latest | debug | manual | +betterC, 1 job |
 
-Windows is not optional here. `Mutex` and `Cond` are a genuinely different
-implementation there — `CRITICAL_SECTION` and `CONDITION_VARIABLE`, not pthreads
+Windows is not optional here. `Mutex` and `Cond` are a genuinely different  
+implementation there — `CRITICAL_SECTION` and `CONDITION_VARIABLE`, not pthreads  
 — and `SleepConditionVariableCS` has different spurious-wakeup behaviour.
 
 **Dedicated jobs — every push (5 jobs)**
@@ -389,7 +389,7 @@ betterC on macos and windows
     compiler: ${{ matrix.compiler }}    # ldc-latest, dmd-latest, ldc-1.xx
 ```
 
-That action handles all three compilers and pinned versions on all three OSes.
+That action handles all three compilers and pinned versions on all three OSes.  
 It is the only D-specific CI setup you need.
 
 Mode selection, given import-based policy selection:
@@ -398,8 +398,8 @@ Mode selection, given import-based policy selection:
 - run: dub test --config=unittest-${{ matrix.policy }} --build=${{ matrix.build }}
 ```
 
-Two test configurations, each importing `matryoshka.manual` or
-`matryoshka.managed`. No version identifiers, no build flags, and both modes
+Two test configurations, each importing `matryoshka.manual` or  
+`matryoshka.managed`. No version identifiers, no build flags, and both modes  
 compile in every job.
 
 ---
@@ -421,7 +421,7 @@ If you build this incrementally, this order gives the most per hour spent:
 10. coverage reporting                                     last, it measures rather than finds
 ```
 
-Steps 2 and 3 are the two that find things nothing else finds. Everything else
+Steps 2 and 3 are the two that find things nothing else finds. Everything else  
 is breadth.
 
 ---

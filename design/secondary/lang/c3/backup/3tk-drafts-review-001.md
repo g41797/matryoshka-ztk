@@ -21,7 +21,7 @@ Verdicts:
 | **UNVERIFIED** | A C3 language claim. Nothing here can settle it. 3TK-4 does. |
 | **OUT** | Outside the specification's subject. Neither confirmed nor denied. |
 
-A row may carry two verdicts. `CONFLICT-S` and `CONFLICT-D` together is the
+A row may carry two verdicts. `CONFLICT-S` and `CONFLICT-D` together is the  
 common case: a draft is wrong, and another draft is right about it.
 
 Spec references are `Part n.m`. Audit references are `audit n.m`.
@@ -38,12 +38,12 @@ Spec references are `Part n.m`. Audit references are `audit n.m`.
 | `3tk-additions.md` | 08-23 08:34 | Four separate notes: hooks, methods, Slot, handles | **Split verdict.** The hooks note is the sharpest and the most wrong |
 | `3tk-porting-notes.md` | 08-23 08:35 | The full C3 design, latest and most careful | **The best of the seven.** 4 things to fix |
 
-`3tk-poc.md` predates the other six by three days and predates the
-specification by three. It is the only draft written without the others in
+`3tk-poc.md` predates the other six by three days and predates the  
+specification by three. It is the only draft written without the others in  
 view. Every one of its conflicts is a consequence of that.
 
-`3tk-porting-notes.md` is the only draft that already contains a verification
-rule, splitting confirmed architecture from what needs a compilable prototype.
+`3tk-porting-notes.md` is the only draft that already contains a verification  
+rule, splitting confirmed architecture from what needs a compilable prototype.  
 That split is correct and this review keeps it.
 
 ---
@@ -72,16 +72,16 @@ That split is correct and this review keeps it.
 | P18 | Closing question: type erasure by macro casting, or a `PolyNode` pattern with an enum byte tag? | CONFLICT-S | Part 5.2 — the identity is not an index into a table. An enum byte over a closed set of types is that table. Part 5.1 requires uniqueness across **all** outer types in the program, including the application's | Answered by the specification. The question does not need re-asking |
 | P19 | Closing question: register each Master in an intrusive active-workers list? | CONFLICT-S | Part 1.3 | Follows from P1 |
 
-**Recommendation for the file.** Retire it. Mark it superseded in
-`3tk-status.md` rather than deleting it: P7 and P13 are worth keeping in the
-record, and the file is the clearest available evidence of what a port looks
+**Recommendation for the file.** Retire it. Mark it superseded in  
+`3tk-status.md` rather than deleting it: P7 and P13 are worth keeping in the  
+record, and the file is the clearest available evidence of what a port looks  
 like when it is written without the specification.
 
 ---
 
 # 2. `ztk-to-3tk.md`
 
-This draft proposes the process, not the design. It is measured against what
+This draft proposes the process, not the design. It is measured against what  
 was actually done.
 
 | # | Claim | Verdict | Conflicts with | Recommendation |
@@ -99,15 +99,15 @@ was actually done.
 | Z11 | Build a feature/test matrix between the two repositories | OUT | — | A 3TK-5 decision. Note that Part 5.3, Part 9.9 and Part 20 make an exact parallel *undesirable* in places: the port is expected to diverge where C3 has a better mechanism |
 | Z12 | Documentation is an open problem; C3 may need a different solution | OUT | — | Real, and untouched by any stage so far. Not in the specification's scope |
 
-**Recommendation for the file.** Superseded by `3tk-staging-plan-001.md`. Its
+**Recommendation for the file.** Superseded by `3tk-staging-plan-001.md`. Its  
 one live residue is Z8 and Z9 — the first questions 3TK-4 should answer.
 
 ---
 
 # 3. `3tk-design-notes.md`
 
-The earlier of the two design documents. `3tk-porting-notes.md` covers the same
-ground later and more carefully. Only rows where the two differ, or where the
+The earlier of the two design documents. `3tk-porting-notes.md` covers the same  
+ground later and more carefully. Only rows where the two differ, or where the  
 specification has something to say, are listed.
 
 | # | Claim | Verdict | Conflicts with | Recommendation |
@@ -137,7 +137,7 @@ specification has something to say, are listed.
 
 # 4. `3tk-polyhelper.md`
 
-Code-level. The shape is close to Part 7.2. The spelling is unverified
+Code-level. The shape is close to Part 7.2. The spelling is unverified  
 throughout and the file contradicts itself once.
 
 | # | Claim | Verdict | Conflicts with | Recommendation |
@@ -159,9 +159,9 @@ throughout and the file contradicts itself once.
 | H15 | Usage example: `Mbox` gets a helper, and opts out of create/destroy | HOLDS | Part 7.3 — "A type that allocates itself... gets a helper without them". Part 11.1 — the mailbox is still an item and still needs the rest of the helper | |
 | H16 | Mapping table: `tag: *const anyopaque` → `type: typeid` | HOLDS | Part 5.3, `audit 3` row 3 | Subject to conflict **C1** |
 
-**Not covered anywhere in the file, and required.** Part 7.4 — the generator
-rejects a type with no inner field, or an inner of the wrong type, and the
-message names the offending type. `3tk-design-notes.md` D9 raises it; the code
+**Not covered anywhere in the file, and required.** Part 7.4 — the generator  
+rejects a type with no inner field, or an inner of the wrong type, and the  
+message names the offending type. `3tk-design-notes.md` D9 raises it; the code  
 draft does not implement it.
 
 ---
@@ -211,7 +211,7 @@ Four unrelated notes in one file. They should be split.
 
 # 6. `3tk-porting-notes.md`
 
-The latest and the most careful. Only rows that add to, or differ from,
+The latest and the most careful. Only rows that add to, or differ from,  
 `3tk-design-notes.md` are listed; D-rows it repeats carry the same verdict.
 
 | # | Claim | Verdict | Conflicts with | Recommendation |
@@ -240,14 +240,14 @@ The latest and the most careful. Only rows that add to, or differ from,
 | N22 | The verification rule: confirmed architecture versus what needs a compilable prototype, with both lists written out | HOLDS | Part 21 is that rule, formalized | The single best contribution of the seven drafts. Its "requires a prototype" list is a ready-made agenda for 3TK-4 |
 | N23 | The confirmed list includes "Slot uses `AnyHandle*`" | CONFLICT-S | Part 9.1 | Conflict **C4**. Note that this places the error in the *confirmed* column, where it is hardest to dislodge |
 
-**Not covered.** These parts of the specification appear in no draft at all —
+**Not covered.** These parts of the specification appear in no draft at all —  
 see section 8.
 
 ---
 
 # 7. `3tk-build-dist.md`
 
-Packaging. Outside the specification's subject except in its framing
+Packaging. Outside the specification's subject except in its framing  
 paragraphs, which describe the toolkit and get two things wrong.
 
 | # | Claim | Verdict | Conflicts with | Recommendation |
@@ -267,7 +267,7 @@ paragraphs, which describe the toolkit and get two things wrong.
 
 # 8. What no draft covers
 
-Present in the specification, absent from all seven drafts. Not conflicts —
+Present in the specification, absent from all seven drafts. Not conflicts —  
 holes. Listed because 3TK-5 must fill them and nothing before it will.
 
 | Spec | Subject | Marking |
@@ -301,7 +301,7 @@ Twelve of the thirty-three invariants of Part 18 appear in no draft.
 
 # 9. The conflict register
 
-The eleven conflicts the owner rules on. Each names the drafts on both sides
+The eleven conflicts the owner rules on. Each names the drafts on both sides  
 and what the specification says, where it says anything.
 
 ### C1 — Does `typeid` satisfy Part 5.1?
@@ -309,12 +309,12 @@ and what the specification says, where it says anything.
 - **For:** `3tk-design-notes.md` D4, `3tk-porting-notes.md` N2,
   `3tk-polyhelper.md` H4, H16. All four assume yes.
 - **Against:** `ztk-to-3tk.md` Z9 flags it as the dangerous area, precisely
-  because the ztk tag is a unique opaque identity, not "some runtime type
+  because the ztk tag is a unique opaque identity, not "some runtime type  
   number".
 - **Specification:** Part 5.1 MUST, five clauses. Part 5.3 permits a native
   identifier. Part 21 Q2 asks the question.
 - **Note:** four drafts assume it and none checks it. This is the single
-  highest-leverage question in 3TK-4, because Parts 5, 6, 7 and 11.7 all rest
+  highest-leverage question in 3TK-4, because Parts 5, 6, 7 and 11.7 all rest  
   on it.
 
 ### C2 — `inline AnyNode`, or `AnyNode` as the first field?
@@ -340,15 +340,15 @@ and what the specification says, where it says anything.
 ### C4 — What is the Slot?
 
 - **The double pointer is the Slot:** `3tk-design-notes.md` D7,
-  `3tk-additions.md` A13, `3tk-porting-notes.md` N5 and N23 — the last of which
+  `3tk-additions.md` A13, `3tk-porting-notes.md` N5 and N23 — the last of which  
   puts it in its *confirmed* column.
 - **The optional handle is the Slot:** `3tk-polyhelper.md` H2, first block,
   before the same file reverses itself.
 - **Specification:** Part 9.1 MUST — a Slot is a container of one handle, or of
-  nothing. Part 9.3 MUST — an operation that acquires takes a **pointer to a
+  nothing. Part 9.3 MUST — an operation that acquires takes a **pointer to a  
   Slot**. So `AnyHandle` is the Slot and `AnyHandle*` is the parameter.
 - **Note:** the drafts' *representation* is right and their *word* is wrong.
-  Left as is, Part 9.2's six rules become unstateable, because five of them are
+  Left as is, Part 9.2's six rules become unstateable, because five of them are  
   rules about the Slot and there would be no name for the thing they govern.
 
 ### C5 — `PoolHooks`: interface, or struct of function pointers?
@@ -356,11 +356,11 @@ and what the specification says, where it says anything.
 - **Interface:** `3tk-additions.md` A1, A2. **Struct with `ctx` and `tags`:**
   `3tk-design-notes.md` D16. **Undecided:** `3tk-porting-notes.md` N15.
 - **Specification:** Part 12.1 MUST — the port spells them in the language's
-  own interface mechanism; the ztk struct exists only because Zig has no
+  own interface mechanism; the ztk struct exists only because Zig has no  
   interface keyword. Part 21 Q5.
 - **Note:** the specification leans hard to the interface. But the three
-  signatures `3tk-additions.md` proposes are each wrong against Part 12.2 —
-  rows A3, A4, A5 — and `tags` cannot simply move into the hook object, row A6.
+  signatures `3tk-additions.md` proposes are each wrong against Part 12.2 —  
+  rows A3, A4, A5 — and `tags` cannot simply move into the hook object, row A6.  
   Ruling for the interface does not settle the shape of it.
 
 ### C6 — The `AnyList` surface
@@ -378,11 +378,11 @@ and what the specification says, where it says anything.
 - **Silent:** `3tk-design-notes.md` D18, `3tk-porting-notes.md` N16. Both state
   the general allocator principle and neither addresses the release parameter.
 - **Specification:** Part 13.1 SHOULD — no release call takes an allocator as a
-  parameter. Part 13.3 names removing it as the thing a conforming port does.
-  Part 13.4 leaves the application-item half **open**, and Part 20 decision 2
+  parameter. Part 13.3 names removing it as the thing a conforming port does.  
+  Part 13.4 leaves the application-item half **open**, and Part 20 decision 2  
   lists it.
 - **Note:** genuinely open by the specification's own words. It is also the
-  first open question on the `3tk-status.md` list. The two must be answered
+  first open question on the `3tk-status.md` list. The two must be answered  
   together.
 
 ### C8 — Where does the list go in the order?
@@ -391,9 +391,9 @@ and what the specification says, where it says anything.
 - **Specification:** Part 22 — inner and identity, helper, Slot, list, mailbox,
   pool. The list is step 5.
 - **Note:** Part 22 says of itself "Not conformance. A suggestion." The drafts'
-  reason is that Mbox and Pool both depend on the list. The specification's
-  reason is that the list *speaks in handles* (Part 8.3) and its inserts take
-  Slots (Part 8.2), so it depends on the helper and the Slot. Both reasons are
+  reason is that Mbox and Pool both depend on the list. The specification's  
+  reason is that the list *speaks in handles* (Part 8.3) and its inserts take  
+  Slots (Part 8.2), so it depends on the helper and the Slot. Both reasons are  
   true. The owner picks.
 
 ### C9 — Two `project.json` shapes
@@ -407,11 +407,11 @@ and what the specification says, where it says anything.
 
 - **For:** `3tk-porting-notes.md` N4, for static API separation.
 - **The cost, found but not weighed:** `3tk-additions.md` A15, A16 — a distinct
-  typedef does not convert, so every Slot-shaped call needs an explicit
+  typedef does not convert, so every Slot-shaped call needs an explicit  
   `(AnyNode**)` cast at the call site.
 - **Specification:** Part 7.5 MUST — application code never performs the
-  crossing by hand, and every crossing goes through the helper, so the
-  arithmetic appears in one file. Part 11.1 — both containers are ordinary
+  crossing by hand, and every crossing goes through the helper, so the  
+  arithmetic appears in one file. Part 11.1 — both containers are ordinary  
   items with ordinary crossings.
 - **Note:** the two notes are in the same author's family of drafts and do not
   cite each other. A16 is an argument against N4 and is not presented as one.
@@ -429,28 +429,28 @@ and what the specification says, where it says anything.
 
 Independent of every ruling above.
 
-**Into 3TK-4, as its agenda.** The "requires a compilable C3 prototype" list of
-`3tk-porting-notes.md` N22 maps almost one to one onto Part 21's twelve
+**Into 3TK-4, as its agenda.** The "requires a compilable C3 prototype" list of  
+`3tk-porting-notes.md` N22 maps almost one to one onto Part 21's twelve  
 questions. Add to it, in this order:
 
 1. C1 — `typeid` against all five clauses of Part 5.1. Q2.
 2. H5 — whether a macro can generate the per-type helper at all. Q1.
 3. C2 — `inline` embedding and inner-to-outer arithmetic. Q3.
 4. Q7 — a condition variable with a **timed** wait. Nothing in any draft
-   mentions whether C3 has one. ztk paid 71 lines for its absence, and Part 16
+   mentions whether C3 has one. ztk paid 71 lines for its absence, and Part 16  
    row 7 says a language that has one deletes them.
 5. Q11 — build modes and compiled-out asserts, which Part 8.6 and Part 15.5
    both need.
 6. C3 and A10 — the two cheap ones.
 
-**Into 3TK-5.** Section 8, the twenty-two uncovered parts. Twelve of the
+**Into 3TK-5.** Section 8, the twenty-two uncovered parts. Twelve of the  
 thirty-three invariants have never been discussed in this folder.
 
-**Retire.** `3tk-poc.md` and `ztk-to-3tk.md`, as superseded — kept on disk,
+**Retire.** `3tk-poc.md` and `ztk-to-3tk.md`, as superseded — kept on disk,  
 marked in `3tk-status.md`.
 
-**Keep whole.** `3tk-porting-notes.md` N22, the verification rule, and N8, the
-outcome-versus-invariant distinction. Both were arrived at independently of the
+**Keep whole.** `3tk-porting-notes.md` N22, the verification rule, and N8, the  
+outcome-versus-invariant distinction. Both were arrived at independently of the  
 specification and both agree with it.
 
 ---

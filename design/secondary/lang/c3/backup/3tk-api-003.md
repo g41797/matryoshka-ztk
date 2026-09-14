@@ -1,36 +1,36 @@
 # 3tk — API verification table, 003
 
-Every public declaration of the C3 port, with every assert and every contract
+Every public declaration of the C3 port, with every assert and every contract  
 clause copied from the source and carrying its `file:line`.
 
 **This is not the page to learn the toolkit from.**
 [3tk-api-002.md](3tk-api-002.md) is that page, and it is the one a caller
-reads. Read this one to check that 002 is telling the truth, or to find where
+reads. Read this one to check that 002 is telling the truth, or to find where  
 in `3tk/src` a promise is actually made.
 
-**It was written as the reference and it is not one.** Reviewed by the owner
-2026-08-25: three of its four bullets per entry were mandatory, so every entry
-filled them whether or not it had anything to say — 87 `What` bullets that
-restate the declaration's own name, 30 bullets whose whole content is `O(1)`,
-and 94 citation bullets against 18 lines of example code in the entire port.
+**It was written as the reference and it is not one.** Reviewed by the owner  
+2026-08-25: three of its four bullets per entry were mandatory, so every entry  
+filled them whether or not it had anything to say — 87 `What` bullets that  
+restate the declaration's own name, 30 bullets whose whole content is `O(1)`,  
+and 94 citation bullets against 18 lines of example code in the entire port.  
 The citations are the part worth keeping, and that is what this file now is.
 
-**It is alive.** It is revised whenever `3tk/src` changes, in the same stage
-that changes it. A file under `ref/` that contradicts `3tk/src` is a defect of
+**It is alive.** It is revised whenever `3tk/src` changes, in the same stage  
+that changes it. A file under `ref/` that contradicts `3tk/src` is a defect of  
 the stage that changed the source. The rule binds every file under `ref/`.
 
-**It does not argue.** No ruling markers, no history, no alternatives that were
+**It does not argue.** No ruling markers, no history, no alternatives that were  
 refused. Those live in [3tk-decisions-005.md](3tk-decisions-005.md).
 
-**Every contract and every check below is copied from `3tk/src`**, with its
+**Every contract and every check below is copied from `3tk/src`**, with its  
 `file:line`. None is inferred from what a declaration ought to check.
 
-**003 replaces 001, revised by 3TK-32 on 2026-08-25.** 001 is in `backup/`.
-3TK-32 rewrote the 21 string literals in `3tk/src` that cited a specification
-Part, and the one that carried a ruling marker, so that what a user is shown is
-the fact they can act on. Every one of those strings is quoted here, so every
-quote was rewritten with it. The removed markers are on `// [3tk: ...]` marks in
-the source, and adding those marks moved lines, so every `file:line` on this
+**003 replaces 001, revised by 3TK-32 on 2026-08-25.** 001 is in `backup/`.  
+3TK-32 rewrote the 21 string literals in `3tk/src` that cited a specification  
+Part, and the one that carried a ruling marker, so that what a user is shown is  
+the fact they can act on. Every one of those strings is quoted here, so every  
+quote was rewritten with it. The removed markers are on `// [3tk: ...]` marks in  
+the source, and adding those marks moved lines, so every `file:line` on this  
 page was recomputed. No declaration, signature or body changed.
 
 ## What was measured
@@ -38,8 +38,8 @@ page was recomputed. No declaration, signature or body changed.
 Measured live on 2026-08-25, against `3tk/src`:
 
 - **67 public functions and macros.** `fn` and `macro` at column 0, minus the
-  seven marked `@private` — a marker C3 ignores on a method declaration and
-  warns that it ignores, so those seven are reachable and are documented
+  seven marked `@private` — a marker C3 ignores on a method declaration and  
+  warns that it ignores, so those seven are reachable and are documented  
   nowhere. Treating them as internal is a convention, not a wall.
 - **16 public types and constants.** `struct`, `enum`, `alias`, `typedef`,
   `const`, `faultdef`, `interface`.
@@ -47,8 +47,8 @@ Measured live on 2026-08-25, against `3tk/src`:
 - **66 contract clauses** in `<* *>` blocks — `@require`, `@param`, `@return?`.
   No `@ensure` anywhere.
 
-The seven internal declarations are not documented here. They are
-`Mailbox.enqueue`, `Mailbox.dequeue`, `Mailbox.has_queued`, `Mailbox.send_at`,
+The seven internal declarations are not documented here. They are  
+`Mailbox.enqueue`, `Mailbox.dequeue`, `Mailbox.has_queued`, `Mailbox.send_at`,  
 `Pool.bucket_for`, `Pool.take_back`, `Pool.take_back_handle`.
 
 ## How to read an entry
@@ -122,7 +122,7 @@ The seven internal declarations are not documented here. They are
 
 - **What** — the port's faults.
 - **Promises** — the first six are runtime conditions, never defects. A correct
-  program reaches every one. They are reported in every build mode and they
+  program reaches every one. They are reported in every build mode and they  
   never assert.
 - **Costs** — `UNKNOWN_IDENTITY` is the exception: it reports a defect of the
   caller. It is produced by `Pool.get` and `Pool.get_wait` and by nothing else.
@@ -131,7 +131,7 @@ The seven internal declarations are not documented here. They are
 
 - **What** — true where the checking tiers are live.
 - **Promises** — a `$if mtk::CHECKED:` block compiles to nothing in a fast
-  build. Its one reader in `src/` is the duplicate-identity scan in
+  build. Its one reader in `src/` is the duplicate-identity scan in  
   `Pool.create`.
 
 ## The link
@@ -205,7 +205,7 @@ The seven internal declarations are not documented here. They are
 
 - **What** — a contract check.
 - **Promises** — in a safe build it is `always_assert`, which aborts and names
-  the message. Under `--safe=no` it expands to nothing at all: the condition is
+  the message. Under `--safe=no` it expands to nothing at all: the condition is  
   not evaluated, and nothing is handed to the optimizer as a promise.
 - **Costs** — nothing in a fast build. `$msg` must be a compile-time string.
 - **Contract** — `@param #cond : "the condition that must hold"` — `inner.c3:66`.
@@ -232,17 +232,17 @@ The seven internal declarations are not documented here. They are
 - **Contract** — `@param $Type : "the outer type"` — `inner.c3:186`.
 - **Checks** — `$assert $off >= 0 : "type " +++ $Type::name +++ " has no Allocator field; use mtk::helper instead of mtk::managed"` — `inner.c3:197`.
 
-**A second declaration of the same name lives in `managed.c3:66`**, with the
+**A second declaration of the same name lives in `managed.c3:66`**, with the  
 same body and the same `$assert` at `managed.c3:74`.
 
 ---
 
 # `mtk` — queue.c3
 
-**First-in first-out. Seven operations. Nothing here allocates, the item is the
+**First-in first-out. Seven operations. Nothing here allocates, the item is the  
 node, and every operation is O(1) in every build mode.**
 
-**Nothing in this file can fail.** A take from an empty queue returns null.
+**Nothing in this file can fail.** A take from an empty queue returns null.  
 That is an answer, not a fault.
 
 ## Types
@@ -307,7 +307,7 @@ That is an answer, not a fault.
 - **What** — add at the back, from a Slot.
 - **Promises** — the transfer clears the Slot.
 - **Costs** — O(1). **An empty Slot is a defect, not a no-op.** The check is
-  tier 2 and the early return is ordinary code, so a fast build does nothing
+  tier 2 and the early return is ordinary code, so a fast build does nothing  
   rather than dereference a null.
 - **Checks** — `@check(s.is_full(), "push_back_slot from an empty Slot")` — `queue.c3:112`.
 
@@ -326,7 +326,7 @@ That is an answer, not a fault.
 - **What** — move every item of another queue onto this one.
 - **Promises** — `other` is empty afterwards. No repair is needed at the join.
 - **Costs** — O(1), a splice. The self-move check is tier 2 and the early
-  return is ordinary code; without both, the naive move rings the items into a
+  return is ordinary code; without both, the naive move rings the items into a  
   cycle and loses every one.
 - **Contract** — `@param other : "the queue to empty onto this one; empty afterwards"` — `queue.c3:152`.
 - **Checks** — `@check(other != null, "append_queue with a null queue")` — `queue.c3:157`.
@@ -340,7 +340,7 @@ That is an answer, not a fault.
 
 **There is no walker and no splice.** There is no Slot-shaped insert.
 
-**No caller is entitled to the order.** The pool says the container is a stack;
+**No caller is entitled to the order.** The pool says the container is a stack;  
 it does not promise most-recently-returned-first.
 
 ## Types
@@ -392,28 +392,28 @@ it does not promise most-recently-returned-first.
 
 # `mtk::helper` — helper.c3
 
-**Every crossing between a typed pointer and a type-erased handle happens in
+**Every crossing between a typed pointer and a type-erased handle happens in  
 this file and nowhere else.**
 
-**There is no instantiation and no alias, for any type, ever.** The members are
-macros over `$Type`, and the code is generated per call site. A new outer type
+**There is no instantiation and no alias, for any type, ever.** The members are  
+macros over `$Type`, and the code is generated per call site. A new outer type  
 costs nothing before it can be used — not one line.
 
-**The type identity is C3's own `$Type::typeid`.** The port does not
+**The type identity is C3's own `$Type::typeid`.** The port does not  
 re-export it.
 
-**Two names, two behaviours.** `from_*` is the checking crossing and returns
-null on a mismatch. `must_from_*` is the asserting crossing: its `@require` is
-live in a safe build and gone under `--safe=no`, and it names the caller's
+**Two names, two behaviours.** `from_*` is the checking crossing and returns  
+null on a mismatch. `must_from_*` is the asserting crossing: its `@require` is  
+live in a safe build and gone under `--safe=no`, and it names the caller's  
 line.
 
     struct Msg { int id; Inner node; char[64] body; }
 
-    Msg m;
-    mtk::helper::init(&m);
+    Msg m;  
+    mtk::helper::init(&m);  
     Handle h = mtk::helper::to_handle(&m);
 
-    Msg* p = h.to(Msg);        // checking
+    Msg* p = h.to(Msg);        // checking  
     Msg* q = h.as(Msg);        // asserting
 
 **All twelve crossings are O(1)**, and none allocates.
@@ -424,7 +424,7 @@ line.
 
 - **What** — does this identity name my type.
 - **Promises** — a null handle is not mine. An item whose `init` was never
-  called carries a zeroed typeid, which matches no type, and is refused here
+  called carries a zeroed typeid, which matches no type, and is refused here  
   rather than mis-claimed.
 - **Costs** — O(1), one typeid comparison.
 - **Contract** — `@param $Type : "the outer type"` — `helper.c3:17`.
@@ -435,8 +435,8 @@ line.
 
 - **What** — writes the identity into the inner.
 - **Promises** — the link is cleared in the same write, so a freshly
-  initialized item passes the link test and can be inserted. **This is the one
-  place the identity is written.** Every creation site calls it, including the
+  initialized item passes the link test and can be inserted. **This is the one  
+  place the identity is written.** Every creation site calls it, including the  
   ones that do not allocate.
 - **Costs** — O(1), one `any_make`. The type is inferred from the pointer; no
   call site names it.
@@ -460,7 +460,7 @@ line.
 
 - **What** — the checking crossing.
 - **Promises** — null when the identity does not match. A mismatch is a
-  legitimate state of a correct program: a walker of a heterogeneous list meets
+  legitimate state of a correct program: a walker of a heterogeneous list meets  
   other types by design.
 - **Costs** — O(1).
 - **Contract** — `@param $Type : "the outer type expected"` — `helper.c3:57`.
@@ -494,7 +494,7 @@ line.
 
 - **What** — the moving crossing. The one member with two postconditions.
 - **Promises** — on a match the typed pointer is returned **and** the Slot is
-  cleared. On a mismatch null is returned **and** the Slot is untouched. Both
+  cleared. On a mismatch null is returned **and** the Slot is untouched. Both  
   halves are tested and neither is optional.
 - **Costs** — O(1). The returned pointer is computed from the handle `peek`
   observed, not from `take()`'s return value.
@@ -502,8 +502,8 @@ line.
 
 ## The same crossings, as methods
 
-**`Handle` is an alias for `Inner*`, so a method on `Inner` is reached through
-a handle directly.** `to` and `as` are the two names `any` uses for these
+**`Handle` is an alias for `Inner*`, so a method on `Inner` is reached through  
+a handle directly.** `to` and `as` are the two names `any` uses for these  
 operations, so a C3 reader already knows which is which.
 
 ### `macro Inner.to(&self, $Type)`
@@ -541,29 +541,29 @@ operations, so a C3 reader already knows which is which.
 
 # `mtk::managed` — managed.c3
 
-**`mtk::helper` plus a create and a release.** *Managed* means one thing: the
+**`mtk::helper` plus a create and a release.** *Managed* means one thing: the  
 item keeps the allocator it was created with, so its release takes none.
 
-**No type declares itself managed.** The distinction lives at the call site.
-The one hard gate is at build time: `required_alloc_offset` refuses a type with
+**No type declares itself managed.** The distinction lives at the call site.  
+The one hard gate is at build time: `required_alloc_offset` refuses a type with  
 no `Allocator` field and names the helper it should have taken.
 
     struct Holder { int id; Inner node; Allocator alloc; }
 
-    Slot s;
-    mtk::managed::create(Holder, mem, &s)!;
-    ...
+    Slot s;  
+    mtk::managed::create(Holder, mem, &s)!;  
+    ...  
     mtk::managed::release(Holder, &s);
 
 ### `macro void? create($Type, Allocator a, Slot* slot)`
 
 - **What** — allocate an item and fill a Slot with it.
 - **Promises** — it fills a Slot and does not return a pointer. On an
-  allocation failure **the Slot is left untouched** and the fault is returned.
-  The allocator is written into the item and kept for life. `helper::init` is
+  allocation failure **the Slot is left untouched** and the fault is returned.  
+  The allocator is written into the item and kept for life. `helper::init` is  
   called.
 - **Costs** — one allocation, through `alloc::new_try`. The plain `alloc::new`
-  aborts on failure and would leave the untouched-Slot promise no path to be
+  aborts on failure and would leave the untouched-Slot promise no path to be  
   true on.
 - **Contract** — `@param $Type : "the outer type, which must carry an Allocator field"` — `managed.c3:22`.
 - **Contract** — `@param a : "the allocator the item keeps for life"` — `managed.c3:23`.
@@ -574,8 +574,8 @@ no `Allocator` field and names the helper it should have taken.
 
 - **What** — free the item, with the allocator it kept.
 - **Promises** — **no allocator parameter.** A no-op on an empty Slot, which is
-  what makes the defer-before-acquire shape legal: the defer is registered
-  before the acquisition and runs harmlessly on the failure path. The Slot is
+  what makes the defer-before-acquire shape legal: the defer is registered  
+  before the acquisition and runs harmlessly on the failure path. The Slot is  
   empty afterwards.
 - **Costs** — one free.
 - **Contract** — `@param $Type : "the outer type, which must carry an Allocator field"` — `managed.c3:44`.
@@ -594,22 +594,22 @@ no `Allocator` field and names the helper it should have taken.
 
 # `mtk::mailbox` — mailbox.c3
 
-**A queue of items, with waiting. Many producers, many consumers, on one
+**A queue of items, with waiting. Many producers, many consumers, on one  
 object.**
 
-**A mailbox is itself an item.** It embeds an inner, it has a type identity,
+**A mailbox is itself an item.** It embeds an inner, it has a type identity,  
 and it can travel through another mailbox or sit on a list.
 
-**Two queues, not one.** Out-of-band items live in their own queue and every
-take tries it first, so absolute priority with first-in first-out inside each
+**Two queues, not one.** Out-of-band items live in their own queue and every  
+take tries it first, so absolute priority with first-in first-out inside each  
 class falls out of the structure.
 
-**The fields are reachable and are named with a leading underscore.** C3 0.8.3
-hides neither a field nor a method. Reading them is a documentation problem
+**The fields are reachable and are named with a leading underscore.** C3 0.8.3  
+hides neither a field nor a method. Reading them is a documentation problem  
 rather than a broken invariant.
 
-**Usual flow.** `create`, then any number of `send` / `receive` calls from any
-number of threads, then `close` with a queue to receive the remainder, then
+**Usual flow.** `create`, then any number of `send` / `receive` calls from any  
+number of threads, then `close` with a queue to receive the remainder, then  
 `release`.
 
 ## Types and identity
@@ -617,7 +617,7 @@ number of threads, then `close` with a queue to receive the remainder, then
 ### `struct Mailbox`
 
 - **What** — the mailbox. Its members are the inner, a mutex, a condition
-  variable, an allocator, the closed flag and its atomic twin, the two queues,
+  variable, an allocator, the closed flag and its atomic twin, the two queues,  
   and the wake generation.
 - **Promises** — it repeats these members rather than embedding a shared base
   struct, because a shared base would put a second inner in the outer.
@@ -645,7 +645,7 @@ number of threads, then `close` with a queue to receive the remainder, then
 
 - **What** — create a mailbox on the heap.
 - **Promises** — **creation is a transaction.** Each failure undoes exactly
-  what succeeded before it, through `defer catch`. Nothing partially
+  what succeeded before it, through `defer catch`. Nothing partially  
   constructed is ever returned or observable. The allocator is kept for life.
 - **Costs** — one allocation, a mutex init and a condition-variable init.
 - **Contract** — `@param a : "the allocator the mailbox keeps for life"` — `mailbox.c3:66`.
@@ -655,8 +655,8 @@ number of threads, then `close` with a queue to receive the remainder, then
 - **What** — destroy the mutex and the condition variable, and free the
   mailbox.
 - **Promises** — **the mailbox must be closed first, and this is the one
-  precondition the toolkit refuses to soften.** It is `always_assert`: it
-  aborts in every build mode, including `--safe=no -O3`. No allocator
+  precondition the toolkit refuses to soften.** It is `always_assert`: it  
+  aborts in every build mode, including `--safe=no -O3`. No allocator  
   parameter.
 - **Costs** — one free.
 - **Checks** — `always_assert(self._closed, "releasing an open mailbox")` — `mailbox.c3:96`.
@@ -696,7 +696,7 @@ number of threads, then `close` with a queue to receive the remainder, then
 
 - **What** — take an item if one is queued. **Never waits.**
 - **Promises** — three outcomes: an item, `EMPTY`, or `CLOSED`. A receive with
-  a zero timeout has the same reach; the two differ in how the empty case is
+  a zero timeout has the same reach; the two differ in how the empty case is  
   reported, and a caller reading outcomes is entitled to the difference.
 - **Costs** — O(1) under the mutex.
 - **Contract** — `@param slot : "an empty Slot; filled on success"` — `mailbox.c3:214`.
@@ -707,8 +707,8 @@ number of threads, then `close` with a queue to receive the remainder, then
 
 - **What** — take an item, waiting up to a timeout.
 - **Promises** — four outcomes: an item, `CLOSED`, `TIMEOUT`, or `WOKEN`. The
-  deadline is anchored once, before the loop. A wakeup carries no meaning and
-  the state is re-evaluated from scratch every turn. A waiter leaving on a
+  deadline is anchored once, before the loop. A wakeup carries no meaning and  
+  the state is re-evaluated from scratch every turn. A waiter leaving on a  
   timeout takes one last look, and signals if anything is still queued.
 - **Costs** — blocks on the condition variable. There is no interruption: C3
   has no interruptible condition wait.
@@ -721,8 +721,8 @@ number of threads, then `close` with a queue to receive the remainder, then
 
 - **What** — take the whole batch at once.
 - **Promises** — every queued item is moved onto `out`, in the order `receive`
-  would have taken them: out-of-band first, then ordinary, first-in first-out
-  within each. Releasing the items is the caller's work — what they are is
+  would have taken them: out-of-band first, then ordinary, first-in first-out  
+  within each. Releasing the items is the caller's work — what they are is  
   knowledge the mailbox never had.
 - **Costs** — two O(1) splices under the mutex.
 - **Contract** — `@param out : "an empty queue; every queued item is moved onto it, in receive order"` — `mailbox.c3:265`.
@@ -734,7 +734,7 @@ number of threads, then `close` with a queue to receive the remainder, then
 
 - **What** — release every current waiter.
 - **Promises** — each released waiter reports `WOKEN`. **The mailbox stays
-  open.** The effect does not persist: a thread that starts waiting afterwards
+  open.** The effect does not persist: a thread that starts waiting afterwards  
   captures the new generation and is unaffected.
 - **Costs** — one broadcast under the mutex.
 - **Contract** — `@return? mtk::CLOSED` — `mailbox.c3:288`.
@@ -743,11 +743,11 @@ number of threads, then `close` with a queue to receive the remainder, then
 
 - **What** — close the mailbox and give back what was left.
 - **Promises** — **cannot fail.** Callable more than once; the second call
-  takes nothing. Every remaining item is moved onto `out`, in receive order.
+  takes nothing. Every remaining item is moved onto `out`, in receive order.  
   Every waiter is released.
 - **Costs** — two O(1) splices and one broadcast, under the mutex.
 - **The named mistake** — discarding the queue this returns loses the items,
-  and those items keep their links, so a later send refuses them. The refusal
+  and those items keep their links, so a later send refuses them. The refusal  
   is exact, so the mistake surfaces at the first reuse.
 - **Contract** — `@param out : "an empty queue; the remainder is moved onto it, in receive order"` — `mailbox.c3:311`.
 
@@ -771,25 +771,25 @@ number of threads, then `close` with a queue to receive the remainder, then
 
 **Policy is not in the pool. Policy is in the hooks.**
 
-**The pool's close gives nothing back to the caller.** Everything the pool
-still held goes to the close hook. That is the mirror image of the mailbox's
+**The pool's close gives nothing back to the caller.** Everything the pool  
+still held goes to the close hook. That is the mirror image of the mailbox's  
 close and the sharpest asymmetry in the toolkit.
 
-**The identity set is fixed at creation and is not empty.** An identity outside
-it is a defect of the caller: a checking build aborts, and a fast build reports
+**The identity set is fixed at creation and is not empty.** An identity outside  
+it is a defect of the caller: a checking build aborts, and a fast build reports  
 `UNKNOWN_IDENTITY`.
 
 **There is no `put_all`.** A caller giving a batch back writes the loop itself:
 
-    while (mtk::Handle h = batch.pop_front())
-    {
-        Slot s;
-        s.fill(h);
-        p.put(&s);
-        if (s.is_full()) { batch.push_back(h); break; }   // refused
+    while (mtk::Handle h = batch.pop_front())  
+    {  
+        Slot s;  
+        s.fill(h);  
+        p.put(&s);  
+        if (s.is_full()) { batch.push_back(h); break; }   // refused  
     }
 
-**Usual flow.** `create` with the identity set and the hooks, then any number of
+**Usual flow.** `create` with the identity set and the hooks, then any number of  
 `get` / `put` calls from any number of threads, then `close`, then `release`.
 
 ## The hooks
@@ -807,8 +807,8 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — an item of a named identity was asked for and none was available.
 - **Promises** — the Slot is empty on entry. Create one, or leave it empty to
-  report failure; an empty Slot afterwards becomes `NOT_CREATED`. Returning an
-  item of a different identity is a defect of the application, and the pool
+  report failure; an empty Slot afterwards becomes `NOT_CREATED`. Returning an  
+  item of a different identity is a defect of the application, and the pool  
   checks for it at tier 2.
 - **Costs** — called with no lock held.
 - **Contract** — `@param want : "the identity asked for"` — `pool.c3:48`.
@@ -819,11 +819,11 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — an item is being given back.
 - **Promises** — four outcomes and none mandated. Released with nothing kept:
-  empty the Slot. Kept as it is, or kept after a reset: leave it full. Released
-  with a different item put back: replace the contents. **A full Slot on return
+  empty the Slot. Kept as it is, or kept after a reset: leave it full. Released  
+  with a different item put back: replace the contents. **A full Slot on return  
   means one thing — an item is kept, original or replacement.**
 - **Costs** — called with no lock held. Items added to `extra` are taken the
-  same way, with the same checks: that is how a composite item gives its parts
+  same way, with the same checks: that is how a composite item gives its parts  
   back.
 - **Contract** — `@param in_pool : "how many of this identity are held, BEFORE the addition. A hint"` — `pool.c3:64`.
 - **Contract** — `@param slot : "full on entry"` — `pool.c3:65`.
@@ -833,11 +833,11 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — the pool is going down.
 - **Promises** — called with everything that remained, as one flat queue, and
-  **the hook is responsible for processing or releasing every item in it.**
+  **the hook is responsible for processing or releasing every item in it.**  
   Called outside the mutex, after the closed flag is already set.
 - **Costs** — **called once by `close`, and possibly once more with
-  stragglers** from a `put` whose hook was still running when the close fired.
-  A hook writes the same loop either way, and **must not free its own context
+  stragglers** from a `put` whose hook was still running when the close fired.  
+  A hook writes the same loop either way, and **must not free its own context  
   on the first call.**
 - **Contract** — `@param remaining : "everything the pool still held, flattened across every identity. No order is promised"` — `pool.c3:80`.
 
@@ -853,7 +853,7 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — one free stack per identity.
 - **Promises** — a stack, and the reason is defect surfacing: the item just
-  given back is on top, so the next `get` passes it straight to a new user and
+  given back is on top, so the next `get` passes it straight to a new user and  
   a stale writer collides with that user immediately instead of much later.
 - **Costs** — no count field beside it. `InnerStack.len` is O(1), and the hint
   given to a hook is read from it under the lock.
@@ -861,7 +861,7 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 ### `struct Pool`
 
 - **What** — the pool. Its members are the inner, a mutex, a condition
-  variable, an allocator, the closed flag and its atomic twin, the bucket
+  variable, an allocator, the closed flag and its atomic twin, the bucket  
   slice, and the hooks.
 - **Costs** — the buckets are a flat slice allocated once and scanned linearly.
   The set is small, fixed, and never grows, so a hash map would buy nothing.
@@ -888,12 +888,12 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — create a pool on the heap.
 - **Promises** — **the hooks are a parameter of creation and not a later
-  step**: a pool cannot exist without them. The identity set is fixed here.
-  **Creation is a transaction**: each failure undoes exactly what succeeded
+  step**: a pool cannot exist without them. The identity set is fixed here.  
+  **Creation is a transaction**: each failure undoes exactly what succeeded  
   before it. Nothing partially constructed is ever returned or observable.
 - **Costs** — two allocations — the pool and the bucket slice — plus a mutex
-  init and a condition-variable init. **The duplicate scan is O(n²) and is
-  compiled only where the tiers are live.** It runs before anything is
+  init and a condition-variable init. **The duplicate scan is O(n²) and is  
+  compiled only where the tiers are live.** It runs before anything is  
   allocated, so it needs no cleanup.
 - **Contract** — `@param a : "the allocator the pool keeps for life"` — `pool.c3:159`.
 - **Contract** — `@param tags : "the identities this pool holds. Not empty, and no duplicates — both checked"` — `pool.c3:160`.
@@ -907,7 +907,7 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 - **What** — destroy the mutex and the condition variable, and free the buckets
   and the pool.
 - **Promises** — **the pool must be closed first.** `always_assert`, aborting
-  in every build mode: releasing an open pool means the items it still held
+  in every build mode: releasing an open pool means the items it still held  
   never reached the close hook.
 - **Costs** — two frees.
 - **Checks** — `always_assert(self._closed, "releasing an open pool")` — `pool.c3:215`.
@@ -925,10 +925,10 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — take a stored item, or ask the hook for a new one.
 - **Promises** — four faults: `CLOSED`, `NOT_AVAILABLE`, `NOT_CREATED`,
-  `UNKNOWN_IDENTITY`. `NOT_AVAILABLE` comes only from `AVAILABLE_ONLY`, and
+  `UNKNOWN_IDENTITY`. `NOT_AVAILABLE` comes only from `AVAILABLE_ONLY`, and  
   `NOT_CREATED` only from a hook that produced nothing.
 - **Costs** — O(n) in the number of identities for the bucket lookup, then
-  O(1). **The hook runs outside the mutex**, and everything read before
+  O(1). **The hook runs outside the mutex**, and everything read before  
   unlocking is stale when it returns.
 - **Contract** — `@param want : "the identity wanted"` — `pool.c3:309`.
 - **Contract** — `@param mode : "which of the three modes"` — `pool.c3:251`.
@@ -942,12 +942,12 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — take a stored item, waiting up to a timeout.
 - **Promises** — **it never creates.** No hook is called on this path. Where a
-  plain get in `AVAILABLE_ONLY` mode reports `NOT_AVAILABLE`, this reports
-  `TIMEOUT`, and the divergence is deliberate. Three faults: `CLOSED`,
+  plain get in `AVAILABLE_ONLY` mode reports `NOT_AVAILABLE`, this reports  
+  `TIMEOUT`, and the divergence is deliberate. Three faults: `CLOSED`,  
   `TIMEOUT`, `UNKNOWN_IDENTITY`.
 - **Costs** — blocks on the condition variable. The bucket lookup happens once,
-  before the loop; the bucket slice is allocated once and never grown, moved or
-  reallocated, so its address stays valid for the pool's whole life, and only
+  before the loop; the bucket slice is allocated once and never grown, moved or  
+  reallocated, so its address stays valid for the pool's whole life, and only  
   its contents change under the lock.
 - **Contract** — `@param want : "the identity wanted"` — `pool.c3:309`.
 - **Contract** — `@param slot : "an empty Slot; filled on success"` — `pool.c3:310`.
@@ -962,13 +962,13 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — give an item back.
 - **Promises** — **returns nothing. The Slot is the answer, not the outcome.**
-  Cleared means the pool took it; unchanged means it was refused and the caller
-  still has the item. **This path cannot fail and cannot be interrupted**: a
+  Cleared means the pool took it; unchanged means it was refused and the caller  
+  still has the item. **This path cannot fail and cannot be interrupted**: a  
   worker that must give its item back must always be able to.
 - **Costs** — O(n) in the number of identities for each bucket lookup.
-  **The put hook runs outside the mutex, and the closed flag is re-read after
-  it.** A close can run to completion inside that window; anything this call is
-  still holding then goes to the close hook, and the caller's Slot stays
+  **The put hook runs outside the mutex, and the closed flag is re-read after  
+  it.** A close can run to completion inside that window; anything this call is  
+  still holding then goes to the close hook, and the caller's Slot stays  
   cleared because the pool did take the item.
 - **Contract** — `@param slot : "a full Slot; cleared if the pool took the item"` — `pool.c3:364`.
 - **Checks** — `mtk::@check(b != null, "Pool.put of an identity the pool was not created with")` — `pool.c3:380`.
@@ -980,12 +980,12 @@ it is a defect of the caller: a checking build aborts, and a fast build reports
 
 - **What** — close the pool and give everything it held to the close hook.
 - **Promises** — **cannot fail. Nothing comes back to the caller.** Callable
-  more than once: the second call takes nothing and does **not** run the hook
-  again. The hook is called once, outside the mutex, after the flag is set.
-  Every bucket is emptied into one queue, flattened; the hook never sees
+  more than once: the second call takes nothing and does **not** run the hook  
+  again. The hook is called once, outside the mutex, after the flag is set.  
+  Every bucket is emptied into one queue, flattened; the hook never sees  
   buckets or per-identity groups. **No order is promised.**
 - **Costs** — O(n) in the items kept, once, on a pool going down. A stack keeps
-  no tail, so the O(1) splice is not available. The loop repairs every item's
+  no tail, so the O(1) splice is not available. The loop repairs every item's  
   self-link on the way, which a splice would have had to walk and do anyway.
 
 ### `fn bool Pool.is_closed(&self)`

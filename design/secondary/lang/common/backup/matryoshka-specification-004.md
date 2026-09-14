@@ -1,29 +1,29 @@
 # The Matryoshka portable specification (004)
 
-Stage 3TK-17 of [3tk-staging-plan-009.md](../c3/backup/3tk-staging-plan-009.md),
-written 2026-08-24. **004 changes one Part — 7.1 — and nothing else.** It is
-the first specification defect found since 003, and it was found by building a
-port rather than by auditing one: the C3 port answered *generate code per type*
-with call-site expansion instead of a per-type object, and Part 7.1 as 003
-worded it described the object rather than the promise. The change log at the
+Stage 3TK-17 of [3tk-staging-plan-009.md](../c3/backup/3tk-staging-plan-009.md),  
+written 2026-08-24. **004 changes one Part — 7.1 — and nothing else.** It is  
+the first specification defect found since 003, and it was found by building a  
+port rather than by auditing one: the C3 port answered *generate code per type*  
+with call-site expansion instead of a per-type object, and Part 7.1 as 003  
+worded it described the object rather than the promise. The change log at the  
 end names the difference.
 
 003 was stage 3TK-13 of
 [3tk-staging-plan-007.md](../c3/backup/3tk-staging-plan-007.md), written from
 [3tk-deviations-001.md](../c3/3tk-deviations-001.md) — the audit that measured
-the C3 port against version 002, Part by Part, and split what it found into
-*this port only* and *every port*. **Only the every-port half is in this
+the C3 port against version 002, Part by Part, and split what it found into  
+*this port only* and *every port*. **Only the every-port half is in this  
 document.** Versions 001, 002 and 003 are in [backup/](backup/).
 
 This document says what Matryoshka is, without naming a language.
 
 It is self-contained. A port is written from this file alone.
 
-**Two realizations appear, and only as realizations.** Lines marked *ztk* are
-Zig's. Lines marked *3tk* are C3's. Where the two differ, both are shown, so a
-reader cannot mistake either one for the rule — the mistake that produced 003,
-and the one 004 finishes in Part 7.1. Part 11.11 already said in its own words
-that a port can be *better* than ztk, not merely different; 003 is the first
+**Two realizations appear, and only as realizations.** Lines marked *ztk* are  
+Zig's. Lines marked *3tk* are C3's. Where the two differ, both are shown, so a  
+reader cannot mistake either one for the rule — the mistake that produced 003,  
+and the one 004 finishes in Part 7.1. Part 11.11 already said in its own words  
+that a port can be *better* than ztk, not merely different; 003 is the first  
 version where that is visible on the page.
 
 ## How to read this
@@ -31,14 +31,14 @@ version where that is visible on the page.
 - Every element carries a conformance marking. Part 0 defines the four.
 - Every part states the rule first. Evidence and background come after.
 - The external references are `ztk-audit-001.md`, and behind it
-  `src/polynode.zig`, `src/mailbox.zig`, `src/pool.zig`; and for the *3tk*
+  `src/polynode.zig`, `src/mailbox.zig`, `src/pool.zig`; and for the *3tk*  
   lines, `../c3/3tk/src/`. Nothing else.
 - Terminology: **inner** is the embedded structure. **outer** is the struct
   that embeds it. Never "parent".
 - **Part numbers do not move.** A Part deleted in this version stays in place
-  as a tombstone that says it was deleted and why. Part numbers are cited by
-  hand across four documents and roughly forty doc comments, and renumbering
-  would silently invalidate every one. Part 18's invariant table already worked
+  as a tombstone that says it was deleted and why. Part numbers are cited by  
+  hand across four documents and roughly forty doc comments, and renumbering  
+  would silently invalidate every one. Part 18's invariant table already worked  
   this way — assumption A1.
 
 ## Sources
@@ -82,7 +82,7 @@ Matryoshka is a toolkit for passing items between long-lived threads.
 - No allocation happens on a transfer.
 - One holder at a time. The transfer is a move, never a copy.
 
-The name is the shape: the inner sits inside the outer, and the outer is what
+The name is the shape: the inner sits inside the outer, and the outer is what  
 the application wrote.
 
 ## 1.2 What it is not — MUST
@@ -111,7 +111,7 @@ There is no `Master` type.
 
 # Part 2 — Threads and waiting
 
-The word "execution" in a heading is on the banned list of `rules-049.md`
+The word "execution" in a heading is on the banned list of `rules-049.md`  
 Part 5. This part is that section.
 
 ## 2.1 Plain threads — MUST
@@ -129,11 +129,11 @@ The whole toolkit rests on two synchronization primitives.
 - A mutex.
 - A condition variable with a **timed** wait.
 
-Nothing else is required. No atomics beyond the optional fast path of Part
-15.4. No thread-local storage. No semaphore. No channel type from the standard
+Nothing else is required. No atomics beyond the optional fast path of Part  
+15.4. No thread-local storage. No semaphore. No channel type from the standard  
 library.
 
-This is why the toolkit is correct on more than one threading backend: every
+This is why the toolkit is correct on more than one threading backend: every  
 wait goes through those two.
 
 *ztk*: `audit 6.1`, `matryoshka-concepts-003.md:757-767`.
@@ -257,23 +257,23 @@ The inner has exactly two conceptual parts.
   8, and to answer whether it is on one at all. Part 8.7.
 - **Identity** — the type identity of the outer. One field. Part 5.
 
-**Two parts. The field count is the realization's, not the specification's.**
+**Two parts. The field count is the realization's, not the specification's.**  
 Both known realizations are conformant and they do not agree on it:
 
 - *ztk*: two link fields, a previous and a next, plus the identity. Three
   fields.
 - *3tk*: one link field plus the identity. Two fields, 16 bytes on a 64-bit
-  target against ztk's 24. The backward link is not needed because neither
-  container removes from the middle — Part 8.2 — and the link test of Part 8.7
+  target against ztk's 24. The backward link is not needed because neither  
+  container removes from the middle — Part 8.2 — and the link test of Part 8.7  
   is made exact by a terminator rather than by a second field.
 
-A port that needs a previous link writes one. A port whose containers never
+A port that needs a previous link writes one. A port whose containers never  
 remove from the middle does not.
 
-A port adds a further per-item field only with a reason written down. Every
-item in the program pays for it, including the items that never use it. That
-is the test the field has to pass, and an allocator is the one that most often
-fails it — it serves the subset of items the toolkit allocates and is charged
+A port adds a further per-item field only with a reason written down. Every  
+item in the program pays for it, including the items that never use it. That  
+is the test the field has to pass, and an allocator is the one that most often  
+fails it — it serves the subset of items the toolkit allocates and is charged  
 to all of them. Part 13.4.
 
 *ztk*: `polynode.zig:83-86`, `audit 1.2`.
@@ -300,7 +300,7 @@ to all of them. Part 13.4.
 - No wrapper object with its own lifetime.
 - A heterogeneous list, because the list sees only inners.
 
-Remove intrusion and a wrapper allocation returns on every transfer. That is
+Remove intrusion and a wrapper allocation returns on every transfer. That is  
 the reason it is a MUST.
 
 ---
@@ -329,7 +329,7 @@ The shape is fixed. The spelling is the port's business.
 - A language with a native runtime type identifier uses it.
 - A language without one uses the address of a per-type value.
 - *ztk*: a mutable one-byte global per instantiation. Mutable, because a
-  constant may be merged by the linker with another constant of the same
+  constant may be merged by the linker with another constant of the same  
   contents, and merged addresses are not unique.
 - Uniqueness in ztk comes from the compile-time generator: one instantiation
   per type, one global per instantiation.
@@ -378,12 +378,12 @@ Every crossing comes in two forms. Both are required.
 - The **checking** form. Returns nothing when the identity does not match. The
   caller decides what to do.
 - The **asserting** form. The mismatch is a defect of the program, not a
-  runtime condition. It stops the program, or it is checked only in a build
+  runtime condition. It stops the program, or it is checked only in a build  
   mode that checks.
 
 A port names them apart so a reader sees at the call site which one is meant.
 
-*ztk*: `fromPoly` and `mustFromPoly`; `fromSlot` and `mustFromSlot`.
+*ztk*: `fromPoly` and `mustFromPoly`; `fromSlot` and `mustFromSlot`.  
 `audit 1.4`.
 
 ## 6.4 What it makes safe — background
@@ -394,12 +394,12 @@ A port names them apart so a reader sees at the call site which one is meant.
 
 ## 6.5 Dispatch on the identity — SHOULD
 
-**This is a pattern the application writes. The toolkit ships nothing for it.**
-Every clause below describes application code — the receiver is the
-application's, the handlers are the application's, and the last clause hands the
-release to the caller. A port that ships no dispatch table has skipped nothing
-and owes no explanation; what it owes is that Parts 5 and 6 make the pattern
-writable. 002 did not say whose element this was, and a port read the silence as
+**This is a pattern the application writes. The toolkit ships nothing for it.**  
+Every clause below describes application code — the receiver is the  
+application's, the handlers are the application's, and the last clause hands the  
+release to the caller. A port that ships no dispatch table has skipped nothing  
+and owes no explanation; what it owes is that Parts 5 and 6 make the pattern  
+writable. 002 did not say whose element this was, and a port read the silence as  
 a skipped SHOULD — assumption A4.
 
 - One handler per pair of receiver and identity. A table, keyed on the
@@ -411,11 +411,11 @@ a skipped SHOULD — assumption A4.
 - A port whose language can branch directly on a type identifier may do so.
   The table is one spelling.
 - *ztk*: a branch is impossible, because the identity is an address assigned
-  by the linker and a branch arm must be known at compile time. Equality still
+  by the linker and a branch arm must be known at compile time. Equality still  
   works, because equality needs only to know which global the value names.
 - *3tk*: nothing shipped, on the reading above. The heterogeneous walk that
-  claims by identity is in a test — `t_identity.c3:129-151` — as the
-  demonstration that the pattern is writable, which is all this Part asks of a
+  claims by identity is in a test — `t_identity.c3:129-151` — as the  
+  demonstration that the pattern is writable, which is all this Part asks of a  
   port.
 
 *ztk*: `audit 2.4`.
@@ -432,24 +432,24 @@ a skipped SHOULD — assumption A4.
 - The type identity of Part 5 and the crossings of Part 6 arrive together, from
   the one act of generation.
 
-The *promise* is that a crossing is typed, and that the typing is not copied by
-hand. **How a port spells the generation is the port's business.** A named
-per-type object is one spelling of it and not the rule; expansion at each call
-site is another. A port with no compile-time generation at all writes the same
+The *promise* is that a crossing is typed, and that the typing is not copied by  
+hand. **How a port spells the generation is the port's business.** A named  
+per-type object is one spelling of it and not the rule; expansion at each call  
+site is another. A port with no compile-time generation at all writes the same  
 block by hand for each type, and loses only the typing.
 
-***Helper*** is this document's word for that per-type surface, whatever a port
-calls it and wherever the generated code ends up living. Part 7.2 is its
+***Helper*** is this document's word for that per-type surface, whatever a port  
+calls it and wherever the generated code ends up living. Part 7.2 is its  
 content, and that is the MUST.
 
-*ztk*: a per-type structure, produced by a comptime function from the type —
-one named helper object per outer type, the members its declarations.
+*ztk*: a per-type structure, produced by a comptime function from the type —  
+one named helper object per outer type, the members its declarations.  
 `polynode.zig:141-355`, `audit 3` row 6.
 
-*3tk*: no per-type object and no instantiation, for any type, ever. The members
-are macros over a type parameter, and the code is generated at each call site
-from the type named there. A new outer type costs nothing before it can be
-used. `../c3/3tk/src/helper.c3`, and `3tk-deviations-001.md` V19 for why the
+*3tk*: no per-type object and no instantiation, for any type, ever. The members  
+are macros over a type parameter, and the code is generated at each call site  
+from the type named there. A new outer type costs nothing before it can be  
+used. `../c3/3tk/src/helper.c3`, and `3tk-deviations-001.md` V19 for why the  
 two realizations part company here.
 
 ## 7.2 What the helper contains — MUST
@@ -462,7 +462,7 @@ Every helper carries these, whatever the spelling.
   pointer. Part 6.3.
 - Checking and asserting crossings from a Slot to a typed pointer.
 - A **moving** crossing from a Slot: on a match, the typed pointer is returned
-  *and* the Slot is cleared. On a mismatch, nothing is returned and the Slot is
+  *and* the Slot is cleared. On a mismatch, nothing is returned and the Slot is  
   untouched.
 - A crossing the other way: from a typed pointer to a type-erased handle. This
   one cannot fail.
@@ -476,7 +476,7 @@ Every helper carries these, whatever the spelling.
 - The *distinction* is real and portable. A port makes it by any means its
   language offers: two generators, an interface, a flag, a separate name.
 - *ztk*: the type declares a marker constant, and the generator branches on
-  its presence, producing one of two near-identical helpers. That spelling is
+  its presence, producing one of two near-identical helpers. That spelling is  
   Zig's, and it costs 110 duplicated lines.
 
 *ztk*: `audit 3` row 8, `audit 5.6`.
@@ -503,7 +503,7 @@ Every helper carries these, whatever the spelling.
 
 ## 8.1 The rule — MUST
 
-**Ordering primitives whose nodes are the inners of Part 4.** Not one shape: as
+**Ordering primitives whose nodes are the inners of Part 4.** Not one shape: as  
 many as the containers of Part 11 need, and no more.
 
 - Items of different outer types sit on one of them.
@@ -511,20 +511,20 @@ many as the containers of Part 11 need, and no more.
 - They allocate nothing.
 - The layer is where the checks live. Part 8.5.
 
-*Version 002 said "a doubly-linked list", singular, and that was ztk's
-mechanism read as the rule.* What the design requires is first-in-first-out for
-the mailbox and a give-back container for the pool. Whether one general list
+*Version 002 said "a doubly-linked list", singular, and that was ztk's  
+mechanism read as the rule.* What the design requires is first-in-first-out for  
+the mailbox and a give-back container for the pool. Whether one general list  
 serves both, or two narrow ones do, is the port's call.
 
 - *ztk*: one doubly-linked list, used by both containers.
 - *3tk*: two singly-linked primitives — a FIFO queue for the mailbox, a stack
-  for the pool's per-identity storage. Neither removes from the middle, which
+  for the pool's per-identity storage. Neither removes from the middle, which  
   is what pays for the single link field of Part 4.2.
 
 ## 8.2 The surface — SHOULD
 
-**The rule is the requirement, not the count.** A port provides what the
-containers of Part 11 and the application actually call, and nothing else.
+**The rule is the requirement, not the count.** A port provides what the  
+containers of Part 11 and the application actually call, and nothing else.  
 Names are the port's business.
 
 Required, because Part 11 cannot be built without them:
@@ -538,10 +538,10 @@ Required, because Part 11 cannot be built without them:
 Required at the public surface, because application code needs it:
 
 - **Add from a Slot**, on whichever primitive the application can reach. Part 9.
-  This is not a convenience. Part 12.5's put hook fills the extra list from a
-  Slot it just created, and that hook is application code; without a
-  Slot-shaped insert the hook writes `take()` by hand and loses rule 1's
-  compile-time ally at the one surface the toolkit hands to the application.
+  This is not a convenience. Part 12.5's put hook fills the extra list from a  
+  Slot it just created, and that hook is application code; without a  
+  Slot-shaped insert the hook writes `take()` by hand and loses rule 1's  
+  compile-time ally at the one surface the toolkit hands to the application.  
   A primitive the application cannot reach does not need one.
 
 Provided if the port has a use for it:
@@ -549,15 +549,15 @@ Provided if the port has a use for it:
 - Walk it. Part 8.4.
 - Look at the front, or at the back, without removing.
 - Remove a named item from the middle; insert after or before a named item.
-  **Both containers of Part 11 can be built without these**, and a port that
+  **Both containers of Part 11 can be built without these**, and a port that  
   builds them without also drops the backward link of Part 4.2.
 
 No operation can fail. There is no error to report.
 
 - *ztk*: sixteen operations on one list. `polynode.zig:379-603`, `audit 1.5`.
 - *3tk*: eleven across two primitives — seven on the queue, four on the stack.
-  Twelve of ztk's sixteen leave the port. The four middle-removal and
-  named-insert operations went with the anchor of Part 11.3; the front-and-back
+  Twelve of ztk's sixteen leave the port. The four middle-removal and  
+  named-insert operations went with the anchor of Part 11.3; the front-and-back  
   lookers had no caller.
 
 ## 8.3 The list speaks in handles — MUST
@@ -583,28 +583,28 @@ No operation can fail. There is no error to report.
 
 ## 8.6 The double check on insert — DELETED in 003
 
-**This Part is a tombstone. The number is kept because it is cited by hand; the
+**This Part is a tombstone. The number is kept because it is cited by hand; the  
 rule is gone.** Assumption A1.
 
-002 required two checks on every insert — an O(n) walk of this list, and a link
-test — on the ground that neither alone was enough: the walk saw a list of
-exactly one member that the link test could not, and the link test saw a
+002 required two checks on every insert — an O(n) walk of this list, and a link  
+test — on the ground that neither alone was enough: the walk saw a list of  
+exactly one member that the link test could not, and the link test saw a  
 *different* list that the walk could not.
 
-**The first half of that argument was a consequence of Part 8.7's blind spot,
-and 003 closes the blind spot.** Once the link test is exact it refuses an item
-on *any* primitive, this one or another, so the walk catches nothing it misses.
+**The first half of that argument was a consequence of Part 8.7's blind spot,  
+and 003 closes the blind spot.** Once the link test is exact it refuses an item  
+on *any* primitive, this one or another, so the walk catches nothing it misses.  
 One O(1) check replaces two, and the O(n) insert is gone from every build mode.
 
-A port whose link test is not exact still needs the walk. It writes it under
-Part 8.7, where the blind spot is now named as the thing to pay for, and not
+A port whose link test is not exact still needs the walk. It writes it under  
+Part 8.7, where the blind spot is now named as the thing to pay for, and not  
 here.
 
 *3tk*: one guard per insert, `queue.c3:79-83`, `stack.c3:66-70`.
 
 ## 8.7 The link test — MUST
 
-**The link test answers one question: is this item on some ordering primitive?
+**The link test answers one question: is this item on some ordering primitive?  
 It MUST be exact.**
 
 - Exact means it is true for every item on any primitive, including an item
@@ -615,28 +615,28 @@ It MUST be exact.**
   the item, so the test reports it unlinked. Part 8.8.
 - It is O(1).
 
-**How exactness is paid for is the port's call, and there are three known
+**How exactness is paid for is the port's call, and there are three known  
 prices.**
 
 - **A terminator.** The last item of a chain points at itself instead of at
-  nothing, so *linked* is *the link is not nothing* and it costs no field.
-  The price is that the link carries two meanings, and every walk must end on
-  *the item points at itself* rather than on nothing. A walk that forgets loops
-  for ever.
+  nothing, so *linked* is *the link is not nothing* and it costs no field.  
+  The price is that the link carries two meanings, and every walk must end on  
+  *the item points at itself* rather than on nothing. A walk that forgets loops  
+  for ever.  
   *3tk*: `inner.c3:155`, and four walk sites each state the end test.
 - **A membership field.** One field per item, and the test reads it. Costs a
-  field on every item in the program, including the items that never move.
+  field on every item in the program, including the items that never move.  
   Part 4.2's test applies.
 - **Neither.** A test on the neighbour fields alone is *not* exact — an item
-  alone on a list has no neighbours and reports unlinked. A port that stops
-  here has a blind spot, and it MUST then carry the O(n) walk that 002's Part
-  8.6 required, because that walk is what covers the hole.
+  alone on a list has no neighbours and reports unlinked. A port that stops  
+  here has a blind spot, and it MUST then carry the O(n) walk that 002's Part  
+  8.6 required, because that walk is what covers the hole.  
   *ztk*: this one. `audit 2.2`, `polynode.zig:104-116`.
 
-**002 stated the blind spot as inherent and priced closing it at a field per
-item.** Both halves were wrong: the blind spot is a property of one realization,
-and the terminator closes it for free. What 002's own last bullet called
-*strictly better* is now the rule, and the realization that does not reach it
+**002 stated the blind spot as inherent and priced closing it at a field per  
+item.** Both halves were wrong: the blind spot is a property of one realization,  
+and the terminator closes it for free. What 002's own last bullet called  
+*strictly better* is now the rule, and the realization that does not reach it  
 pays the walk instead.
 
 ## 8.8 The repair — MUST
@@ -685,7 +685,7 @@ A **Slot** is a container of one handle, or of nothing.
 - Empty means: the item is elsewhere.
 - Full means: the item is here, and this Slot's holder is responsible for it.
 
-It covers both transfer and creation. Every acquisition and every release in
+It covers both transfer and creation. Every acquisition and every release in  
 the toolkit is Slot-shaped.
 
 ## 9.2 The six rules — MUST
@@ -709,7 +709,7 @@ All six. A port that keeps five has not kept the idiom.
 - On failure the Slot is untouched, so the caller's error path has nothing to
   undo.
 
-This is the idiom's own shape. It is not a workaround for a missing return
+This is the idiom's own shape. It is not a workaround for a missing return  
 type.
 
 ## 9.4 The Slot is the answer — MUST
@@ -833,15 +833,15 @@ Each of the two carries these five, whatever it calls them.
 - A closed flag.
 - An allocator, kept for life. Part 13.
 
-**This is a statement about what each contains, not a shared type.** A port may
-factor them into one internal base and embed it twice; a port may repeat the
-five members in both structs. Neither is more conformant, and the base — where
+**This is a statement about what each contains, not a shared type.** A port may  
+factor them into one internal base and embed it twice; a port may repeat the  
+five members in both structs. Neither is more conformant, and the base — where  
 one exists — is not public and is not a type the application names.
 
-*002 said "one internal base", and that is a mechanism.* A port that reads it as
-the rule and factors a base out will find Part 4.4 in its way: the base carries
-the inner, so a container embedding a base embeds one inner, and any second
-embedding of the base breaks the one-inner rule. The requirement was always the
+*002 said "one internal base", and that is a mechanism.* A port that reads it as  
+the rule and factors a base out will find Part 4.4 in its way: the base carries  
+the inner, so a container embedding a base embeds one inner, and any second  
+embedding of the base breaks the one-inner rule. The requirement was always the  
 five parts.
 
 - *ztk*: the members appear in both objects.
@@ -874,17 +874,17 @@ Ordering.
 **The mechanism is the port's**, and 002 named only one of the two:
 
 - *ztk*: one queue, with an anchor kept at the last out-of-band item so that an
-  out-of-band insert stays O(1) — an empty anchor means insert at the front —
-  and the anchor cleared when the last out-of-band item is taken. Four sites
+  out-of-band insert stays O(1) — an empty anchor means insert at the front —  
+  and the anchor cleared when the last out-of-band item is taken. Four sites  
   keep it honest. `audit 2.15`.
 - *3tk*: two queues, out-of-band and ordinary, drained in that order. The
-  ordering falls out of the structure instead of being maintained by hand, and
-  the anchor, the front-insert and the insert-after-a-named-item are all gone
+  ordering falls out of the structure instead of being maintained by hand, and  
+  the anchor, the front-insert and the insert-after-a-named-item are all gone  
   with it. `mailbox.c3:66-67`, `:148-165`.
 
-A port that keeps one queue writes the anchor. A port that keeps two does not,
-and Part 11.4 already permitted the second queue as *one level with a cleaner
-home*. **The ordering promise is identical either way, and a port that weakens
+A port that keeps one queue writes the anchor. A port that keeps two does not,  
+and Part 11.4 already permitted the second queue as *one level with a cleaner  
+home*. **The ordering promise is identical either way, and a port that weakens  
 it has changed the design.**
 
 ## 11.4 Out-of-band is one level, not a queue — MAY
@@ -926,14 +926,14 @@ And:
 - Discarding the list a close returns is the named mistake. It drops items,
   and those items keep their links, so a later send refuses them.
 
-**A closed mailbox is empty.** Close is the only drain, it takes the whole
-queue in one step, and a send is refused after the closed flag is set — both
-under the same mutex, Part 15.3. So no item can be in a closed mailbox, and no
-acquisition ever has to choose between returning an item and reporting closed.
+**A closed mailbox is empty.** Close is the only drain, it takes the whole  
+queue in one step, and a send is refused after the closed flag is set — both  
+under the same mutex, Part 15.3. So no item can be in a closed mailbox, and no  
+acquisition ever has to choose between returning an item and reporting closed.  
 Invariant 34.
 
-That is why Part 19.1 needs no precedence rule. A port that reads the outcome
-table as a choice — item, or closed, when both seem to apply — has invented a
+That is why Part 19.1 needs no precedence rule. A port that reads the outcome  
+table as a choice — item, or closed, when both seem to apply — has invented a  
 state this design does not have.
 
 *ztk*: `audit 2.6`.
@@ -943,14 +943,14 @@ state this design does not have.
 A keeper of reusable items, grouped by type identity.
 
 - **One give-back container per identity.** A stack, a queue, or anything with
-  O(1) insert and O(1) removal; Part 11.10 already refuses to promise which
-  item comes back, so the choice is free and it is a port's to make on its own
+  O(1) insert and O(1) removal; Part 11.10 already refuses to promise which  
+  item comes back, so the choice is free and it is a port's to make on its own  
   grounds.
   - *ztk*: a list per identity.
   - *3tk*: a stack per identity, chosen for defect surfacing rather than for
-    speed — the item just given back is on top, so the next get hands it
-    straight to a new owner and a caller still writing through a stale pointer
-    collides at once instead of much later. `pool.c3:125-129`. **The property is
+    speed — the item just given back is on top, so the next get hands it  
+    straight to a new owner and a caller still writing through a stale pointer  
+    collides at once instead of much later. `pool.c3:125-129`. **The property is  
     only useful because Part 11.10 entitles no caller to it.**
 - One count per identity, if the container's length is not O(1).
 - The set of identities is fixed at creation and is not empty.
@@ -967,12 +967,12 @@ Operations.
 - **put** — give an item back. Slot-shaped. Cannot fail.
 - **close** — take everything down through the hook.
 
-**002 also listed a list put — give many back — and 003 deletes it.** It was the
-one operation whose failure mode had no clean answer: a mid-batch refusal had to
-restore the caller's list, could not restore its order, and 002 had to warn
-about that in Part 11.8. A caller that wants to give many back calls put in a
-loop and reads the Slot each time, which is Part 9.4 doing its ordinary work.
-Part 12.5's extra list is not this operation and is unaffected: it flows from
+**002 also listed a list put — give many back — and 003 deletes it.** It was the  
+one operation whose failure mode had no clean answer: a mid-batch refusal had to  
+restore the caller's list, could not restore its order, and 002 had to warn  
+about that in Part 11.8. A caller that wants to give many back calls put in a  
+loop and reads the Slot each time, which is Part 9.4 doing its ordinary work.  
+Part 12.5's extra list is not this operation and is unaffected: it flows from  
 the hook to the pool, not from the caller.
 
 *3tk*: no `put_all`; the two tests that used one were converted to a loop.
@@ -988,13 +988,13 @@ The mirror image of Part 11.6, and the sharpest asymmetry in the toolkit.
 - **A put that discovers the pool closed while its hook ran gives what it is
   holding to the close hook, not to the caller.** Part 12.3.
 
-**A closed pool is empty**, for the same reason and by the same mechanism: the
-close collects every bucket in one step under the mutex, and a put after the
-flag is set is refused. The items go to the hook rather than to the caller, and
+**A closed pool is empty**, for the same reason and by the same mechanism: the  
+close collects every bucket in one step under the mutex, and a put after the  
+flag is set is refused. The items go to the hook rather than to the caller, and  
 that is the only difference from Part 11.6. Invariant 34.
 
-*002 also stated how a list put behaved on a mid-batch refusal, and warned that
-the restored order might differ from the original.* Part 11.7 deleted the
+*002 also stated how a list put behaved on a mid-batch refusal, and warned that  
+the restored order might differ from the original.* Part 11.7 deleted the  
 operation, so both clauses go with it.
 
 *ztk*: `audit 2.6`.
@@ -1008,7 +1008,7 @@ operation, so both clauses go with it.
 - *ztk*: the book says twice that the waiting get calls the creation hook. The
   code says it does not. The code is the truth. A port follows the code.
 
-*ztk*: `audit 5.2`, an open question of the ztk line, not of this
+*ztk*: `audit 5.2`, an open question of the ztk line, not of this  
 specification.
 
 ## 11.10 No sequence guarantee — MUST
@@ -1022,7 +1022,7 @@ specification.
 - The internals of both objects are not part of the surface.
 - Where the language has opaque types or private fields, they are hidden.
 - *ztk*: the fields are reachable, and a comment says they are internal. Zig
-  has no private field. This is a case where a port is *better* than ztk, not
+  has no private field. This is a case where a port is *better* than ztk, not  
   merely different.
 
 *ztk*: `audit 5.3`.
@@ -1033,7 +1033,7 @@ specification.
 - Both stop the program. In every build mode. Not an assert that compiles out.
 - This is the one precondition the toolkit refuses to soften.
 - Closedness is a precondition **here and nowhere else**. Every other call on
-  a closed object reports closed, or is a no-op, and the object stays a valid
+  a closed object reports closed, or is a no-op, and the object stays a valid  
   item.
 - Close is callable more than once. The second call takes nothing, and does
   not run the pool's close hook again.
@@ -1076,10 +1076,10 @@ specification.
 - A full Slot on return means one thing: an item is kept. Original or
   replacement.
 - The hook may also fill an **extra container** the pool hands it. Each item in
-  it is added the same way, with the same checks. This is how a composite item
+  it is added the same way, with the same checks. This is how a composite item  
   gives its parts back. Part 12.5.
 - **The port names which container it is**, and it is one of the primitives of
-  Part 8, not a general list. The hook is application code, so this type is on
+  Part 8, not a general list. The hook is application code, so this type is on  
   the public surface and Part 8.2's Slot-shaped insert is required on it.
   - *3tk*: a queue. `t_pool.c3:70` fills it from a Slot.
 - The pool does not check that the parts form a real composite, and does not
@@ -1092,15 +1092,15 @@ specification.
 - The hook is responsible for processing or releasing every item.
 - Called **outside** the mutex, after the closed flag is already set.
 - **Called once by close — and once more for each put that discovers the pool
-  closed while its own hook was running.** Part 12.3 states when that happens
-  and why there is nowhere else for those items to go. **A hook MUST therefore
-  tolerate a later call and MUST NOT destroy its own state on the first one.**
-  It is the same contract either way: process or release every item handed to
+  closed while its own hook was running.** Part 12.3 states when that happens  
+  and why there is nowhere else for those items to go. **A hook MUST therefore  
+  tolerate a later call and MUST NOT destroy its own state on the first one.**  
+  It is the same contract either way: process or release every item handed to  
   it.
 
-*002 said "called once", and that was true only because 002 had not noticed the
-window Part 12.3 opens.* The clause is weakened deliberately, and it is the only
-place 003 weakens a MUST: two calls to a cleanup hook is a smaller cost than
+*002 said "called once", and that was true only because 002 had not noticed the  
+window Part 12.3 opens.* The clause is weakened deliberately, and it is the only  
+place 003 weakens a MUST: two calls to a cleanup hook is a smaller cost than  
 items with no holder.
 
 *ztk*: `audit 2.7`.
@@ -1112,33 +1112,33 @@ items with no holder.
   them.
 - A hook that touches shared state protects it itself.
 - A hook does not call back into the pool, and does not block or wait. That is
-  the contract, not a warning about deadlock — the lock is not held while a
+  the contract, not a warning about deadlock — the lock is not held while a  
   hook runs.
 - A hook reports nothing, so it has no way to report an interrupted lock. It
   acquires locks uninterruptibly.
 
-**What the pool does when a hook returns — MUST.** This is the rule that follows
-from unlocking across the hook, and 002 did not state it. Every port has the
+**What the pool does when a hook returns — MUST.** This is the rule that follows  
+from unlocking across the hook, and 002 did not state it. Every port has the  
 same window, because every port obeys the first bullet above.
 
 1. **After a hook returns, the pool re-reads the closed flag under the mutex**,
-   before it does anything with what the hook produced. A close can run to
-   completion inside the window: it sets the flag, drains every container, and
+   before it does anything with what the hook produced. A close can run to  
+   completion inside the window: it sets the flag, drains every container, and  
    calls the close hook, all while the pool is unlocked.
 2. **If the flag is set, everything that call is holding goes to the close
-   hook** — the item the hook kept and every item it added to the extra
+   hook** — the item the hook kept and every item it added to the extra  
    container of Part 12.5.
 3. Nothing lands in a container after the flag is set, so **invariant 34
-   holds**. Nothing goes back to the caller, so **Part 11.8 holds** and the
+   holds**. Nothing goes back to the caller, so **Part 11.8 holds** and the  
    caller's Slot stays cleared: the pool did take the item.
 
-**Handing the items back to the caller instead is not available**, and the
-reason is structural rather than a preference. The caller has one Slot and it
-was emptied when the pool took the item; the extra container's items were never
-the caller's at all, so there is no channel to return them through and they
+**Handing the items back to the caller instead is not available**, and the  
+reason is structural rather than a preference. The caller has one Slot and it  
+was emptied when the pool took the item; the extra container's items were never  
+the caller's at all, so there is no channel to return them through and they  
 leak. That is why Part 12.2's *called once* is the clause that gives way.
 
-*3tk*: `pool.c3:445-480`, and `t_concurrency.c3` holds the window open
+*3tk*: `pool.c3:445-480`, and `t_concurrency.c3` holds the window open  
 deterministically and fails on invariant 34 without the re-read.
 
 ## 12.4 The count is a hint — MUST
@@ -1155,8 +1155,8 @@ deterministically and fails on invariant 34 without the re-read.
 - Removing it means a composite item has no way to give its parts back in one
   call.
 - **It is a Part 8 primitive named by the port**, and it is the one place a
-  Part 8 primitive crosses the public surface into application code. Part 8.2's
-  *add from a Slot* is required on it for that reason, and Part 12.3's rule
+  Part 8 primitive crosses the public surface into application code. Part 8.2's  
+  *add from a Slot* is required on it for that reason, and Part 12.3's rule  
   covers what happens to its contents if the pool closed while the hook ran.
 - It is not the deleted list put of Part 11.7. That one flowed from the caller
   to the pool; this one flows from the hook to the pool.
@@ -1220,7 +1220,7 @@ deterministically and fails on invariant 34 without the re-read.
 
 ## 14.2 The transfer orders memory — MUST
 
-Exclusive access has two halves. This is the half that is invisible in the
+Exclusive access has two halves. This is the half that is invisible in the  
 signatures.
 
 - Possession is the visible half.
@@ -1327,7 +1327,7 @@ Two kinds of wrong, and the line between them is a design statement.
 
 Named once, so no port re-derives the list.
 
-These exist in ztk only because of Zig 0.16 and its `std.Io`. A port on plain
+These exist in ztk only because of Zig 0.16 and its `std.Io`. A port on plain  
 threads deletes every row and loses no Matryoshka semantics.
 
 | # | Excluded | What it is |
@@ -1393,9 +1393,9 @@ Two more spellings that are Zig's and not Matryoshka's.
 
 Every MUST of Parts 2 to 15, in the order a port meets them.
 
-**Row numbers do not move**, for the reason Part 0's reading notes give: a
-retired row stays in place saying it was retired, and a replacement takes a new
-number. Row 16 was retired in 003 and 16b replaces it; row 13 was strengthened;
+**Row numbers do not move**, for the reason Part 0's reading notes give: a  
+retired row stays in place saying it was retired, and a replacement takes a new  
+number. Row 16 was retired in 003 and 16b replaces it; row 13 was strengthened;  
 row 35 is new. The count is not a target — assumption A1.
 
 | # | Invariant | Part |
@@ -1441,18 +1441,18 @@ row 35 is new. The count is not a target — assumption A1.
 
 # Part 19 — The outcome sets
 
-The outcomes of every operation, as values. A port picks its own mechanism:
+The outcomes of every operation, as values. A port picks its own mechanism:  
 errors, a status value, an optional, a union.
 
-Two rows carry a conditional outcome, marked in place: *interrupted* exists only
-where Part 2.9 is realized, and Part 2.9 is a SHOULD a port may drop with the
-reason its own last bullet permits. A port that drops it drops the outcome, and
-the timeout outcome stays. Part 16 row 12 already marked the excluded half of
+Two rows carry a conditional outcome, marked in place: *interrupted* exists only  
+where Part 2.9 is realized, and Part 2.9 is a SHOULD a port may drop with the  
+reason its own last bullet permits. A port that drops it drops the outcome, and  
+the timeout outcome stays. Part 16 row 12 already marked the excluded half of  
 this the same way; 003 marks the included half.
 
-These are sets, not orderings. Where a row lists both an item and *closed*, the
-two do not compete: invariant 34 makes a closed container empty, so the
-acquiring operations below reach *closed* only on an empty container. No
+These are sets, not orderings. Where a row lists both an item and *closed*, the  
+two do not compete: invariant 34 makes a closed container empty, so the  
+acquiring operations below reach *closed* only on an empty container. No  
 precedence rule is needed and none is given.
 
 ## 19.1 Mailbox
@@ -1505,10 +1505,10 @@ Open. This specification does not rule on them. Each port answers, in writing.
 3. **One helper, or two variants?** The distinction is real. The mechanism is
    the port's. Part 7.3.
 4. **How is the link test made exact?** A terminator costs no field and gives
-   the link two meanings, so every walk must carry the end test. A membership
-   field costs a field on every item in the program and keeps the meanings
-   apart. Part 8.7 prices both, and a port that reaches neither carries the
-   O(n) walk instead. *002 asked whether the blind spot was acceptable; 003
+   the link two meanings, so every walk must carry the end test. A membership  
+   field costs a field on every item in the program and keeps the meanings  
+   apart. Part 8.7 prices both, and a port that reaches neither carries the  
+   O(n) walk instead. *002 asked whether the blind spot was acceptable; 003  
    closes it, so the question is how, not whether.*
 5. **Both a blocking receive and a poll?** A receive with a zero timeout has
    the same reach. The two differ only in how the empty case is reported.
@@ -1518,11 +1518,11 @@ Open. This specification does not rule on them. Each port answers, in writing.
 8. **Is interruption modelled at all?** Part 2.9.
 9. **Is the pre-lock fast path kept?** Part 15.4.
 10. **Which ordering primitives does the port build?** One general list serving
-    both containers, or one narrow primitive per container. The narrow route
-    drops the backward link of Part 4.2 and most of Part 8.2's optional half;
-    the general route is one body of code. Parts 8.1 and 8.2. *002 asked
-    instead where the O(n) insert check lived on a port with no build modes.
-    Part 8.6 is deleted and there is no such check to place, so the decision
+    both containers, or one narrow primitive per container. The narrow route  
+    drops the backward link of Part 4.2 and most of Part 8.2's optional half;  
+    the general route is one body of code. Parts 8.1 and 8.2. *002 asked  
+    instead where the O(n) insert check lived on a port with no build modes.  
+    Part 8.6 is deleted and there is no such check to place, so the decision  
     died and this one takes its number.*
 
 ---
@@ -1531,7 +1531,7 @@ Open. This specification does not rule on them. Each port answers, in writing.
 
 The questions a language answers before it can host Matryoshka.
 
-Every port answers this same list, with a citation per answer. A "no" is not a
+Every port answers this same list, with a citation per answer. A "no" is not a  
 refusal — it names what the port pays instead.
 
 ## Q1 — Compile-time generation over a type
@@ -1603,9 +1603,9 @@ refusal — it names what the port pays instead.
 - Is there a distinction between a checking build and a fast one?
 - Can an assert be compiled out?
 - If no: Part 15.5 still holds, and the port decides what the checks cost in
-  production. The checks in question are Part 8.5's, and the exact link test of
-  Part 8.7 is O(1), so a port with no build modes carries it everywhere at a
-  price it can afford. A port that did not reach an exact link test carries the
+  production. The checks in question are Part 8.5's, and the exact link test of  
+  Part 8.7 is O(1), so a port with no build modes carries it everywhere at a  
+  price it can afford. A port that did not reach an exact link test carries the  
   O(n) walk instead, and that is the one this question is sharp for.
 
 ## Q12 — Compile-time reflection on a struct's fields
@@ -1626,11 +1626,11 @@ Not conformance. A suggestion, from the layering of Part 17.
 5. The ordering primitives, with the exact link test. Part 8.
 6. The mailbox. Part 11.3 to 11.6.
 7. The pool, with its hooks. Parts 11.7 to 11.10 and 12. **Read Part 12.3's
-   what-the-pool-does-when-a-hook-returns before writing put**, not after: the
+   what-the-pool-does-when-a-hook-returns before writing put**, not after: the  
    window is easy to write wrong and it strands items rather than crashing.
 8. Delete nothing from Part 16. It was never written.
 
-Steps 2 to 5 are the toolkit. Steps 6 and 7 are built on it, with no
+Steps 2 to 5 are the toolkit. Steps 6 and 7 are built on it, with no  
 privileged access.
 
 ---
@@ -1653,32 +1653,32 @@ One row. **V-numbers are
 |---|---|---|---|
 | V19 | 7.1 | *For each outer type there is a helper bound to that one type. The helper is generated at compile time from the type* — and *the shape is fixed* | For each outer type the members of Part 7.2 exist, specialized to that type, generated rather than hand-written. **A named per-type object is one spelling of that, not the rule.** Both realizations shown: ztk's per-type structure, 3tk's macros over a type parameter with no per-type object at all |
 
-**Why it survived 003.** 003's theme was exactly this mistake — 002 was written
-from ztk and stated Zig's mechanism as the rule in fourteen places, all
-fourteen corrected. **Part 7.1 was the fifteenth and 003 walked past it.** The
-sentence reads like a requirement, and nothing exposed it as a mechanism until
-a port answered *generate code per type* a different way. **This is the first
-specification defect found since 003, and it was found by building, not by
+**Why it survived 003.** 003's theme was exactly this mistake — 002 was written  
+from ztk and stated Zig's mechanism as the rule in fourteen places, all  
+fourteen corrected. **Part 7.1 was the fifteenth and 003 walked past it.** The  
+sentence reads like a requirement, and nothing exposed it as a mechanism until  
+a port answered *generate code per type* a different way. **This is the first  
+specification defect found since 003, and it was found by building, not by  
 auditing.**
 
-Of Part 7.1's three clauses, two were already true of a call-site-expansion
-port: the generation is at compile time and from the type, and the identity and
-the crossings arrive together. Only *bound to that one type* failed — and Part
-7.1's own closing sentence already set the floor lower, conceding that a port
-with no generation at all writes the block by hand and *loses only the typing*.
-A port that generates but names no object sits above that floor on the thing
+Of Part 7.1's three clauses, two were already true of a call-site-expansion  
+port: the generation is at compile time and from the type, and the identity and  
+the crossings arrive together. Only *bound to that one type* failed — and Part  
+7.1's own closing sentence already set the floor lower, conceding that a port  
+with no generation at all writes the block by hand and *loses only the typing*.  
+A port that generates but names no object sits above that floor on the thing  
 the sentence says matters.
 
-**Parts 7.2, 7.3, 7.4 and 7.5 are untouched.** 7.2's nine members are a MUST
-and both realizations carry all nine; the validation and the border are
+**Parts 7.2, 7.3, 7.4 and 7.5 are untouched.** 7.2's nine members are a MUST  
+and both realizations carry all nine; the validation and the border are  
 unaffected by where the generated code lives.
 
-**What this cost, and it is worth stating.** A whole version for one Part. The
-alternative was to leave the trap set for the next port: D's idiomatic answer
-to *generate code per type* is templates and mixins — call-site expansion, the
-same shape as a C3 macro, not a per-type struct — and dtk had not started when
-this was cut. Fixing it afterwards means a second port re-deriving the same
-argument from cold. No other specification change was pending at the cut: V1 to
+**What this cost, and it is worth stating.** A whole version for one Part. The  
+alternative was to leave the trap set for the next port: D's idiomatic answer  
+to *generate code per type* is templates and mixins — call-site expansion, the  
+same shape as a C3 macro, not a per-type struct — and dtk had not started when  
+this was cut. Fixing it afterwards means a second port re-deriving the same  
+argument from cold. No other specification change was pending at the cut: V1 to  
 V18 are consumed by 003, and V7b was recorded-not-fixed deliberately.
 
 ### What a reader of 002 would have got wrong
@@ -1710,8 +1710,8 @@ Every difference, so nobody has to diff the two files. **V-numbers are
 
 ### The five assumptions this version was written on
 
-The owner was asked before the cut and answered *take all recommendations,
-record them as assumptions*. **These are defaults, not rulings.** A later reader
+The owner was asked before the cut and answered *take all recommendations,  
+record them as assumptions*. **These are defaults, not rulings.** A later reader  
 may overturn any of them without contradicting anyone.
 
 | # | Assumption | Cost to overturn |
@@ -1725,19 +1725,19 @@ may overturn any of them without contradicting anyone.
 ### What did not change, and deliberately
 
 - **No conformance marking was changed.** A MUST that becomes a SHOULD is a
-  decision, not a stage's judgment. The one clause that was weakened — Part
-  12.2's *called once* — was weakened in its wording, under a ruling, and it is
+  decision, not a stage's judgment. The one clause that was weakened — Part  
+  12.2's *called once* — was weakened in its wording, under a ruling, and it is  
   named twice above so nobody finds it by accident.
 - **Part 11.7 still promises nothing about the pool's order**, and Part 11.10
-  still says so. 003 names the container kind and stops. The C3 port's
-  defect-surfacing argument for a stack works only while no caller is entitled
+  still says so. 003 names the container kind and stops. The C3 port's  
+  defect-surfacing argument for a stack works only while no caller is entitled  
   to the order.
 - **Part 2.6 is untouched.** The C3 port fails it — its pool's leaver signals on
-  one bucket over a shared condition variable — and the rule is right as
-  written. Moving a rule to accommodate a port's defect is how a specification
+  one bucket over a shared condition variable — and the rule is right as  
+  written. Moving a rule to accommodate a port's defect is how a specification  
   stops being one.
 - **Parts 0, 1, 2, 3, 5, 7, 9, 10, 13, 14, 15, 16, 17, 19.3 and 19.4 are
-  unchanged.** Six further findings of the audit — its P1 to P6 — are ports
-  failing rules that already said the right thing, and none of them reached
-  this file. V11 is the single exception, and it is here because the rule
+  unchanged.** Six further findings of the audit — its P1 to P6 — are ports  
+  failing rules that already said the right thing, and none of them reached  
+  this file. V11 is the single exception, and it is here because the rule  
   genuinely did not exist.

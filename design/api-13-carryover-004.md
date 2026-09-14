@@ -175,7 +175,7 @@ Notes.
 - The book itself is clean. One changelog row names the word to record an
   earlier removal, which Part 5 of the rules allows.
 - `design/rules-049.md` names it to ban it, and is exempt.
-- `design/matryoshka-tk-implementation-plan-072.md` names it in the rows that
+- `design/matryoshka-tk-implementation-plan-073.md` names it in the rows that
   recorded the ban.
 - The `src/matryoshka.zig` hit was one line, and 13-2 already had the file open.
   Closed 2026-08-13, owner approved. Six sites left.
@@ -255,7 +255,7 @@ and it now names sections and the `HELD` state. Part 5 of
   from. Sections 3, 7 and 10 point here.
 - [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md) — the book.
 - [rules-049.md](rules-049.md) — banned words, Part 5. Doc comments, Part 4.
-- [matryoshka-tk-implementation-plan-072.md](matryoshka-tk-implementation-plan-072.md) —
+- [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md) —
   the 13-2 entry names this note as its input.
 
 ---

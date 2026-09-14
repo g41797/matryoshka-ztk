@@ -1,40 +1,40 @@
 # 3tk — the lifetime fix
 
-**Fourth version, 2026-08-28, written by INTR 6.** It supersedes
+**Fourth version, 2026-08-28, written by INTR 6.** It supersedes  
 `3tk-lifetime-fix-003.md`, which is in `backup/` with `-001` and `-002`.
 
-**This version carries an owner ruling, and it is the reason the document is
+**This version carries an owner ruling, and it is the reason the document is  
 shorter than the one before it.**
 
 > **Release while a call is in flight is not prevented. It is written down as a
 > thing the caller must not do, and it is checked. It is not waited for.**
 
-**Ruled 2026-08-28.** Everything about the hazard is still here — the race, the
-hook window, the parked receiver, why taking the mutex proves nothing. What
-changed is the ending: **the port names the rule and checks it, rather than
+**Ruled 2026-08-28.** Everything about the hazard is still here — the race, the  
+hook window, the parked receiver, why taking the mutex proves nothing. What  
+changed is the ending: **the port names the rule and checks it, rather than  
 absorbing the cost of it.**
 
-**Three questions closed as a consequence** — `Q-A`, `Q-B`, `Q-C` — and with them
-the contradiction the second review called the largest problem in `-002`.
-Section 15 shows each one and why it no longer arises. **`Q-D` and `P6` stay
+**Three questions closed as a consequence** — `Q-A`, `Q-B`, `Q-C` — and with them  
+the contradiction the second review called the largest problem in `-002`.  
+Section 15 shows each one and why it no longer arises. **`Q-D` and `P6` stay  
 open.**
 
-**This version also carries the reorganization** the second review asked for and
-INTR 5 held back: contract first, then mechanism, then the two tools, then the
+**This version also carries the reorganization** the second review asked for and  
+INTR 5 held back: contract first, then mechanism, then the two tools, then the  
 tests, then what is open, with the review history at the end.
 
-**No byte of `3tk/src`, `test/` or `negative/` has been touched by any of the
+**No byte of `3tk/src`, `test/` or `negative/` has been touched by any of the  
 four stages that wrote this document.**
 
-**Inputs**, and nothing else was read for this version: `-003`, and the owner's
-ruling. **The two reviews and the two advice files are in `backup/`**; their
+**Inputs**, and nothing else was read for this version: `-003`, and the owner's  
+ruling. **The two reviews and the two advice files are in `backup/`**; their  
 findings are in the sections below and in *Review history*.
 
-**Every line number was printed live on 2026-08-28.** Re-print before trusting
+**Every line number was printed live on 2026-08-28.** Re-print before trusting  
 them: every fix in 3TK-53 and 3TK-54 moves them.
 
-**This document is versioned.** An answer to section 14 makes `005`, and the
-superseded version goes to `backup/`. **A question and its answer live here**,
+**This document is versioned.** An answer to section 14 makes `005`, and the  
+superseded version goes to `backup/`. **A question and its answer live here**,  
 never only in a conversation.
 
 ---
@@ -43,7 +43,7 @@ never only in a conversation.
 
 ## 1. The one defect, on two tools
 
-`Mailbox.release` at `mailbox.c3:106` and `Pool.release` at `pool.c3:231` both
+`Mailbox.release` at `mailbox.c3:106` and `Pool.release` at `pool.c3:231` both  
 open with the same line:
 
 ```c3
@@ -51,8 +51,8 @@ always_assert(self._closed, "releasing an open mailbox");   // mailbox.c3:114
 always_assert(self._closed, "releasing an open pool");      // pool.c3:240
 ```
 
-**That assertion answers the wrong question, and it answers it reassuringly.**
-A caller who passes it believes something has been checked. Something has — just
+**That assertion answers the wrong question, and it answers it reassuringly.**  
+A caller who passes it believes something has been checked. Something has — just  
 not the thing that matters.
 
 There are **three states, not two**:
@@ -63,8 +63,8 @@ There are **three states, not two**:
 | **quiet** | no call is still inside | **nobody** |
 | **freed** | the memory is gone | the allocator |
 
-`_close` establishes the first. `release` acts as though it had established the
-second. Between them sits every call that entered before the close and has not
+`_close` establishes the first. `release` acts as though it had established the  
+second. Between them sits every call that entered before the close and has not  
 yet returned.
 
 The shape, from the mailbox advice §1:
@@ -84,9 +84,9 @@ receive()
                                  <- A is inside freed memory
 ```
 
-**A caller who reads `Part 11.12`, closes, and then releases has obeyed every
-clause the toolkit states, and can still land here.** That is what makes this
-worth acting on. **What the ruling changes is what "acting on" means** — see
+**A caller who reads `Part 11.12`, closes, and then releases has obeyed every  
+clause the toolkit states, and can still land here.** That is what makes this  
+worth acting on. **What the ruling changes is what "acting on" means** — see  
 section 4.
 
 ## 2. The lifetime contract
@@ -117,12 +117,12 @@ release   invokes _close if the tool is still open, REQUIRES quiet,
           destroys, and frees.
 ```
 
-**`REQUIRES` is the whole of the ruling.** An earlier draft of this document had
-`release` *wait for* quiet. It now **checks** for it and aborts if it does not
-hold. Section 4 is the rule that makes the check the caller's business, and
+**`REQUIRES` is the whole of the ruling.** An earlier draft of this document had  
+`release` *wait for* quiet. It now **checks** for it and aborts if it does not  
+hold. Section 4 is the rule that makes the check the caller's business, and  
 section 11 is what that choice costs.
 
-**Where the protection begins**, stated with the contract so that `_active` is
+**Where the protection begins**, stated with the contract so that `_active` is  
 not mistaken for a count on the pointer:
 
 > **A tool is protected from the moment an operation is accepted at the entry
@@ -134,10 +134,10 @@ not mistaken for a count on the pointer:
 > **An active operation is any execution path that has acquired a valid
 > reference to the tool and may still access its memory.**
 
-Whether it is a public call, a hook window, or the tail of a `close` does not
+Whether it is a public call, a hook window, or the tail of a `close` does not  
 enter into it. What enters into it is whether the memory can still be touched.
 
-**A rejected entry never becomes active.** A call that takes the mutex, finds the
+**A rejected entry never becomes active.** A call that takes the mutex, finds the  
 tool closed and returns `CLOSED` raises nothing.
 
 ```text
@@ -150,9 +150,9 @@ unlock                      return CLOSED
 execute
 ```
 
-**A thread may leave the mutex and remain active.** `_active` stays raised while
-the call runs outside the mutex, application code included. **This is the whole
-reason the mutex is not the mechanism**, and it is the sentence 3TK-54 is most
+**A thread may leave the mutex and remain active.** `_active` stays raised while  
+the call runs outside the mutex, application code included. **This is the whole  
+reason the mutex is not the mechanism**, and it is the sentence 3TK-54 is most  
 likely to get wrong.
 
 **Enumerated, so no site is missed:**
@@ -174,11 +174,11 @@ likely to get wrong.
 | queries that take the mutex — `count_of` at `pool.c3:511` and its neighbours | yes |
 | `release` | **no** |
 
-**`release` is never counted.** It would then be waiting on, or asserting
-against, itself. Both advices say this in the same words — mailbox §8, pool
+**`release` is never counted.** It would then be waiting on, or asserting  
+against, itself. Both advices say this in the same words — mailbox §8, pool  
 *Second advice* §8.
 
-**`close` is active for its whole body, and the two tools are not equally
+**`close` is active for its whole body, and the two tools are not equally  
 exposed:**
 
 | | why it is active | how long |
@@ -188,7 +188,7 @@ exposed:**
 
 ## 4. The three rules the port states and does not enforce
 
-**This section is the ruling.** Three hazards are real, none of them is prevented,
+**This section is the ruling.** Three hazards are real, none of them is prevented,  
 and each one is a sentence the caller is answerable for.
 
 ### Rule 1 — closed **and quiet** before released. **New.**
@@ -197,11 +197,11 @@ and each one is a sentence the caller is answerable for.
 > running.** Close it, let every thread that touches it finish, and release it
 > after that. **The usual way to get quiet is to join the threads.**
 
-**Why it is not waited for.** A `release` that waited would block on application
-code the port does not control — an `on_put` or an `on_close` that never returns
-would be a release that never returns — and an application could close the cycle
-by writing a hook that waits on the release that waits for it. **That trades a
-use-after-free for a deadlock**, adds a promise every other port would then owe,
+**Why it is not waited for.** A `release` that waited would block on application  
+code the port does not control — an `on_put` or an `on_close` that never returns  
+would be a release that never returns — and an application could close the cycle  
+by writing a hook that waits on the release that waits for it. **That trades a  
+use-after-free for a deadlock**, adds a promise every other port would then owe,  
 and puts the port in the business of managing application execution.
 
 **Why it is not merely a comment.** `release` **checks it**:
@@ -211,20 +211,20 @@ always_assert(self._closed && self._active == 0,
               "releasing a mailbox that is not quiet");
 ```
 
-**In all four builds.** `release` is not a hot path; a comparison against a field
-already in the cache line costs nothing worth measuring, and a caller who breaks
+**In all four builds.** `release` is not a hot path; a comparison against a field  
+already in the cache line costs nothing worth measuring, and a caller who breaks  
 the rule gets a stop with a message rather than corruption an hour later.
 
-**What the check catches, and what it does not.** It catches a violation **on the
-schedule it happens to see**. A program that breaks the rule and interleaves
-harmlessly today passes today. **A wait would have been correct on every
+**What the check catches, and what it does not.** It catches a violation **on the  
+schedule it happens to see**. A program that breaks the rule and interleaves  
+harmlessly today passes today. **A wait would have been correct on every  
 schedule; a check is not**, and that is the cost of the ruling, stated plainly.
 
-**The parked receiver is the case worth reading twice.** A thread inside
-`receive` or `get_wait` is parked in `wait_until` with the mutex released, so it
-is invisible to anything but the count. `close` wakes it, but **`close` does not
-wait for it to leave** — closed is not quiet. **The caller must close, then
-observe that thread finish, and only then release.** This is where *join your
+**The parked receiver is the case worth reading twice.** A thread inside  
+`receive` or `get_wait` is parked in `wait_until` with the mutex released, so it  
+is invisible to anything but the count. `close` wakes it, but **`close` does not  
+wait for it to leave** — closed is not quiet. **The caller must close, then  
+observe that thread finish, and only then release.** This is where *join your  
 threads* is doing the real work rather than being advice.
 
 ### Rule 2 — exactly one destruction owner. **Already the rule today.**
@@ -233,10 +233,10 @@ threads* is doing the real work rather than being advice.
 > `release` once.** Calls on the tool may be concurrent with each other; a second
 > concurrent `release` is not supported.
 
-**Two concurrent releases have no protocol that assigns the destroying to one of
-them.** No counter, no flag and no ordering inside the tool can decide it,
-because whichever thread loses is reading memory the winner is freeing. The
-mailbox advice's §5 gives one interleaving that ends in a double free; **that is
+**Two concurrent releases have no protocol that assigns the destroying to one of  
+them.** No counter, no flag and no ordering inside the tool can decide it,  
+because whichever thread loses is reading memory the winner is freeing. The  
+mailbox advice's §5 gives one interleaving that ends in a double free; **that is  
 an illustration and not the argument.**
 
 The pool advice's §14 gives the matrix:
@@ -249,8 +249,8 @@ The pool advice's §14 gives the matrix:
 | release vs `close` | **only under Rule 1** |
 | release vs release | **no** |
 
-**The matrix reads differently under this ruling than it did in `-003`**, and the
-difference is the ruling. A design that waits can say *yes* to the first four. A
+**The matrix reads differently under this ruling than it did in `-003`**, and the  
+difference is the ruling. A design that waits can say *yes* to the first four. A  
 design that checks says *the caller must have arranged it*.
 
 ### Rule 3 — a stale pointer is not protected. **Already the rule today.**
@@ -261,9 +261,9 @@ thread B:  p.release()  // closes, checks, frees
 thread A:  p.put()      // enters freed memory
 ```
 
-**No counter inside the freed memory can help.** The counter and the mutex
-guarding it are in the memory being freed, which is the same defect one level
-down — the `Q5` document said this first, under *A counter alone narrows the
+**No counter inside the freed memory can help.** The counter and the mutex  
+guarding it are in the memory being freed, which is the same defect one level  
+down — the `Q5` document said this first, under *A counter alone narrows the  
 race*.
 
 > **The port's protection begins when an operation is accepted. It does not
@@ -271,22 +271,22 @@ race*.
 
 ### The three together
 
-**Rule 3 is the one that matters for judging the ruling.** The port already lives
-on a written rule for the stale pointer, and always has. **Rule 1 does not remove
-a class of error; it moves a line** — from *do not release while anyone might be
-inside* to *do not release while anyone might enter*. Both are rules the caller
-obeys. **Rule 1 asks less discipline than the alternative, and it asks it in the
-place where an application already has the answer: it knows when its threads have
+**Rule 3 is the one that matters for judging the ruling.** The port already lives  
+on a written rule for the stale pointer, and always has. **Rule 1 does not remove  
+a class of error; it moves a line** — from *do not release while anyone might be  
+inside* to *do not release while anyone might enter*. Both are rules the caller  
+obeys. **Rule 1 asks less discipline than the alternative, and it asks it in the  
+place where an application already has the answer: it knows when its threads have  
 finished.**
 
 ### The text this owes
 
-**These are deliverables, not notes.** `W3` was drafted as a temporary warning
-saying the port did not yet handle this. **Under the ruling it is permanent, and
+**These are deliverables, not notes.** `W3` was drafted as a temporary warning  
+saying the port did not yet handle this. **Under the ruling it is permanent, and  
 it is the fix.**
 
 - **`Part 11.12`** — today *closed before released*. It becomes **closed and
-  quiet before released**, with *quiet* defined as in section 2 and the joining
+  quiet before released**, with *quiet* defined as in section 2 and the joining  
   sentence beside it.
 - **both `release` descriptors** — the rule, what the assertion checks, and the
   parked-receiver case.
@@ -301,13 +301,13 @@ it is the fix.**
 
 **A plain `usz`, under the mutex the two tools already own.**
 
-**No atomic.** Both structs already carry a `Mutex` and a `ConditionVariable`,
-and almost every call already takes the mutex. **The mutex already protects
-`_closed` and the buckets, so `_active` joins the synchronization domain that
+**No atomic.** Both structs already carry a `Mutex` and a `ConditionVariable`,  
+and almost every call already takes the mutex. **The mutex already protects  
+`_closed` and the buckets, so `_active` joins the synchronization domain that  
 exists rather than introducing a second one.**
 
-**In all four builds, not only the checking ones.** A field that exists in one
-build and not another makes the struct a different size per build, and nothing
+**In all four builds, not only the checking ones.** A field that exists in one  
+build and not another makes the struct a different size per build, and nothing  
 about a `usz` under an already-held mutex justifies that risk.
 
 The protocol:
@@ -318,11 +318,11 @@ leave    lock; _active--
 release  lock; assert(_closed && _active == 0); destroy; free
 ```
 
-**No broadcast is owed by `leave`.** Nothing waits on the count reaching zero,
-which is the largest single simplification the ruling buys: the condition
+**No broadcast is owed by `leave`.** Nothing waits on the count reaching zero,  
+which is the largest single simplification the ruling buys: the condition  
 variable keeps exactly the job it has today.
 
-**Every raise and every lower is under the same mutex, and the raise happens
+**Every raise and every lower is under the same mutex, and the raise happens  
 before the call can execute outside it.**
 
 ```text
@@ -341,7 +341,7 @@ unlock
 
 ## 6. The private primitive
 
-`_close()` runs **with the mutex already held**. It is the state change both
+`_close()` runs **with the mutex already held**. It is the state change both  
 public paths share, and nothing else.
 
 | it does | it never does |
@@ -359,13 +359,13 @@ close(&queue1)      // closes; the contents move to queue1
 release(&queue2)    // already closed: no transfer, queue2 is left untouched
 ```
 
-**So `release` never calls public `close`, and no lock nests** — the mailbox
+**So `release` never calls public `close`, and no lock nests** — the mailbox  
 advice's §14 and the pool advice's *Second advice* §7.
 
-**The fast-path ordering is named here and specified by 3TK-53.** `_close`
-publishes the fast-path closed state using the ordering the existing fast-path
-protocol requires. That protocol is in the code today; **3TK-53 states which
-ordering it is, and why, against the load that pairs with it.** The store in the
+**The fast-path ordering is named here and specified by 3TK-53.** `_close`  
+publishes the fast-path closed state using the ordering the existing fast-path  
+protocol requires. That protocol is in the code today; **3TK-53 states which  
+ordering it is, and why, against the load that pairs with it.** The store in the  
 block below is quoted from the port as it stands, not specified by this document.
 
 ```c3
@@ -385,7 +385,7 @@ fn void Mailbox._close(&self, InnerQueue* out) @private
 }
 ```
 
-**Each tool has its own**, and what matters publicly is which call supplies the
+**Each tool has its own**, and what matters publicly is which call supplies the  
 storage:
 
 ```text
@@ -401,12 +401,12 @@ Pool._close(InnerQueue* out)      empties every bucket's free stack into out.
 | **`Mailbox.release()`** | **nothing to receive.** Rule 1 requires the tool to be closed first, and `close` has already handed the items back |
 | **`Pool.release()`** | **nothing to receive**, for the same reason |
 
-**Neither `release` grows a parameter.** That is the whole of `Q-B` and `Q-C`,
+**Neither `release` grows a parameter.** That is the whole of `Q-B` and `Q-C`,  
 closed by Rule 1 — section 15.
 
 ## 7. Destruction ordering — open, and 3TK-53's
 
-`release` still destroys a `Mutex` and a `ConditionVariable` and frees the block
+`release` still destroys a `Mutex` and a `ConditionVariable` and frees the block  
 holding them, so one question survives the ruling untouched:
 
 > **When is the mutex released, and can it be destroyed while it is held?**
@@ -424,9 +424,9 @@ release:
     allocator.free(self)
 ```
 
-**That order is a sketch and not a ruling.** The exact order is whatever C3's
-`Mutex` and `ConditionVariable` require, and **3TK-53 establishes it against the
-real structs before either tool is changed.** Neither this document nor the
+**That order is a sketch and not a ruling.** The exact order is whatever C3's  
+`Mutex` and `ConditionVariable` require, and **3TK-53 establishes it against the  
+real structs before either tool is changed.** Neither this document nor the  
 feasibility probe decides it.
 
 ---
@@ -438,10 +438,10 @@ feasibility probe decides it.
 **The mailbox has no hook, so it is the mechanism without the hard part.**
 
 - **Its waiting path holds the mutex across `wait_until` at `mailbox.c3:255`**, so
-  a parked receiver is covered by the same field with no special handling. It is
+  a parked receiver is covered by the same field with no special handling. It is  
   also the case Rule 1 exists for.
 - **`close(InnerQueue* out)` writes into caller-owned storage**, and the mailbox
-  still never allocates for the outers it gives back — the property `close` has
+  still never allocates for the outers it gives back — the property `close` has  
   today at `mailbox.c3:327`, kept.
 - **`release` keeps its signature.** Under Rule 1 the tool is already closed, so
   there is nothing left inside it to hand anywhere.
@@ -455,18 +455,18 @@ defer queue_outers_release(&iq);   // declared first, runs second
 defer mbox.close(&iq);             // declared second, runs first
 ```
 
-C3 runs deferred statements in **reverse textual order**, so the mailbox fills
-`iq` first and the client's function empties it second. **`release` is not part
-of this shape**, and under Rule 1 it cannot be: a `defer` cannot know that the
+C3 runs deferred statements in **reverse textual order**, so the mailbox fills  
+`iq` first and the client's function empties it second. **`release` is not part  
+of this shape**, and under Rule 1 it cannot be: a `defer` cannot know that the  
 other threads have finished.
 
 ## 9. Pool
 
-**`_active` must cover the whole call, hook window included.** This is the single
-most important implementation line in the document, and it is the pool advice's
+**`_active` must cover the whole call, hook window included.** This is the single  
+most important implementation line in the document, and it is the pool advice's  
 *Second advice* §3.
 
-The window is deliberate and specified. `Part 12.3` MUST forbids holding the
+The window is deliberate and specified. `Part 12.3` MUST forbids holding the  
 mutex across a call into application code, so `Pool.put` opens it itself:
 
 ```
@@ -475,8 +475,8 @@ pool.c3:422:    self._hooks.on_put(in_pool, &mine, &extra);
 pool.c3:423:    self._mu.lock();
 ```
 
-**`:423` re-takes a mutex that a release breaking Rule 1 may already have
-destroyed and freed.** That is the defect at its worst site, and the count is
+**`:423` re-takes a mutex that a release breaking Rule 1 may already have  
+destroyed and freed.** That is the defect at its worst site, and the count is  
 what lets `release` see it.
 
 So, for `put`:
@@ -485,7 +485,7 @@ So, for `put`:
 - lowered only after the re-take at `:423` **and** after any straggler
   `on_close` at `:434`.
 
-**A count that stops at `on_put` leaves the straggler hook uncovered**, and the
+**A count that stops at `on_put` leaves the straggler hook uncovered**, and the  
 straggler path is application code holding pool-derived state:
 
 ```text
@@ -495,28 +495,28 @@ release: sees 0, frees
 put:  still inside
 ```
 
-**`Pool.close` stays counted through its own hook** at `pool.c3:493`, which runs
+**`Pool.close` stays counted through its own hook** at `pool.c3:493`, which runs  
 after the mutex is released at `:490`.
 
-**`Pool.get`'s hook at `pool.c3:321`** runs after the mutex is released at
-`:320`, and the call returns straight after it. Same rule: raised before `:320`,
-lowered after the hook. **This is the one added lock in the design** — `get` does
-not re-take the mutex today, and a count that covers its hook must. **3TK-54
+**`Pool.get`'s hook at `pool.c3:321`** runs after the mutex is released at  
+`:320`, and the call returns straight after it. Same rule: raised before `:320`,  
+lowered after the hook. **This is the one added lock in the design** — `get` does  
+not re-take the mutex today, and a count that covers its hook must. **3TK-54  
 measures it and reports the number**; it is not assumed here.
 
-**`get_wait` counts as active** and leaves on the close broadcast. It holds the
-mutex across `wait_until` at `pool.c3:368` and reports `CLOSED` when it wakes and
+**`get_wait` counts as active** and leaves on the close broadcast. It holds the  
+mutex across `wait_until` at `pool.c3:368` and reports `CLOSED` when it wakes and  
 sees the flag — the path that already works at `pool.c3:351-352`.
 
-**Taking the mutex is not a lifetime mechanism.** The pool advice's §12 states
-it and the code proves it: the mutex is free for the whole of `on_get` and
-`on_put`, which is exactly the window. A release that merely locked would sail
+**Taking the mutex is not a lifetime mechanism.** The pool advice's §12 states  
+it and the code proves it: the mutex is free for the whole of `on_get` and  
+`on_put`, which is exactly the window. A release that merely locked would sail  
 straight through it.
 
-**Hook semantics are untouched by all of this.** `Part 12.2` — `on_close` called
-once by close, and once more for each put that finds the pool closed while its
-own hook ran — and `Part 12.3` — several hooks at once, unserialized — stand
-exactly as written. **Nothing in this design orders one hook against another**,
+**Hook semantics are untouched by all of this.** `Part 12.2` — `on_close` called  
+once by close, and once more for each put that finds the pool closed while its  
+own hook ran — and `Part 12.3` — several hooks at once, unserialized — stand  
+exactly as written. **Nothing in this design orders one hook against another**,  
 and that is `Q-A`, closed in section 15.
 
 ---
@@ -525,7 +525,7 @@ and that is `Q-A`, closed in section 15.
 
 ## 10. What stays unchanged
 
-Named here so no stage widens the work. From the pool advice's §18 to §24 and
+Named here so no stage widens the work. From the pool advice's §18 to §24 and  
 §28, and from the rulings already taken:
 
 - **the flat bucket lookup** at `pool.c3:260` — O(identities), and the identity
@@ -551,43 +551,43 @@ Named here so no stage widens the work. From the pool advice's §18 to §24 and
 **What the ruling costs:**
 
 - **A violation is caught on the schedule it happens on, not on every schedule.**
-  A program that breaks Rule 1 and interleaves harmlessly passes. This is the
+  A program that breaks Rule 1 and interleaves harmlessly passes. This is the  
   price, and it is the only real one.
 - **The caller carries a rule.** It is written in three places — section 4's list
-  — and it is the sort of rule an application answers structurally, by joining
+  — and it is the sort of rule an application answers structurally, by joining  
   its threads, rather than by writing code against it.
 
 **What it no longer costs, all of which `-003` owed:**
 
 - **`release` still cannot block.** No waiting on application code, no
-  hook that can hold a release for ever, and **no deadlock clause** — the cycle
+  hook that can hold a release for ever, and **no deadlock clause** — the cycle  
   where a hook waits on the release waiting for it cannot be built.
 - **No new promise for the other ports.** `Q-D` shrinks to one word in an
   existing precondition, not a guarantee every port must implement.
 - **No public signature change**, so no contradiction with the `Q5` ruling's
-  *the client's code is unaffected either way*, and **3TK-50's examples are not
+  *the client's code is unaffected either way*, and **3TK-50's examples are not  
   affected**.
 - **No question about hook ordering.** Nothing waits, so nothing can be read as
   serializing hooks.
 - **The two `release_open_*` negatives stay tier 1** and `run-builds.sh` keeps
   its shape.
 
-**What it costs on the calling path:** one increment and one decrement under a
-mutex the call already holds, plus **one added lock in `Pool.get`** — section 9,
+**What it costs on the calling path:** one increment and one decrement under a  
+mutex the call already holds, plus **one added lock in `Pool.get`** — section 9,  
 measured by 3TK-54 rather than assumed.
 
 ## 12. The `P6` interaction
 
-`P6` — the pool cannot tell whether the close hook processed the items it was
+`P6` — the pool cannot tell whether the close hook processed the items it was  
 given or dropped them — is untouched by the ruling and stays the owner's.
 
-**Its lifetime blocker is removed either way.** Counting what went out against
-what came back means nothing while a further `on_close` may still arrive from a
-straggler `put`. **Said precisely:** after a release that obeys Rule 1, every
-operation accepted before the closure has finished. That is what `_active == 0`
+**Its lifetime blocker is removed either way.** Counting what went out against  
+what came back means nothing while a further `on_close` may still arrive from a  
+straggler `put`. **Said precisely:** after a release that obeys Rule 1, every  
+operation accepted before the closure has finished. That is what `_active == 0`  
 means, and it is not a promise that no thread anywhere still holds the pointer.
 
-**What is not removed** is what *came back* means. The hook is handed an
+**What is not removed** is what *came back* means. The hook is handed an  
 `InnerQueue*` and may free items, leave items, or both:
 
 ```text
@@ -596,9 +596,9 @@ hook frees 3 items
 hook leaves 2 items in the queue
 ```
 
-Whether the pool observes *2 came back*, or whether the queue is the hook's from
-that moment on, is the `InnerQueue` contract for who owns what, and it is not
-written down. **`P6` needs that contract before its option 1 can be called
+Whether the pool observes *2 came back*, or whether the queue is the hook's from  
+that moment on, is the `InnerQueue` contract for who owns what, and it is not  
+written down. **`P6` needs that contract before its option 1 can be called  
 ready.**
 
 ---
@@ -607,9 +607,9 @@ ready.**
 
 ## 13. Tests and negatives
 
-Built in 3TK-53 and 3TK-54. **None of them has to be a flaky race.** A hook that
-parks until the main thread has called release is a deterministic trigger for
-exactly the window, and the port already has that shape in
+Built in 3TK-53 and 3TK-54. **None of them has to be a flaky race.** A hook that  
+parks until the main thread has called release is a deterministic trigger for  
+exactly the window, and the port already has that shape in  
 `test/t_concurrency.c3`.
 
 | file | stage | what it proves |
@@ -622,8 +622,8 @@ exactly the window, and the port already has that shape in
 | `negative/release_with_straggler_put.c3` | 54 | **new.** A concurrent put produces the second `on_close`; the release sees a non-zero count and stops |
 | `negative/release_not_quiet_pool.c3` | 54 | **new.** A `get_wait` parked when release runs — closed, woken, but not yet returned. **Closed is not quiet**, and this is the program that says so |
 
-**All of them are ordinary tier-1 negatives**: they abort, in all four builds,
-with a message naming the rule. **`run-builds.sh` gains rows and changes nothing
+**All of them are ordinary tier-1 negatives**: they abort, in all four builds,  
+with a message naming the rule. **`run-builds.sh` gains rows and changes nothing  
 else**, and the moved check count is printed, not assumed.
 
 Test-suite cases:
@@ -635,7 +635,7 @@ Test-suite cases:
 - `test/t_concurrency.c3` — the correct shape under load, repeated, under
   `run-sanitizers.sh` as well as `run-builds.sh`.
 
-**One program the ruling means the port does not write:** anything proving that a
+**One program the ruling means the port does not write:** anything proving that a  
 release *waits*. There is nothing to wait for.
 
 ---
@@ -657,73 +657,73 @@ Two questions, not one:
 > **`Q-D.2`** — if it does, does 3TK-52 run before 3tk's code, or does 3tk go
 > first under a written assumption naming which way it assumed?
 
-**The ruling makes this much smaller than it was.** `-003` asked whether every
-port must implement a waiting `release`. **This asks whether every port must
-state a precondition** — one word in `Part 11.12` and a sentence beside it. A
+**The ruling makes this much smaller than it was.** `-003` asked whether every  
+port must implement a waiting `release`. **This asks whether every port must  
+state a precondition** — one word in `Part 11.12` and a sentence beside it. A  
 port that cannot check it still states it.
 
-**The vocabulary `closed / quiet / freed` is useful across all ports** and the
+**The vocabulary `closed / quiet / freed` is useful across all ports** and the  
 specification should carry it either way.
 
 ### `Q-F` — `P6`'s ruling. **The owner's.**
 
-Its lifetime blocker is removed. Its own question — what *came back* means — is
+Its lifetime blocker is removed. Its own question — what *came back* means — is  
 untouched. Section 12.
 
 ### `Q-E`, closed by the ruling
 
-3TK-50 asked where it fell against this work, because a changed `release`
-signature would have been carried into every example. **No signature changes**,
-so the examples tree is unaffected and the two lines of work are independent.
+3TK-50 asked where it fell against this work, because a changed `release`  
+signature would have been carried into every example. **No signature changes**,  
+so the examples tree is unaffected and the two lines of work are independent.  
 The ordering is the owner's, in the status file, and nothing here constrains it.
 
 ### `Q-G`, answered by the ruling
 
-`W3` was drafted as a temporary warning — *the port does not yet stop a release
-that races a call in flight* — to be written in and out again within days.
-**Under the ruling it is permanent and it is the deliverable.** Section 4's *The
+`W3` was drafted as a temporary warning — *the port does not yet stop a release  
+that races a call in flight* — to be written in and out again within days.  
+**Under the ruling it is permanent and it is the deliverable.** Section 4's *The  
 text this owes* is what goes in, and it does not come out.
 
-**The seven questions plan 018 left and 019 carried are still open**, and are not
+**The seven questions plan 018 left and 019 carried are still open**, and are not  
 restated here.
 
 ## 15. Closed by the ruling
 
-**Three questions and one contradiction. None of them was answered; all of them
-stopped arising.** They are kept here with their reasons, so that a later reader
+**Three questions and one contradiction. None of them was answered; all of them  
+stopped arising.** They are kept here with their reasons, so that a later reader  
 does not reopen a question that no longer has content.
 
 ### `Q-A` — hook serialization. **Does not arise.**
 
-The question was whether `on_close` should wait for the `on_get` and `on_put`
-calls already in flight, which would have made the lifetime counter into a hook
+The question was whether `on_close` should wait for the `on_get` and `on_put`  
+calls already in flight, which would have made the lifetime counter into a hook  
 serializer and reopened `Part 12.2` and `Part 12.3`.
 
-**Nothing waits.** `_active` is read once, by `release`, in an assertion. It
-cannot order one hook against another because it never blocks anything. **The two
-halves of the pool advice that disagreed — its §4, §8, §17, §30 against its
-*Second advice* §5 and §15 — were disagreeing about a wait that no longer
+**Nothing waits.** `_active` is read once, by `release`, in an assertion. It  
+cannot order one hook against another because it never blocks anything. **The two  
+halves of the pool advice that disagreed — its §4, §8, §17, §30 against its  
+*Second advice* §5 and §15 — were disagreeing about a wait that no longer  
 exists.**
 
 ### `Q-B` — does `Mailbox.release` gain `InnerQueue* out`? **Does not arise.**
 
-The question existed because a `release` that closed on the caller's behalf had
+The question existed because a `release` that closed on the caller's behalf had  
 nowhere to put the items an open mailbox still held.
 
-**Rule 1 requires the tool to be closed before it is released**, and
-`Mailbox.close(out)` has already given them back. **`release` never sees a mailbox
+**Rule 1 requires the tool to be closed before it is released**, and  
+`Mailbox.close(out)` has already given them back. **`release` never sees a mailbox  
 with anything in it.**
 
 ### `Q-C` — does `Pool.release` gain one? **Does not arise.** Same reason: `Pool.close` has already given everything to `on_close`.
 
 ### The `Q5` contradiction. **Dissolved with `Q-B`.**
 
-The second review called this the largest problem in `-002`: the `Q5` ruling of
-2026-08-27 rested on **the client's code is unaffected either way**, while `Q-B`
+The second review called this the largest problem in `-002`: the `Q5` ruling of  
+2026-08-27 rested on **the client's code is unaffected either way**, while `Q-B`  
 proposed a public signature change that necessarily changed client code.
 
-**No signature changes**, so the `Q5` ruling stands as written and needs no
-re-wording. **What `Q5` does gain is a precondition** — closed **and quiet** —
+**No signature changes**, so the `Q5` ruling stands as written and needs no  
+re-wording. **What `Q5` does gain is a precondition** — closed **and quiet** —  
 which is a rule on when a caller may act, not a change to what they write.
 
 ---
@@ -732,11 +732,11 @@ which is a rule on when a caller may act, not a change to what they write.
 
 ## The feasibility probe, and what is left of it
 
-**Run at 3TK-51, before the ruling.** A scratch module compiled against `3tk/src`
-in all four builds: a `usz` counter under a `Mutex`, four worker threads entering
-under the mutex, working **outside** it — the pool's hook window — and leaving
-under it; a waiter blocking on the `ConditionVariable` until the counter reached
-zero; the condition variable and the mutex destroyed and the memory freed
+**Run at 3TK-51, before the ruling.** A scratch module compiled against `3tk/src`  
+in all four builds: a `usz` counter under a `Mutex`, four worker threads entering  
+under the mutex, working **outside** it — the pool's hook window — and leaving  
+under it; a waiter blocking on the `ConditionVariable` until the counter reached  
+zero; the condition variable and the mutex destroyed and the memory freed  
 afterwards; and `wait_until` with no signal.
 
 **What it printed, in every one of the four builds:**
@@ -749,50 +749,50 @@ afterwards; and `wait_until` with no signal.
 PROBE OK
 ```
 
-**Most of it is no longer load-bearing.** The probe was built to answer *can a
-release wait for a counter and then destroy what it waited on*. **Nothing waits
-any more**, so the waiting half of it is now background. Two findings survive and
+**Most of it is no longer load-bearing.** The probe was built to answer *can a  
+release wait for a counter and then destroy what it waited on*. **Nothing waits  
+any more**, so the waiting half of it is now background. Two findings survive and  
 are still used:
 
 - **A `ConditionVariable` and a `Mutex` can be destroyed, and the block holding
-  them freed, with no fault in any build.** Section 7 still needs this, and still
+  them freed, with no fault in any build.** Section 7 still needs this, and still  
   does not know the exact order — the probe's structs were not the port's.
 - **In the four builds tested, `wait_until` with no signal returned a fault, and
-  that fault was `thread::WAIT_TIMEOUT`** — matching what `mailbox.c3:255-257`
-  and `pool.c3:368-370` already rely on. **What four runs showed**, not a
+  that fault was `thread::WAIT_TIMEOUT`** — matching what `mailbox.c3:255-257`  
+  and `pool.c3:368-370` already rely on. **What four runs showed**, not a  
   statement about the only value the standard library may return.
 
-**One correction carried forward.** The line reading `release returned` is the
-probe's own wording; **no `release` of this port ran.** What the run establishes
+**One correction carried forward.** The line reading `release returned` is the  
+probe's own wording; **no `release` of this port ran.** What the run establishes  
 is that the sequence completed in a scratch module.
 
-**The scratch module was written outside `3tk/`, run from there, and removed.
+**The scratch module was written outside `3tk/`, run from there, and removed.  
 `3tk/` is clean.**
 
 ## Review history
 
-**Two reviews, both by the same reviewer, both in `backup/`.** Their findings are
+**Two reviews, both by the same reviewer, both in `backup/`.** Their findings are  
 in the sections above; this is the record of where they came from.
 
-**Round 1, on `-001` — twenty points.** It asked for the lifetime invariant to be
-stated before the mechanism; for *active operation* to be defined rather than
-described; for `close` to be counted as active; for the destruction ordering not
-to be prescribed; for Race A and Race B to be named; and for the probe not to
-overclaim. **Its sharpest contribution was the separation of lifetime waiting
-from hook serialization**, which is what made `Q-A` answerable — and, in the end,
+**Round 1, on `-001` — twenty points.** It asked for the lifetime invariant to be  
+stated before the mechanism; for *active operation* to be defined rather than  
+described; for `close` to be counted as active; for the destruction ordering not  
+to be prescribed; for Race A and Race B to be named; and for the probe not to  
+overclaim. **Its sharpest contribution was the separation of lifetime waiting  
+from hook serialization**, which is what made `Q-A` answerable — and, in the end,  
 what made it unnecessary.
 
-**Round 2, on `-002` — thirty-three points.** Its central finding: the document
-declared `Q-A` open and then wrote six sections as though one variant already
-held. It also found three things missing — a hook must not wait on the release
-waiting for it; the release wait must be a predicate loop and a broadcast is only
-a wake-up; the `release_vs_close` programs had no oracle — and four claims
-stronger than their evidence. **The first of the three missing items is now part
+**Round 2, on `-002` — thirty-three points.** Its central finding: the document  
+declared `Q-A` open and then wrote six sections as though one variant already  
+held. It also found three things missing — a hook must not wait on the release  
+waiting for it; the release wait must be a predicate loop and a broadcast is only  
+a wake-up; the `release_vs_close` programs had no oracle — and four claims  
+stronger than their evidence. **The first of the three missing items is now part  
 of why the ruling went the way it did.**
 
-**Both reviewers recommended the waiting design.** Neither was asked whether the
-hazard should be absorbed by the port or stated as a rule; both were reviewing a
-proposal that already assumed the first. **The ruling of 2026-08-28 answered the
+**Both reviewers recommended the waiting design.** Neither was asked whether the  
+hazard should be absorbed by the port or stated as a rule; both were reviewing a  
+proposal that already assumed the first. **The ruling of 2026-08-28 answered the  
 question that was never put to them.**
 
 ## What changed from `-003`
@@ -813,14 +813,14 @@ question that was never put to them.**
 | **the probe** | narrowed to the two findings still used |
 | **the whole document** | reorganized: contract, mechanism, tools, consequences, programs, open, appendix. The repetition the second review counted across a dozen sections is gone |
 
-**One thing deliberately not removed:** every description of the hazard. The race,
-the hook window, the parked receiver, why the mutex proves nothing. **A rule that
-is not explained is a rule that gets deleted by someone who does not know why it
+**One thing deliberately not removed:** every description of the hazard. The race,  
+the hook window, the parked receiver, why the mutex proves nothing. **A rule that  
+is not explained is a rule that gets deleted by someone who does not know why it  
 is there.**
 
 ## Verification
 
-Run live on 2026-08-28, after the document was written and with no source
+Run live on 2026-08-28, after the document was written and with no source  
 changed.
 
 | check | result |

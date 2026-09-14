@@ -79,7 +79,7 @@ The two `pool.c3` sites are inside `<* *>`.
 
 ## 4. What was done, 2026-08-27
 
-Two of the three sites contradicted themselves. The truthful lines sat right
+Two of the three sites contradicted themselves. The truthful lines sat right  
 beside the stale one.
 
 `3tk/src/pool.c3:92`, the hooks interface.

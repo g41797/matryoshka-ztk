@@ -157,7 +157,7 @@ With `static`, every thread gets its own `PolyTag`.
 
 Every thread therefore computes a different type ID for the same type.
 
-An item created on thread A and received on thread B has a tag that matches
+An item created on thread A and received on thread B has a tag that matches  
 nothing on thread B.
 
 `fromPoly` returns `null`.
@@ -190,7 +190,7 @@ Separately compiled objects each emit the instance, and the linker merges them.
 
 So there is one `_tag` for `Request` in the final binary.
 
-If you ever observe two different tags for one type, you are looking at two
+If you ever observe two different tags for one type, you are looking at two  
 copies of the library in one process, not at a template problem.
 
 ---
@@ -251,10 +251,10 @@ Then the cast is a plain reinterpret and the subtraction disappears.
 
 Zig cannot promise this.
 
-Zig may reorder the fields of an ordinary struct, which is exactly why
+Zig may reorder the fields of an ordinary struct, which is exactly why  
 `@fieldParentPtr` exists as a compiler intrinsic.
 
-D's layout rule makes the offset-zero mandate enforceable with a `static
+D's layout rule makes the offset-zero mandate enforceable with a `static  
 assert`, and the arithmetic form correct either way.
 
 Mandate it or don't.
@@ -286,7 +286,7 @@ auto p = RequestHelper.fromPoly(node);
 
 Same shape as the Zig call site.
 
-No `comptime` keyword — a template argument is a compile-time argument by
+No `comptime` keyword — a template argument is a compile-time argument by  
 construction.
 
 ---
@@ -350,7 +350,7 @@ It is something the author cannot spell wrong.
 
 Keep the `static assert` on the offset in `PolyHelper`, not in the mixin.
 
-Inside the mixin, the struct's layout is not finished yet, and asking for
+Inside the mixin, the struct's layout is not finished yet, and asking for  
 `offsetof` there is asking too early.
 
 ---
@@ -529,7 +529,7 @@ struct Mbox
 Two details in `create` and `destroy` carry over from the Zig, and both matter:
 
 - `*p = T.init` before `initItem`. D structs have no default constructor, so
-  this is the D form of Zig's `item.* = .{}`. If `T` has a destructor or a
+  this is the D form of Zig's `item.* = .{}`. If `T` has a destructor or a  
   postblit, use `core.lifetime.emplace` instead.
 - `destroy` empties the Slot **before** it frees. A second `destroy` on the same
   Slot then does nothing, which is what makes release-before-acquisition safe.
@@ -570,8 +570,8 @@ State kept in an item cannot validate this.
 
 Here is where writing your own list pays.
 
-In Zig, `std.DoublyLinkedList.popFirst` leaves the removed node's links intact,
-so `reset` has to be called by hand, and forgetting it produces false positives
+In Zig, `std.DoublyLinkedList.popFirst` leaves the removed node's links intact,  
+so `reset` has to be called by hand, and forgetting it produces false positives  
 from `isLinked` for the rest of the program's life.
 
 Your own list calls `reset` inside `popFirst`, `popLast` and `remove`.
@@ -598,10 +598,10 @@ The hazard stops existing rather than being documented.
 
 Two rows are the whole story.
 
-D loses `@fieldParentPtr` and gains deterministic layout, so the intrinsic is
+D loses `@fieldParentPtr` and gains deterministic layout, so the intrinsic is  
 replaced by a constant and an assert.
 
-D gains `mixin template`, so the one thing a user of the toolkit can get wrong
+D gains `mixin template`, so the one thing a user of the toolkit can get wrong  
 — forgetting the embedded node — stops being possible.
 
 ---

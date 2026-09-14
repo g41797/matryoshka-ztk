@@ -1,14 +1,14 @@
 # C3 capability study (002)
 
-Stage 3TK-4, extended by 3TK-72 on 2026-09-09 with the failure half of Q6 —
-`defer catch`, and the fault it can bind. `001` is in this folder's `backup/`,
+Stage 3TK-4, extended by 3TK-72 on 2026-09-09 with the failure half of Q6 —  
+`defer catch`, and the fault it can bind. `001` is in this folder's `backup/`,  
 which is transient.
 
 Stage 3TK-4. The capability questionnaire of
 [matryoshka-specification-001.md](../common/backup/matryoshka-specification-001.md) Part 21,
 answered for C3, with a citation per answer.
 
-Every answer marked **verified** was compiled and run. Every answer marked
+Every answer marked **verified** was compiled and run. Every answer marked  
 **read** comes from the stdlib sources only.
 
 ## The toolchain measured
@@ -23,12 +23,12 @@ Citations are `file:line` under `lib/std/`.
 
 ## What a probe is
 
-A probe is a small program written for one question, compiled, and run. Its
-output is quoted in the answer. Probe sources are reproduced inline here rather
+A probe is a small program written for one question, compiled, and run. Its  
+output is quoted in the answer. Probe sources are reproduced inline here rather  
 than kept as files, so this document is self-contained.
 
-Twelve probes were run for `001`, and **seven more for Q6 in `002`**, five of
-them negative. A negative probe is expected to fail to compile, and the
+Twelve probes were run for `001`, and **seven more for Q6 in `002`**, five of  
+them negative. A negative probe is expected to fail to compile, and the  
 compiler's message is the evidence.
 
 ## The short answer
@@ -48,8 +48,8 @@ compiler's message is the evidence.
 | Q11 | Build modes | **yes, with a trap** — see Q11 |
 | Q12 | Compile-time reflection on fields | **yes** — `$Type::members` with `.name`, `.type`, `.offset` |
 
-Eleven of twelve are a clean yes. C3 is a better host for Matryoshka than Zig
-0.16 is, on every axis the specification measures except one — Q4 — and the
+Eleven of twelve are a clean yes. C3 is a better host for Matryoshka than Zig  
+0.16 is, on every axis the specification measures except one — Q4 — and the  
 excluded surface of Part 16 shrinks by a whole file.
 
 ---
@@ -58,14 +58,14 @@ excluded surface of Part 16 shrinks by a whole file.
 
 **Yes. Generic modules.** Verified.
 
-A module is parameterized on a type, and every declaration inside it is
+A module is parameterized on a type, and every declaration inside it is  
 generated per instantiation.
 
 ```c3
 module mtk::helper <Type>;
 ```
 
-*Read*: `collections/list.c3:4`, `collections/linkedlist.c3:4`,
+*Read*: `collections/list.c3:4`, `collections/linkedlist.c3:4`,  
 `collections/maybe.c3:1` — the whole stdlib collection layer is built this way.
 
 Instantiation is by brace, one alias per generated declaration:
@@ -77,7 +77,7 @@ alias msg_from_any = mtk::helper::from_any{Msg};
 
 *Read*: `hash/sha256.c3:8-9`, `math/complex.c3:7-11`.
 
-**Verified.** A complete per-type helper — Part 7.2's seven members — was
+**Verified.** A complete per-type helper — Part 7.2's seven members — was  
 generated for two outer types and exercised:
 
 ```
@@ -92,26 +92,26 @@ mismatch: nothing    : true
 mismatch: untouched  : true
 ```
 
-The last two lines are Part 7.2's moving crossing on a mismatch: nothing
+The last two lines are Part 7.2's moving crossing on a mismatch: nothing  
 returned, Slot untouched.
 
-**Consequence for the port.** Part 7.1's SHOULD is met in full. The helper is
+**Consequence for the port.** Part 7.1's SHOULD is met in full. The helper is  
 generated, not hand-written.
 
-**Against the drafts.** `3tk-polyhelper.md` proposed
-`macro PolyHelper(Type) { ... fn ... }` with a body full of function
-declarations. That is not the mechanism. A C3 macro does not declare
-functions; a generic *module* does. The draft's overall shape survives; its
+**Against the drafts.** `3tk-polyhelper.md` proposed  
+`macro PolyHelper(Type) { ... fn ... }` with a body full of function  
+declarations. That is not the mechanism. A C3 macro does not declare  
+functions; a generic *module* does. The draft's overall shape survives; its  
 spelling does not.
 
 ---
 
 # Q2 — A per-type identity
 
-**Yes. `typeid` is native, and it satisfies every clause of Part 5.1.**
+**Yes. `typeid` is native, and it satisfies every clause of Part 5.1.**  
 Verified.
 
-The spelling is `Type::typeid`, with a double colon. `Type.typeid` does not
+The spelling is `Type::typeid`, with a double colon. `Type.typeid` does not  
 compile — *"A type can't appear here."*
 
 Probe output:
@@ -134,23 +134,23 @@ Clause by clause against Part 5.1:
 | Two of different types never do | as above |
 | O(1) to compare | a pointer-sized value, compared by `==` |
 
-Part 5.4 — *stored, not computed* — holds: the value assigns to a struct field
+Part 5.4 — *stored, not computed* — holds: the value assigns to a struct field  
 and reads back equal.
 
-Part 5.3's second half does not apply. C3 has a native identifier, so the
-address-of-a-per-type-global trick, and ztk's mutable-byte defence against
+Part 5.3's second half does not apply. C3 has a native identifier, so the  
+address-of-a-per-type-global trick, and ztk's mutable-byte defence against  
 linker merging, are both unnecessary.
 
-*Read*: `core/types.c3:83` `typeid.is_subtype_of`, `core/builtin.c3:145`
-`@typeid`, `core/builtin.c3:760` `typeid.hash`, `collections/object.c3:13` —
+*Read*: `core/types.c3:83` `typeid.is_subtype_of`, `core/builtin.c3:145`  
+`@typeid`, `core/builtin.c3:760` `typeid.hash`, `collections/object.c3:13` —  
 the stdlib itself stores a `typeid` in a struct field for exactly this purpose.
 
-**This closes conflict C1 of the review.** Four drafts assumed it; the fifth
-flagged it as the dangerous area. The four were right, and the assumption is
+**This closes conflict C1 of the review.** Four drafts assumed it; the fifth  
+flagged it as the dangerous area. The four were right, and the assumption is  
 now measured rather than assumed.
 
-**One thing the ztk model gains.** Part 6.5 records that a `switch` over ztk's
-tags does not compile on any backend, because a tag is a linker-assigned
+**One thing the ztk model gains.** Part 6.5 records that a `switch` over ztk's  
+tags does not compile on any backend, because a tag is a linker-assigned  
 address. In C3 it compiles:
 
 ```c3
@@ -162,8 +162,8 @@ switch (handle.type)
 }
 ```
 
-Verified — the probe printed `switch: Job`. So Part 6.5's dispatch table is
-optional for this port. The table remains the better shape where handlers are
+Verified — the probe printed `switch: Job`. So Part 6.5's dispatch table is  
+optional for this port. The table remains the better shape where handlers are  
 registered at runtime; the branch is available where they are not.
 
 ---
@@ -172,7 +172,7 @@ registered at runtime; the branch is available where they are not.
 
 **Yes, both ways.** Verified.
 
-**By value, with implicit conversion.** `inline` on the field gives an implicit
+**By value, with implicit conversion.** `inline` on the field gives an implicit  
 outer-pointer to inner-pointer conversion:
 
 ```c3
@@ -183,7 +183,7 @@ AnyNode* an = pm;      // implicit
 
 Probe: `implicit Msg* -> AnyNode* : true`, and the result equals `&m.node`.
 
-**At any offset, by arithmetic.** The offset of a field is available at compile
+**At any offset, by arithmetic.** The offset of a field is available at compile  
 time (Q12), so the way back works from a field that is not first:
 
 ```c3
@@ -193,12 +193,12 @@ Job* back = (Job*)((char*)node_ptr - OFF);
 
 Probe: `Job inner offset : 8`, `inner -> outer at offset 8: true`.
 
-**Consequence for the port.** Part 4.3's fallback — *"A port whose cast needs
-offset zero fixes the field at offset zero instead"* — is not needed. C3 has
+**Consequence for the port.** Part 4.3's fallback — *"A port whose cast needs  
+offset zero fixes the field at offset zero instead"* — is not needed. C3 has  
 the full freedom the specification's SHOULD describes.
 
-**This closes conflict C2 of the review.** `3tk-polyhelper.md` assumed offset
-zero and a plain cast; `3tk-design-notes.md` and `3tk-porting-notes.md` wanted
+**This closes conflict C2 of the review.** `3tk-polyhelper.md` assumed offset  
+zero and a plain cast; `3tk-design-notes.md` and `3tk-porting-notes.md` wanted  
 `inline`. Both compile. They are not, however, the same design:
 
 | | `inline AnyNode node` | `AnyNode node` at any offset |
@@ -207,19 +207,19 @@ zero and a plain cast; `3tk-design-notes.md` and `3tk-porting-notes.md` wanted
 | Field may sit anywhere | yes | yes |
 | Reader sees the crossing | **no** | yes |
 
-The second column is what Part 7.5 asks for: *every* crossing goes through the
-helper, so the arithmetic appears in one file. `inline` makes one direction of
-the crossing invisible at the call site. That is a real argument against
+The second column is what Part 7.5 asks for: *every* crossing goes through the  
+helper, so the arithmetic appears in one file. `inline` makes one direction of  
+the crossing invisible at the call site. That is a real argument against  
 `inline` that neither draft raised, and it is the owner's to weigh.
 
-Note also Part 10.1: the four names exist so a reader of a signature knows
+Note also Part 10.1: the four names exist so a reader of a signature knows  
 which side of the border they are on. An implicit conversion erases that.
 
 ---
 
 # Q4 — Opaque types or private fields
 
-**No private fields. A real opaque type instead.** Verified, including two
+**No private fields. A real opaque type instead.** Verified, including two  
 negative probes.
 
 **Per-field visibility does not exist.**
@@ -230,8 +230,8 @@ struct Thing { int a; int b @private; }
 
 > `Error: '@private' cannot be used here.`
 
-Nothing in the stdlib uses per-field visibility. `@private` and `@local` apply
-to declarations — functions, globals, constants, whole types.
+Nothing in the stdlib uses per-field visibility. `@private` and `@local` apply  
+to declarations — functions, globals, constants, whole types.  
 *Read*: `collections/list.c3:426`, `core/dstring.c3:10`, `core/dstring.c3:749`.
 
 **A private struct behind a public alias hides nothing.**
@@ -241,7 +241,7 @@ struct PoolImpl @private { ... int in_pool; ... }
 alias Pool = PoolImpl;
 ```
 
-Another module reads `p.in_pool` and it compiles. The alias re-exports the
+Another module reads `p.in_pool` and it compiles. The alias re-exports the  
 layout.
 
 **A distinct opaque type does work.**
@@ -255,23 +255,23 @@ From another module: `p.count()` works, and `p.in_pool` gives
 
 > `Error: There is no field or method 'Pool.in_pool'.`
 
-**Consequence for the port.** Part 11.11 SHOULD says *"Where the language has
-opaque types or private fields, they are hidden"*, and calls this a place where
-a port can be better than ztk. C3 can be better, but only by the opaque route,
+**Consequence for the port.** Part 11.11 SHOULD says *"Where the language has  
+opaque types or private fields, they are hidden"*, and calls this a place where  
+a port can be better than ztk. C3 can be better, but only by the opaque route,  
 and the opaque route costs something the drafts did not price:
 
 - A `typedef Pool = void` is no longer a struct that embeds an inner. Part 11.1
-  MUST — *the two containers are themselves items* — then has to be satisfied
-  through the implementation struct, and the helper for the container is bound
+  MUST — *the two containers are themselves items* — then has to be satisfied  
+  through the implementation struct, and the helper for the container is bound  
   to `PoolImpl`, not to `Pool`.
 - Every method body begins with a cast.
 
-**Against the drafts.** `3tk-design-notes.md` D15 and `3tk-porting-notes.md`
-N19 both state that C3 private fields let the struct stay public while its
-state is hidden, and N19 builds a whole separation of concerns on it —
-*"private fields hide implementation state; typed handles restrict API usage.
-Do not mix these two reasons"*. The first half of that sentence describes a
-feature C3 does not have in 0.8.3. This is the study's sharpest correction, and
+**Against the drafts.** `3tk-design-notes.md` D15 and `3tk-porting-notes.md`  
+N19 both state that C3 private fields let the struct stay public while its  
+state is hidden, and N19 builds a whole separation of concerns on it —  
+*"private fields hide implementation state; typed handles restrict API usage.  
+Do not mix these two reasons"*. The first half of that sentence describes a  
+feature C3 does not have in 0.8.3. This is the study's sharpest correction, and  
 it reopens a design question both drafts considered settled.
 
 The honest options for the port are three, and none is free:
@@ -280,7 +280,7 @@ The honest options for the port are three, and none is free:
    better.
 2. `typedef Pool = void` — real hiding, at the cost above.
 3. Keep the fields public and rely on the helper border. Part 7.5 already makes
-   the crossing single-sited; the fields being reachable is then a
+   the crossing single-sited; the fields being reachable is then a  
    documentation problem, not a structural one.
 
 ---
@@ -309,13 +309,13 @@ Three further facts, each verified:
 - An interface value **carries the concrete typeid**: `h.type == Hk::typeid`.
 - The stdlib's own `Allocator` is an interface. *Read*: `core/alloc.c3:17`.
 
-**Consequence for the port.** Part 12.1 MUST — *"The port spells them in the
-language's own interface mechanism"* — is met directly. The `ctx` field of the
-ztk hook struct disappears, because the implementing object is the context.
+**Consequence for the port.** Part 12.1 MUST — *"The port spells them in the  
+language's own interface mechanism"* — is met directly. The `ctx` field of the  
+ztk hook struct disappears, because the implementing object is the context.  
 Part 21 Q5's fallback is not needed.
 
-**This closes conflict C5 of the review**, on the mechanism. It does not close
-the signatures. The probe deliberately used the signatures the *specification*
+**This closes conflict C5 of the review**, on the mechanism. It does not close  
+the signatures. The probe deliberately used the signatures the *specification*  
 requires, not the ones `3tk-additions.md` proposed:
 
 - `on_get` takes the wanted identity and a **Slot to fill** — Part 12.2, "The
@@ -325,11 +325,11 @@ requires, not the ones `3tk-additions.md` proposed:
 - `on_close` takes **the list of what remained** — Part 12.2, and Part 11.8,
   since nothing comes back to the caller.
 
-All three compile as written. The draft's three signatures were not a C3
+All three compile as written. The draft's three signatures were not a C3  
 limitation; they were a misreading.
 
-`tags` — Part 11.7's fixed, non-empty set of identities — is a creation
-parameter of the pool, not a member of the hook object. Nothing in C3 pushes it
+`tags` — Part 11.7's fixed, non-empty set of identities — is a creation  
+parameter of the pool, not a member of the hook object. Nothing in C3 pushes it  
 either way, and `3tk-additions.md` A6's hedge was right to hedge.
 
 ---
@@ -338,7 +338,7 @@ either way, and `3tk-additions.md` A6's hedge was right to hedge.
 
 **Yes. `defer`, in three forms.** Verified.
 
-The stdlib relies on it heavily, including for allocator swapping.
+The stdlib relies on it heavily, including for allocator swapping.  
 *Read*: `core/mem.c3:510`.
 
 There is also a scoped-lock macro that takes a body:
@@ -357,11 +357,11 @@ macro void Mutex.@in_lock(&mutex; @body)
 | `defer catch` | the **fault** exit only |
 | `defer try` | the **success** exit only |
 
-**`defer catch` is Zig's `errdefer`.** `defer try` has no Zig spelling: it is
-the cleanup that runs only when the function succeeded, which in Zig is written
+**`defer catch` is Zig's `errdefer`.** `defer try` has no Zig spelling: it is  
+the cleanup that runs only when the function succeeded, which in Zig is written  
 by hand at the end of the happy path.
 
-**All three verified together, and the two conditional forms are exclusive** —
+**All three verified together, and the two conditional forms are exclusive** —  
 exactly one fires per exit. A function carrying both, called twice:
 
 ```
@@ -374,15 +374,15 @@ succeeding:
 
 ## `defer catch` can bind the fault
 
-**Documented and verified.** `MANUAL.md` §6_12_2 gives both forms —
-`defer catch { ... }` and `defer (catch err) { ... }` — and says of the second:
-*"In the latter form the fault is captured, which can be convenient for logging
-the fault."* The manual's own worked example frees a buffer and logs inside one.
-**3TK-72 probed it on 2026-09-09 and it behaves as documented**; the probe is
-kept here because the study is meant to be self-contained, not because the
+**Documented and verified.** `MANUAL.md` §6_12_2 gives both forms —  
+`defer catch { ... }` and `defer (catch err) { ... }` — and says of the second:  
+*"In the latter form the fault is captured, which can be convenient for logging  
+the fault."* The manual's own worked example frees a buffer and logs inside one.  
+**3TK-72 probed it on 2026-09-09 and it behaves as documented**; the probe is  
+kept here because the study is meant to be self-contained, not because the  
 manual was in doubt.
 
-The fault is available the way `errdefer |err|` makes it available, and the
+The fault is available the way `errdefer |err|` makes it available, and the  
 parentheses go around the whole `catch f` — **not** around the binding:
 
 ```c3
@@ -404,7 +404,7 @@ fn void? work(bool fail, bool second)
 }
 ```
 
-Called three times — failing with `BOOM`, failing with `OTHER`, and
+Called three times — failing with `BOOM`, failing with `OTHER`, and  
 succeeding — it prints:
 
 ```
@@ -418,12 +418,12 @@ no failure:
   success path
 ```
 
-So the binding carries **the actual fault**, not a generic marker, and the defer
+So the binding carries **the actual fault**, not a generic marker, and the defer  
 does not run on the success path.
 
-**Five spellings were probed and all five are refused.** None of them is in the
-manual; they are the shapes a reader coming from Zig, or guessing, will try
-first. The error messages are misleading, which is the reason to write them
+**Five spellings were probed and all five are refused.** None of them is in the  
+manual; they are the shapes a reader coming from Zig, or guessing, will try  
+first. The error messages are misleading, which is the reason to write them  
 down:
 
 | tried | c3c 0.8.3 says |
@@ -434,40 +434,40 @@ down:
 | `defer catch anyfault f ...` | *Expected a type here.* |
 | `defer catch \|f\| ...` (Zig's own) | *An expression was expected.* |
 
-*Expected a type here* reads as though a type annotation would fix it. It would
+*Expected a type here* reads as though a type annotation would fix it. It would  
 not. **The paren goes around `catch f`.**
 
-**A vocabulary note, because the manual and the port differ.** `MANUAL.md` calls
-the captured value an **Excuse** — what an Optional carries when it has no
-result. 3tk and the shared specification call it a **fault** throughout, and
+**A vocabulary note, because the manual and the port differ.** `MANUAL.md` calls  
+the captured value an **Excuse** — what an Optional carries when it has no  
+result. 3tk and the shared specification call it a **fault** throughout, and  
 this study keeps the port's word. They are the same value.
 
 ## Where the port stands on it
 
-**Nothing in `mtk` uses the bound form, and nothing in the C3 standard library
-does either** — every site is the plain `defer catch`, including the four in
-`std::threads`' channels. `Mailbox.create` and `Pool.create` have no use for it:
+**Nothing in `mtk` uses the bound form, and nothing in the C3 standard library  
+does either** — every site is the plain `defer catch`, including the four in  
+`std::threads`' channels. `Mailbox.create` and `Pool.create` have no use for it:  
 they unwind the same way whichever `init` failed.
 
-**The two rules that place a `defer catch` correctly**, which is what
-`Mailbox.create` demonstrates and what `MANUAL.md` §6_12_2 cautions about in its
-own words — *"make sure the `defer` or `defer catch` are declared as close to
-the resource declaration as possible"*, because a `!` rethrow before the
+**The two rules that place a `defer catch` correctly**, which is what  
+`Mailbox.create` demonstrates and what `MANUAL.md` §6_12_2 cautions about in its  
+own words — *"make sure the `defer` or `defer catch` are declared as close to  
+the resource declaration as possible"*, because a `!` rethrow before the  
 declaration leaks:
 
 - **A cleanup is registered on the far side of the call that creates the thing**
-  — `defer catch mb._mu.destroy();` goes *after* `mb._mu.init()!`, never before,
-  because a defer is a runtime registration and registering it earlier arms a
+  — `defer catch mb._mu.destroy();` goes *after* `mb._mu.init()!`, never before,  
+  because a defer is a runtime registration and registering it earlier arms a  
   `destroy` on a mutex that `init` may never have built.
 - **Defers run LIFO**, so resources are released in the reverse of the order
   they were acquired — the mutex before the block it lives in.
 
-**A fault is returned with `~`, not `?`** — `return BOOM~;`. The `?` spelling is
-another language's habit, and 3TK-50 step 8 wrote it once before the build
+**A fault is returned with `~`, not `?`** — `return BOOM~;`. The `?` spelling is  
+another language's habit, and 3TK-50 step 8 wrote it once before the build  
 caught it.
 
-**Consequence for the port.** Part 9.7 SHOULD — the release of a Slot is
-arranged *before* the acquisition that fills it — is one line. The
+**Consequence for the port.** Part 9.7 SHOULD — the release of a Slot is  
+arranged *before* the acquisition that fills it — is one line. The  
 write-it-at-every-exit fallback is not needed.
 
 ---
@@ -476,7 +476,7 @@ write-it-at-every-exit fallback is not needed.
 
 **Yes, all four, and the timed wait is the good kind.** Verified.
 
-*Read*: `threads/thread.c3:11-17` — `Mutex`, `TimedMutex`,
+*Read*: `threads/thread.c3:11-17` — `Mutex`, `TimedMutex`,  
 `ConditionVariable`, `Thread`, `OnceFlag`, all as typedefs over native types.
 
 The condition variable has **three** waits. *Read*: `threads/thread.c3:78-104`.
@@ -487,8 +487,8 @@ The condition variable has **three** waits. *Read*: `threads/thread.c3:78-104`.
 | `wait_timeout(mutex, ms or Duration)` | relative |
 | `wait_until(mutex, Time)` | **absolute deadline** |
 
-This matters more than it looks. Part 2.5 MUST — *the deadline is anchored
-once, before the loop* — and invariant 4 of Part 18. The relative form
+This matters more than it looks. Part 2.5 MUST — *the deadline is anchored  
+once, before the loop* — and invariant 4 of Part 18. The relative form  
 recomputes the deadline on every call:
 
 ```c3
@@ -501,9 +501,9 @@ fn void? NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, long ms)
 
 *Read*: `threads/os/thread_posix.c3:158-162`.
 
-**So a wait loop written on `wait_timeout` violates Part 2.5**, and does so
-silently — every spurious wakeup restarts the full timeout, without bound.
-This is exactly the defect the review found in `3tk-poc.md` (row P7), and C3
+**So a wait loop written on `wait_timeout` violates Part 2.5**, and does so  
+silently — every spurious wakeup restarts the full timeout, without bound.  
+This is exactly the defect the review found in `3tk-poc.md` (row P7), and C3  
 makes it easy to write. The port anchors once and loops on `wait_until`.
 
 Verified, both directions:
@@ -516,24 +516,24 @@ past deadline times out : true
 
 A deadline already in the past returns immediately with `thread::WAIT_TIMEOUT`.
 
-The timeout is reported as a fault, not a return value:
-`if (catch f = cv.wait_until(&mu, deadline)) { ... f == thread::WAIT_TIMEOUT ... }`.
-*Read*: `threads/thread.c3:22-31` for the `faultdef` set, and
+The timeout is reported as a fault, not a return value:  
+`if (catch f = cv.wait_until(&mu, deadline)) { ... f == thread::WAIT_TIMEOUT ... }`.  
+*Read*: `threads/thread.c3:22-31` for the `faultdef` set, and  
 `threads/os/thread_posix.c3:179-194` for `ETIMEDOUT`.
 
-`broadcast` exists — *read*: `threads/thread.c3:81` — which Part 11.5's
+`broadcast` exists — *read*: `threads/thread.c3:81` — which Part 11.5's  
 wake-every-waiter needs.
 
-**Consequence for the port. Part 16 row 7 is deleted.** ztk hand-wrote a timed
-condition wait, 71 lines, because Zig 0.16 has none. C3 has one, in the
-stdlib, on an absolute deadline. Rows 1 to 11 of Part 16 go with the rest of
-`std.Io`. Every draft agreed there is no `std.Io` equivalent, and every draft
+**Consequence for the port. Part 16 row 7 is deleted.** ztk hand-wrote a timed  
+condition wait, 71 lines, because Zig 0.16 has none. C3 has one, in the  
+stdlib, on an absolute deadline. Rows 1 to 11 of Part 16 go with the rest of  
+`std.Io`. Every draft agreed there is no `std.Io` equivalent, and every draft  
 was right.
 
-**Interruption — Part 2.9, a SHOULD — has no native support.** `INTERRUPTED`
-exists as a fault, but only for `sleep` and for `TimedMutex.lock_timeout` on
-`EINTR`. *Read*: `threads/os/thread_posix.c3:94`, `:334`. There is no
-interruptible condition wait. A port that wants Part 2.9 builds it from a flag
+**Interruption — Part 2.9, a SHOULD — has no native support.** `INTERRUPTED`  
+exists as a fault, but only for `sleep` and for `TimedMutex.lock_timeout` on  
+`EINTR`. *Read*: `threads/os/thread_posix.c3:94`, `:334`. There is no  
+interruptible condition wait. A port that wants Part 2.9 builds it from a flag  
 and a broadcast. Part 20 decision 8 stands open, and C3 does not settle it.
 
 ---
@@ -542,7 +542,7 @@ and a broadcast. Part 20 decision 8 stands open, and C3 does not settle it.
 
 **Yes.** Verified.
 
-`Allocator` is an interface, so it is one pointer-plus-type value that stores
+`Allocator` is an interface, so it is one pointer-plus-type value that stores  
 in a field. *Read*: `core/alloc.c3:17`.
 
 ```c3
@@ -550,22 +550,22 @@ struct PoolImpl { inline AnyNode node; int in_pool; Allocator alloc; }
 fn void Pool.release(&self) { alloc::free(self.alloc, self); }   // no parameter
 ```
 
-Verified: created through `alloc::new(a, PoolImpl)`, released through the kept
+Verified: created through `alloc::new(a, PoolImpl)`, released through the kept  
 allocator with no second argument.
 
-*Read*: `core/alloc.c3:179` `new`, `core/alloc.c3:113` `free`,
-`core/allocators.c3:18` — `mem` is a builtin alias for the thread allocator, so
+*Read*: `core/alloc.c3:179` `new`, `core/alloc.c3:113` `free`,  
+`core/allocators.c3:18` — `mem` is a builtin alias for the thread allocator, so  
 a default exists without a global dependency being forced on the library.
 
-**Consequence for the port.** Part 13.1 SHOULD is met in full, including its
-sharp clause: *no release call takes an allocator as a parameter*. Part 13.5
+**Consequence for the port.** Part 13.1 SHOULD is met in full, including its  
+sharp clause: *no release call takes an allocator as a parameter*. Part 13.5  
 does not apply — allocation is parameterized.
 
-**Conflict C7 of the review stays open, and narrows.** The language imposes
-nothing. Part 13.4 leaves the application-item half to the port, Part 20
-decision 2 lists it, and the first open question in `3tk-status.md` is the same
-question. `3tk-polyhelper.md` H9 wrote `destroy(Allocator, slot)`; that is now
-a choice, not a necessity, and Part 13.1 says which way to choose for the two
+**Conflict C7 of the review stays open, and narrows.** The language imposes  
+nothing. Part 13.4 leaves the application-item half to the port, Part 20  
+decision 2 lists it, and the first open question in `3tk-status.md` is the same  
+question. `3tk-polyhelper.md` H9 wrote `destroy(Allocator, slot)`; that is now  
+a choice, not a necessity, and Part 13.1 says which way to choose for the two  
 containers at least.
 
 ---
@@ -574,7 +574,7 @@ containers at least.
 
 **Yes, and it can be made distinct.** Verified, with two negative probes.
 
-Pointers are nullable by default, so `AnyNode*` is already a two-state
+Pointers are nullable by default, so `AnyNode*` is already a two-state  
 container. That is the transparent option, and it is what the drafts propose.
 
 The distinct option also works:
@@ -589,29 +589,29 @@ and it is enforced in both directions:
 
 > `Error: Implicitly casting 'Slot*' to 'AnyHandle*' (AnyNode**) is not permitted`
 
-A zero-initialized `Slot` is null, so Part 9.2 rule 2 — *a Slot starts empty* —
+A zero-initialized `Slot` is null, so Part 9.2 rule 2 — *a Slot starts empty* —  
 is the default state.
 
-There is also `std::collections::maybe` — a `{value, has_value}` struct,
-generic. *Read*: `collections/maybe.c3:1-8`. It is not needed for a pointer and
+There is also `std::collections::maybe` — a `{value, has_value}` struct,  
+generic. *Read*: `collections/maybe.c3:1-8`. It is not needed for a pointer and  
 costs a word.
 
-**Consequence for the port.** Part 9.9 MAY, and Part 20 decision 1, are live
-and both options are real. The distinct type catches misuse at compile time and
+**Consequence for the port.** Part 9.9 MAY, and Part 20 decision 1, are live  
+and both options are real. The distinct type catches misuse at compile time and  
 costs the language's own null test, exactly as Part 9.9 predicts.
 
-**On conflict C4 of the review — the naming.** The probes make the shape plain.
-The Slot is the nullable handle. `AnyHandle*` is a *pointer to* a Slot, which is
-what Part 9.3 says an acquiring operation takes. Four drafts call the double
-pointer "the Slot". Nothing in C3 forces or excuses that; it is a word to fix,
+**On conflict C4 of the review — the naming.** The probes make the shape plain.  
+The Slot is the nullable handle. `AnyHandle*` is a *pointer to* a Slot, which is  
+what Part 9.3 says an acquiring operation takes. Four drafts call the double  
+pointer "the Slot". Nothing in C3 forces or excuses that; it is a word to fix,  
 and Part 9.2's six rules are unstateable until it is.
 
-**On conflict C10 — typed handles.** The second negative probe is the cost
-`3tk-additions.md` A15 predicted and `3tk-porting-notes.md` N4 did not price:
-a distinct handle type means every Slot-shaped call site writes
-`(AnyHandle*)&h`. Part 7.5 MUST says application code never performs the
-crossing by hand and the arithmetic appears in one file. A cast at every call
-site is the opposite of that. The language confirms the cost; the ruling is
+**On conflict C10 — typed handles.** The second negative probe is the cost  
+`3tk-additions.md` A15 predicted and `3tk-porting-notes.md` N4 did not price:  
+a distinct handle type means every Slot-shaped call site writes  
+`(AnyHandle*)&h`. Part 7.5 MUST says application code never performs the  
+crossing by hand and the arithmetic appears in one file. A cast at every call  
+site is the opposite of that. The language confirms the cost; the ruling is  
 still the owner's.
 
 ---
@@ -624,27 +624,27 @@ still the owner's.
 struct Atomic <Type> { Type data; }
 ```
 
-*Read*: `atomic.c3:10`. Load and store take an `AtomicOrdering` — `RELAXED`,
-`ACQUIRE`, `RELEASE`, `ACQUIRE_RELEASE`, `SEQ_CONSISTENT` — with contracts
-rejecting the invalid combinations. *Read*: `atomic.c3:19-31`.
-`compare_exchange` takes separate success and failure orderings.
+*Read*: `atomic.c3:10`. Load and store take an `AtomicOrdering` — `RELAXED`,  
+`ACQUIRE`, `RELEASE`, `ACQUIRE_RELEASE`, `SEQ_CONSISTENT` — with contracts  
+rejecting the invalid combinations. *Read*: `atomic.c3:19-31`.  
+`compare_exchange` takes separate success and failure orderings.  
 *Read*: `atomic.c3:49`.
 
-There is also a standalone fence: `thread::fence($ordering)`.
+There is also a standalone fence: `thread::fence($ordering)`.  
 *Read*: `threads/thread.c3:66`.
 
 Probe: `atomic acquire load : true`, after a `RELEASE` store.
 
-**Consequence for the port.** Part 15.4's pre-lock fast path is available, and
-Part 15.3's closed flag has its natural spelling. Part 14.2 — *the transfer
-orders memory* — is expressible. Part 20 decision 9 stays a design choice, not
+**Consequence for the port.** Part 15.4's pre-lock fast path is available, and  
+Part 15.3's closed flag has its natural spelling. Part 14.2 — *the transfer  
+orders memory* — is expressible. Part 20 decision 9 stays a design choice, not  
 a capability question.
 
 ---
 
 # Q11 — Build modes
 
-**Yes, and there is a trap the specification's model does not cover.**
+**Yes, and there is a trap the specification's model does not cover.**  
 Verified across four builds.
 
 Two assert forms exist.
@@ -654,7 +654,7 @@ Two assert forms exist.
 | `assert(cond, msg)` | aborts, names the message | **no-op, execution continues** | **undefined behaviour — segfault** |
 | `always_assert(cond, msg)` | aborts | aborts | aborts |
 
-*Read*: `core/builtin.c3:158` — `always_assert` is a plain runtime check with
+*Read*: `core/builtin.c3:158` — `always_assert` is a plain runtime check with  
 `abort`, unconditional.
 
 Build mode is readable at compile time:
@@ -665,33 +665,33 @@ const bool TESTING = $feat(TESTING);
 const CompilerOptLevel COMPILER_OPT_LEVEL = ...;
 ```
 
-*Read*: `core/env.c3:129-140`. Verified: a default build reports
+*Read*: `core/env.c3:129-140`. Verified: a default build reports  
 `SAFE_MODE=true OPT=O0`; `--safe=no -O3` reports `SAFE_MODE=false OPT=O2`.
 
-**The trap.** In ztk's model an assert that is compiled out is *gone*. In C3 at
-`--safe=no` with optimization, a plain `assert` becomes an assumption the
-optimizer is entitled to act on. A violated assert is then not a missed check —
-it is undefined behaviour. The probe segfaults, having printed nothing at all,
+**The trap.** In ztk's model an assert that is compiled out is *gone*. In C3 at  
+`--safe=no` with optimization, a plain `assert` becomes an assumption the  
+optimizer is entitled to act on. A violated assert is then not a missed check —  
+it is undefined behaviour. The probe segfaults, having printed nothing at all,  
 in a program whose only fault is one false `assert`.
 
-**Consequence for the port.** Three places in the specification depend on this,
+**Consequence for the port.** Three places in the specification depend on this,  
 and each gets a different answer:
 
 - **Part 11.12 MUST** — close before release *"stops the program. In every
-  build mode. Not an assert that compiles out."* → `always_assert`. This is the
-  one call the specification refuses to soften, and C3 has exactly the right
+  build mode. Not an assert that compiles out."* → `always_assert`. This is the  
+  one call the specification refuses to soften, and C3 has exactly the right  
   primitive for it.
 - **Part 8.6 SHOULD** — the double check on insert, *"under a build mode that
-  checks"* → guard the O(n) walk with `$if env::COMPILER_SAFE_MODE`, so the
+  checks"* → guard the O(n) walk with `$if env::COMPILER_SAFE_MODE`, so the  
   loop is not merely unchecked in a fast build but absent from it.
 - **Part 15.5 SHOULD** — asserts versus reported outcomes → plain `assert`, and
-  the port writes down that a violated one is UB in an optimized unsafe build,
+  the port writes down that a violated one is UB in an optimized unsafe build,  
   not a silent pass.
 
-Part 20 decision 10 — *where does the O(n) insert check live on a port with no
+Part 20 decision 10 — *where does the O(n) insert check live on a port with no  
 build modes* — does not arise. C3 has build modes.
 
-Tests are first class: `fn ... @test`, run by `c3c compile-test`. Verified:
+Tests are first class: `fn ... @test`, run by `c3c compile-test`. Verified:  
 `1 passed, 0 failed, 0 skipped`.
 
 ---
@@ -714,15 +714,15 @@ name=node offset=8
 name=d    offset=32
 ```
 
-*Read*: `io/formatter.c3:38-48` and `encoding/json_marshal.c3:44` use the same
+*Read*: `io/formatter.c3:38-48` and `encoding/json_marshal.c3:44` use the same  
 mechanism.
 
-The property spellings that exist in 0.8.3, since three drafts guessed
-otherwise: `Type::members`, `Type::name`, `Type::typeid`, `Type::size`,
-`Type::alignment`, `Type::kind`, `Type::inner`, `Type::len`. Not `sizeof`, not
+The property spellings that exist in 0.8.3, since three drafts guessed  
+otherwise: `Type::members`, `Type::name`, `Type::typeid`, `Type::size`,  
+`Type::alignment`, `Type::kind`, `Type::inner`, `Type::len`. Not `sizeof`, not  
 `nameof`, not `membersof`, and not `.offsetof` on a member — it is `.offset`.
 
-**Consequence for the port.** Part 7.4 SHOULD is met at build time, in full,
+**Consequence for the port.** Part 7.4 SHOULD is met at build time, in full,  
 including its last clause — *the message names the offending type*:
 
 ```c3
@@ -735,8 +735,8 @@ Verified against a type with no inner:
 
 That is Part 7.4's four bullets, all four, before the program links.
 
-**One mechanical note worth carrying.** A `return` inside `$foreach` does not
-end compile-time iteration. The offset lookup accumulates into a `var $off` and
+**One mechanical note worth carrying.** A `return` inside `$foreach` does not  
+end compile-time iteration. The offset lookup accumulates into a `var $off` and  
 asserts afterwards; written the obvious way it always reaches the `$error`.
 
 ---
@@ -767,9 +767,9 @@ Two naming hazards found while probing, neither in any draft:
 - **A struct name that is all uppercase is rejected.** `struct H` does not
   compile. Short helper names need a lowercase letter.
 - **`std::collections::anylist` already exists**, and it is a heterogeneous
-  list that **shallow-copies every element and owns the copies**
-  (*read*: `collections/anylist.c3:4-19`). It is the semantic opposite of the
-  Matryoshka list, under the exact name the drafts chose for it. Naming the
+  list that **shallow-copies every element and owns the copies**  
+  (*read*: `collections/anylist.c3:4-19`). It is the semantic opposite of the  
+  Matryoshka list, under the exact name the drafts chose for it. Naming the  
   port's list `AnyList` invites a reader to assume the wrong thing.
 
 ---
@@ -796,9 +796,9 @@ capability study can rule on them.
 
 And one thing the study found that the review did not ask about:
 
-**Q4 reopens a settled question.** `3tk-design-notes.md` D15 and
-`3tk-porting-notes.md` N19 both build on C3 private struct fields. There are
-none. Part 11.11's "a port can be better than ztk here" is still reachable, by
+**Q4 reopens a settled question.** `3tk-design-notes.md` D15 and  
+`3tk-porting-notes.md` N19 both build on C3 private struct fields. There are  
+none. Part 11.11's "a port can be better than ztk here" is still reachable, by  
 the opaque-type route, at a cost neither draft priced.
 
 ---
@@ -824,11 +824,11 @@ the opaque-type route, at a cost neither draft priced.
 - **Part 2.9.** No interruptible condition wait. A port that models
   interruption builds it.
 - **Q11.** A plain `assert` under `--safe=no -O3` is an assumption, not a
-  removed check. Part 11.12's unconditional stop must be `always_assert`, and
+  removed check. Part 11.12's unconditional stop must be `always_assert`, and  
   Part 8.6's O(n) walk must be `$if`-guarded rather than assert-guarded.
 - **Part 8.1.** No intrusive doubly-linked list in the stdlib. The stdlib's
-  `linkedlist` allocates a node per element (*read*:
-  `collections/linkedlist.c3:9-14`) and its `anylist` copies. The port writes
+  `linkedlist` allocates a node per element (*read*:  
+  `collections/linkedlist.c3:9-14`) and its `anylist` copies. The port writes  
   its own — which Part 8.5 requires in any case.
 
 ---
@@ -852,7 +852,7 @@ Carried forward, in the order the porting proposal will need them.
    available as a type, unavailable as a module. No all-uppercase type names.
 8. **Interruption.** Part 20 decision 8, with no native support to lean on.
 
-Nothing in Part 21 blocks the port. Every "no" in this study is a cost the port
+Nothing in Part 21 blocks the port. Every "no" in this study is a cost the port  
 pays knowingly, and there are four of them.
 
 ---

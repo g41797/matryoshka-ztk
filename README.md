@@ -2,7 +2,7 @@
 
 ---
 
-# Toolkit for Building Multitasking Systems
+# Toolkit for Building Background Processes
 
 ---
 

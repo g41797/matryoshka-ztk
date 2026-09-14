@@ -4,7 +4,7 @@ Stage 3TK-1 of [3tk-staging-plan-001.md](../c3/backup/3tk-staging-plan-001.md).
 
 Read-only evidence. Every claim names a file and a line range.
 
-Purpose: be the single input for the portable specification, so 3TK-2 never
+Purpose: be the single input for the portable specification, so 3TK-2 never  
 reopens `src/`.
 
 Inputs read, and nothing else:
@@ -12,15 +12,15 @@ Inputs read, and nothing else:
 - `src/matryoshka.zig`, `src/polynode.zig`, `src/mailbox.zig`, `src/pool.zig`,
   `src/internal/cond_timeout.zig` — in full, doc comments included.
 - `design/matryoshka-concepts-003.md`,
-  `design/matryoshka-architecture-foundation-4-006.md`,
-  `design/language-of-matryoshka.md`, `design/matryoshka-api-reference-042.md`,
-  `design/patterns-029.md`, `design/matryoshka-zig-0.16-notes-003.md`,
+  `design/matryoshka-architecture-foundation-4-006.md`,  
+  `design/language-of-matryoshka.md`, `design/matryoshka-api-reference-042.md`,  
+  `design/patterns-029.md`, `design/matryoshka-zig-0.16-notes-003.md`,  
   `kitchen/docs/addendums/slot-idiom.md`, `design/rules-049.md` Part 3.
 
-Not read, by the plan's firewall: the `c3/` drafts, `STATUS-LOG.md`, the `d/`
+Not read, by the plan's firewall: the `c3/` drafts, `STATUS-LOG.md`, the `d/`  
 and `odin/` folders.
 
-Line numbers are of the file as it stands today. A signature quoted below is
+Line numbers are of the file as it stands today. A signature quoted below is  
 copied, not paraphrased.
 
 ---
@@ -119,10 +119,10 @@ pub const TAG: *const anyopaque = &_tag;        // :151 / :277
 ```
 
 - One mutable global per instantiation. `var`, not `const` — a mutable global
-  has a unique runtime address, a `const` may be merged by the linker
+  has a unique runtime address, a `const` may be merged by the linker  
   (`design/matryoshka-zig-0.16-notes-003.md:381-383`).
 - Uniqueness across types comes from comptime memoization: `PolyHelper(Foo)`
-  and `PolyHelper(Bar)` are different types, each with its own `_tag`
+  and `PolyHelper(Bar)` are different types, each with its own `_tag`  
   (`matryoshka-zig-0.16-notes-003.md:384-386`).
 
 Compile-time validation:
@@ -193,7 +193,7 @@ pub const Mbox = struct {                       // :40
     alloc: std.mem.Allocator,                   // :53
 ```
 
-The fields are reachable. The doc comment says they are internal
+The fields are reachable. The doc comment says they are internal  
 (`:38-39`). This matters for the port — see section 5.3.
 
 Companion type:
@@ -247,8 +247,8 @@ pub fn receiveResult(mbx: *Mbox, timeout_ns: ?u64) Mbox.Result               // 
 const helper = polynode.PolyHelper(Mbox);                                    // :525
 ```
 
-Error set of the whole module: `Closed`, `Timeout`, `Wakeup`, plus
-`Io.Cancelable` (which supplies `Canceled`) and the allocator's error from
+Error set of the whole module: `Closed`, `Timeout`, `Wakeup`, plus  
+`Io.Cancelable` (which supplies `Canceled`) and the allocator's error from  
 `new`.
 
 ## 1.7 pool
@@ -299,9 +299,9 @@ pub const Result = union(enum) {                // :138
 };
 ```
 
-Border crossings — the same eight names as `Mbox`, same order:
-`TAG` `:147`, `toPoly` `:152`, `fromPoly` `:159`, `mustFromPoly` `:166`,
-`is_it_you` `:171`, `fromSlot` `:179`, `mustFromSlot` `:186`,
+Border crossings — the same eight names as `Mbox`, same order:  
+`TAG` `:147`, `toPoly` `:152`, `fromPoly` `:159`, `mustFromPoly` `:166`,  
+`is_it_you` `:171`, `fromSlot` `:179`, `mustFromSlot` `:186`,  
 `moveFromSlot` `:195`.
 
 Operations:
@@ -417,8 +417,8 @@ The failure-leaves-it-unchanged half:
 - `moveFromSlot` returns `null` before clearing on a tag mismatch
   (`src/polynode.zig:211`).
 
-The one documented exception: `receiveResult` and `getWaitResult` move the item
-through the returned union, not through a `*Slot`
+The one documented exception: `receiveResult` and `getWaitResult` move the item  
+through the returned union, not through a `*Slot`  
 (`src/mailbox.zig:514-523`, `src/pool.zig:543-553`, `rules-049.md:466-469`).
 
 ## 2.2 `is_linked` and `reset`
@@ -426,11 +426,11 @@ through the returned union, not through a `*Slot`
 - `is_linked` asks whether the node has neighbours. It is **not** a membership
   test (`src/polynode.zig:104-116`).
 - The blind spot is stated in the code: a list of exactly one member reports
-  false, and every `!is_linked` assert in the toolkit inherits that
+  false, and every `!is_linked` assert in the toolkit inherits that  
   (`src/polynode.zig:107-113`).
 - `reset` is the repair. `popFirst`, `popLast` and `remove` call it for the
-  caller (`src/polynode.zig:387`, `:398`, `:409`). Reaching through `_list`
-  does not, and the caller must call it by hand (`src/polynode.zig:91-98`,
+  caller (`src/polynode.zig:387`, `:398`, `:409`). Reaching through `_list`  
+  does not, and the caller must call it by hand (`src/polynode.zig:91-98`,  
   `:592-601`).
 
 Every `!is_linked` assert:
@@ -455,7 +455,7 @@ Every `!is_linked` assert:
     (`src/polynode.zig:433-437`).
   - `is_linked` — a read of the item.
 - Neither alone is enough. The walk sees the list-of-one that `is_linked`
-  cannot; `is_linked` sees a *different* list that the walk cannot
+  cannot; `is_linked` sees a *different* list that the walk cannot  
   (`src/polynode.zig:370-376`).
 - The walk makes an insert O(n) under safety builds, and nothing outside them
   (`src/polynode.zig:378`, `:446`).
@@ -468,16 +468,16 @@ Every `!is_linked` assert:
 
 - A handler returns with the Slot null if it took the item, full if it did not.
 - `error.NoHandler` on a table miss is not a defect: nothing was called and the
-  item never left the Slot, so the caller frees it
+  item never left the Slot, so the caller frees it  
   (`patterns-029.md:600-602`).
 - A `switch` over tags does not compile, on any backend. A prong must be
-  comptime-known; a tag is a linker-assigned address
+  comptime-known; a tag is a linker-assigned address  
   (`patterns-029.md:627-637`, `src/polynode.zig` has no switch on a tag).
 - `isIt` and `==` work, because they need only to know which global the tag
   names (`patterns-029.md:635-637`).
 
-This is a Zig-specific *obstacle*, not a Matryoshka invariant. A port whose
-language can switch on a type ID may do so. The invariant it protects — one
+This is a Zig-specific *obstacle*, not a Matryoshka invariant. A port whose  
+language can switch on a type ID may do so. The invariant it protects — one  
 handler per (receiver, tag) pair, the Slot carries the result — is portable.
 
 ## 2.5 Close before destroy
@@ -486,13 +486,13 @@ handler per (receiver, tag) pair, the Slot carries the result — is portable.
 - `pool.destroy` panics on an open pool (`src/pool.zig:507-514`).
 - Both are unconditional panics, in every build mode. Not asserts.
 - Closedness is a precondition **here and nowhere else**: every other method
-  returns `error.Closed`, or is a no-op, and stays a valid item
+  returns `error.Closed`, or is a no-op, and stays a valid item  
   (`src/mailbox.zig:476-478`, `src/pool.zig:505-506`).
 - `close` may be called more than once, on both sides. The second call takes nothing and, for
-  the pool, does not call `on_close` again (`src/mailbox.zig:387-390`,
+  the pool, does not call `on_close` again (`src/mailbox.zig:387-390`,  
   `src/pool.zig:433-436`).
 - The check-and-set of `closed` is inside the mutex, so a preempted `close`
-  caller cannot race a `destroy` (`src/mailbox.zig:386-391`,
+  caller cannot race a `destroy` (`src/mailbox.zig:386-391`,  
   `src/pool.zig:432-437`).
 
 ## 2.6 The give-back rule
@@ -507,12 +507,12 @@ Every item a mailbox keeps goes back to a caller.
 | `close` | the caller, as a list | `:393-402` |
 
 - Releasing them is the caller's job. What the items are — heap items to free,
-  pool items to give back — is knowledge the mailbox does not have and never had
+  pool items to give back — is knowledge the mailbox does not have and never had  
   (`src/mailbox.zig:361-363`).
 - Run the release unconditionally. An empty list costs nothing
   (`src/mailbox.zig:365-372`).
 - `_ = mbx.close()` is named as the thing not to write. It drops items the
-  mailbox gave back, and those items keep their list links, so `send` rejects
+  mailbox gave back, and those items keep their list links, so `send` rejects  
   them afterwards (`src/mailbox.zig:379-381`).
 
 The pool is the mirror image, and this is the sharpest asymmetry in the toolkit:
@@ -522,7 +522,7 @@ The pool is the mirror image, and this is the sharpest asymmetry in the toolkit:
 - A closed pool refuses a `put` and leaves the Slot unchanged, so the caller
   still has the item (`src/pool.zig:337-340`, `:317-321`).
 - `put_all` stops at the first refusal, puts the item back at the front of the
-  caller's list, and returns. Check the list after the call
+  caller's list, and returns. Check the list after the call  
   (`src/pool.zig:408-416`, `:376-391`).
 - The restored order after a mid-batch close may differ from the original
   (`src/pool.zig:387-388`).
@@ -550,17 +550,17 @@ The pool is the mirror image, and this is the sharpest asymmetry in the toolkit:
 `on_put` (`src/pool.zig:106-120`):
 
 - Four outcomes, none mandated: deleted with nothing returned, given back
-  as-is, given back after reset, deleted with a different item put in the Slot
+  as-is, given back after reset, deleted with a different item put in the Slot  
   (`src/pool.zig:308-313`).
 - A non-null Slot on return means one thing: an item is kept. Original or
   replacement (`src/pool.zig:314-315`).
 - The return value is an optional extra `ItemList`. Each item in it is added
-  the same way, with the same checks. This is how a composite item gives its
+  the same way, with the same checks. This is how a composite item gives its  
   parts back (`src/pool.zig:108-119`, `:363-368`).
 - The pool does not check that they form a real composite, and does not
   distinguish composite from simple (`src/pool.zig:117-119`).
 - No sequence guarantee. Put three times, then get three times — the count,
-  the identity and the order are all hook policy
+  the identity and the order are all hook policy  
   (`src/pool.zig:324-328`).
 
 `on_close` (`src/pool.zig:122-130`):
@@ -573,13 +573,13 @@ The pool is the mirror image, and this is the sharpest asymmetry in the toolkit:
 Hook concurrency (`src/pool.zig:75-89`):
 
 - Hooks run outside the pool's mutex. `put` unlocks, calls `on_put`, relocks
-  (`src/pool.zig:350-352`). Both `get` paths do the same (`:584-586`,
+  (`src/pool.zig:350-352`). Both `get` paths do the same (`:584-586`,  
   `:604-606`).
 - Several hooks may run at once, on different threads. The pool does not
   serialize them.
 - A hook that touches shared state protects it itself.
 - A hook must not call pool APIs, and must not block or wait. That is the
-  contract, not a deadlock warning — the lock is not held while a hook runs
+  contract, not a deadlock warning — the lock is not held while a hook runs  
   (`src/pool.zig:82-85`).
 - A hook returns void, so it has no way to report a cancelled lock. It must
   acquire one uncancelably (`src/pool.zig:86-89`).
@@ -600,12 +600,12 @@ Hook concurrency (`src/pool.zig:75-89`):
 - It does not extend to an item two callers both believe they have. That
   mistake breaks the premise the guarantee is built on.
 
-This is a **MUST** for any port. It is the reason the toolkit is safe without
+This is a **MUST** for any port. It is the reason the toolkit is safe without  
 locks around application data, and it is invisible in the signatures.
 
 ## 2.9 The atomic pre-lock fast path
 
-Both types carry `closed: std.atomic.Value(bool)` and check it before taking
+Both types carry `closed: std.atomic.Value(bool)` and check it before taking  
 the mutex (`src/mailbox.zig:48`, `src/pool.zig:45`).
 
 The shape, at every entry point:
@@ -632,13 +632,13 @@ if (self.*.closed.load(.monotonic)) return error.Closed; // re-check under lock
 - Only waits can be cancelled. Signal, broadcast and unlock never return
   `error.Canceled`.
 - Cancelable, and only these two: `Mbox.receive` (`src/mailbox.zig:248`) and
-  `Pool.get_wait` (`src/pool.zig:267`). Both take the lock with the cancelable
+  `Pool.get_wait` (`src/pool.zig:267`). Both take the lock with the cancelable  
   `lock(io)`.
 - Every other entry point takes it with `lockUncancelable(io)` — a cleanup path
   that must run to the end.
 - `Pool.put` must be cancel-protected. A worker that gets `error.Canceled` from
-  `receive` must give its item back reliably. If `put` could itself fail, the
-  item would be lost with nothing keeping it. `put` returns `void`
+  `receive` must give its item back reliably. If `put` could itself fail, the  
+  item would be lost with nothing keeping it. `put` returns `void`  
   (`src/pool.zig:329`, `matryoshka-zig-0.16-notes-003.md:301-305`).
 - `error.Canceled` is not `error.Closed`. Distinct causes, distinct meanings,
   never remapped (`matryoshka-zig-0.16-notes-003.md:310-322`).
@@ -654,7 +654,7 @@ if (self.*.closed.load(.monotonic)) return error.Closed; // re-check under lock
   wakeup.
 - The comment says so at both sites, in the same words.
 
-This is a portable correctness point, not a Zig detail. Any port with a timed
+This is a portable correctness point, not a Zig detail. Any port with a timed  
 wait in a retry loop meets it.
 
 ## 2.12 A wakeup carries no meaning
@@ -777,7 +777,7 @@ One row per feature. The reason is the deciding half.
 
 # 4. The excluded surface
 
-The declarations that exist **only** to bridge `std.Io`. Enumerated once, here,
+The declarations that exist **only** to bridge `std.Io`. Enumerated once, here,  
 so no port re-derives the list.
 
 A port on plain threads deletes every row and loses no Matryoshka semantics.
@@ -808,8 +808,8 @@ Borderline, and deliberately not excluded:
 - The `closed` atomic (`mailbox.zig:48`) uses `std.atomic`, not `std.Io`. It
   stays.
 
-Counting: of the 16 rows above, 12 vanish outright in a port with a native
-timed condition wait. The remaining four — the `io` fields and the two `new`
+Counting: of the 16 rows above, 12 vanish outright in a port with a native  
+timed condition wait. The remaining four — the `io` fields and the two `new`  
 parameters — vanish or become the port's own runtime handle.
 
 ---
@@ -838,7 +838,7 @@ Evidence for the gap — the allocator is *also* passed in again at teardown:
   `:511-513`), never `p.alloc`.
 - `pool.destroy_slot(slot, alloc)` — same (`:526`, `:531`).
 
-So the kept allocator and the passed allocator can differ. Nothing checks that
+So the kept allocator and the passed allocator can differ. Nothing checks that  
 they match. That is the gap.
 
 Evidence on the application-item side:
@@ -850,12 +850,12 @@ Evidence on the application-item side:
 - The two calls are usually far apart — create in a producer, destroy in a
   consumer, or in a pool hook. Nothing links them.
 
-**What a port should do.** Take the allocator at creation, keep it, and use the
-kept one at teardown. That removes the parameter from `destroy` and
+**What a port should do.** Take the allocator at creation, keep it, and use the  
+kept one at teardown. That removes the parameter from `destroy` and  
 `destroy_slot` on both infrastructure types, and it removes the mismatch.
 
-For application items the question is open: an allocator field per item costs
-one pointer per item, which is real on a small item. 3TK-5 decides. This audit
+For application items the question is open: an allocator field per item costs  
+one pointer per item, which is real on a small item. 3TK-5 decides. This audit  
 only records that ztk does not keep one today.
 
 **Not fixed here.** 3TK-1 is read-only.
@@ -867,11 +867,11 @@ only records that ztk does not keep one today.
 - `get_wait` calls no hook at all (`pool.zig:247`, `:272-293`).
 - The doc comment states it plainly (`:247`).
 - But `matryoshka-api-reference-042.md:1288` says "Calls `on_get` hook" under
-  `get_wait`, and `:1449-1450` says `on_get` is "called for every `get` and
+  `get_wait`, and `:1449-1450` says `on_get` is "called for every `get` and  
   `get_wait` call".
 
-The code and the book disagree. The code is the truth. A port follows
-`src/pool.zig:247`: `get_wait` takes a stored item or waits for one, and never
+The code and the book disagree. The code is the truth. A port follows  
+`src/pool.zig:247`: `get_wait` takes a stored item or waits for one, and never  
 creates.
 
 Correcting the book is not this stage's work. Recorded for the owner.
@@ -882,40 +882,40 @@ Correcting the book is not this stage's work. Recorded for the owner.
   (`mailbox.zig:38-39`). They are still reachable.
 - Same for `Pool` (`pool.zig:34-35`).
 - The 2026 architecture note describes an older shape, `pub const Mailbox =
-  *PolyNode` with a private implementation struct
-  (`foundation:2388-2399`). API 12 replaced it with real pointers to public
+  *PolyNode` with a private implementation struct  
+  (`foundation:2388-2399`). API 12 replaced it with real pointers to public  
   structs.
 - So the hidden-implementation intent survived the change, but only as a
   comment.
 
-**What a port should do.** Where the language has opaque types or private
-fields, hide them. This is a case where the port is *better* than ztk, not
+**What a port should do.** Where the language has opaque types or private  
+fields, hide them. This is a case where the port is *better* than ztk, not  
 merely different.
 
 ## 5.4 `ItemList._list` is public for tests
 
-`polynode.zig:587-602`. The doc comment says "Don't use it directly", then
+`polynode.zig:587-602`. The doc comment says "Don't use it directly", then  
 "Using of this field allowed for tests". Same cause as 5.3.
 
 ## 5.5 `PolyNode.tag` defaults to `undefined`
 
-`polynode.zig:85`. A `PolyNode` built with `.{}` and never passed to `init` has
-a garbage tag. `init` is the only thing that sets it (`:221-226`), and nothing
+`polynode.zig:85`. A `PolyNode` built with `.{}` and never passed to `init` has  
+a garbage tag. `init` is the only thing that sets it (`:221-226`), and nothing  
 forces a caller to run it.
 
-`create` always calls it (`:239`). A stack item does not have to
+`create` always calls it (`:239`). A stack item does not have to  
 (`api-reference:343-347` shows the manual call).
 
-A port with a stronger construction discipline — a required constructor, or a
+A port with a stronger construction discipline — a required constructor, or a  
 tag written at declaration — closes this. Recorded, not fixed.
 
 ## 5.6 The two helper variants are copy-paste
 
-`polynode.zig:144-269` and `:271-353` are byte-identical except for the two
+`polynode.zig:144-269` and `:271-353` are byte-identical except for the two  
 missing functions. 110 duplicated lines.
 
-Not a defect. It is what Zig's comptime branch on a struct's declarations
-costs. A port with a different generation mechanism, or with real inheritance
+Not a defect. It is what Zig's comptime branch on a struct's declarations  
+costs. A port with a different generation mechanism, or with real inheritance  
 between the two variants, writes it once.
 
 ---
@@ -924,15 +924,15 @@ between the two variants, writes it once.
 
 ## 6.1 The execution model, stated without Io
 
-The specification must state the concurrency contract in language-neutral terms.
+The specification must state the concurrency contract in language-neutral terms.  
 The facts, from the sources:
 
 - Plain OS threads, or the language's nearest equivalent. Not fibers, not an
-  async runtime (`matryoshka-zig-0.16-notes-003.md:85-92` names both backends,
-  and the toolkit is correct on either — because everything goes through two
+  async runtime (`matryoshka-zig-0.16-notes-003.md:85-92` names both backends,  
+  and the toolkit is correct on either — because everything goes through two  
   primitives).
 - The toolkit needs exactly two primitives: a mutex, and a condition variable
-  with a timed wait (`matryoshka-concepts-003.md:757-767`,
+  with a timed wait (`matryoshka-concepts-003.md:757-767`,  
   `foundation:2403-2421`).
 - Blocking with a timeout is the primitive. Every wait either gets an item,
   times out, sees the container closed, or is interrupted.
@@ -941,12 +941,12 @@ The facts, from the sources:
 - Order among competing receivers is not FIFO. It is up to the runtime
   (`mailbox.zig:227-229`).
 
-**Question for a port:** does the language's condition variable have a timed
+**Question for a port:** does the language's condition variable have a timed  
 wait? If not, the port pays what ztk paid — a 71-line hand-rolled one.
 
 ## 6.2 The outcome set, independent of error sets
 
-Every operation's outcomes, listed as values rather than as Zig errors. A port
+Every operation's outcomes, listed as values rather than as Zig errors. A port  
 picks its own mechanism.
 
 Mailbox:
@@ -970,18 +970,18 @@ Pool:
 | `put_all` | nothing. Check the list: non-empty means the rest was refused. |
 | `close` | nothing. Cannot fail. |
 
-Note the asymmetry in `get`: `not-available` comes only from
-`available_only`, `not-created` only from a hook that produced nothing
-(`pool.zig:589`, `:609`, `:628`). `get_wait` reports a timeout where
-`get(.available_only)` reports not-available, and the divergence is deliberate
+Note the asymmetry in `get`: `not-available` comes only from  
+`available_only`, `not-created` only from a hook that produced nothing  
+(`pool.zig:589`, `:609`, `:628`). `get_wait` reports a timeout where  
+`get(.available_only)` reports not-available, and the divergence is deliberate  
 (`pool.zig:243-249`).
 
-**Question for a port:** errors, a status enum, or an optional return? The
+**Question for a port:** errors, a status enum, or an optional return? The  
 outcome set is fixed. The mechanism is not.
 
 ## 6.3 The capability list, in draft
 
-3TK-2 turns this into the formal questionnaire. The raw list, from what the
+3TK-2 turns this into the formal questionnaire. The raw list, from what the  
 code needs:
 
 1. Compile-time generation of code parameterized by a type.
@@ -1000,22 +1000,22 @@ code needs:
 ## 6.4 Questions the audit cannot answer
 
 - **Does the Slot become a distinct type?** Zig made it a transparent alias
-  (`polynode.zig:89`). A port could make it opaque and catch misuse at compile
+  (`polynode.zig:89`). A port could make it opaque and catch misuse at compile  
   time. Trade-off: opacity costs the `if (slot) |x|` reading shape.
 - **Do application items keep an allocator?** See 5.1.
 - **One helper, or two variants?** See 5.6. The `no_create_destroy` split is a
   Zig spelling of a real distinction.
 - **Is `is_linked`'s blind spot acceptable?** It is documented and inherited by
-  every assert that uses it (`polynode.zig:107-113`). A port whose list marks
-  membership properly is strictly better. Whether to pay for that is a design
+  every assert that uses it (`polynode.zig:107-113`). A port whose list marks  
+  membership properly is strictly better. Whether to pay for that is a design  
   call, not a porting one.
 - **Does the port keep both `receive` and `try_receive`?** `receive` with a
-  zero timeout has the same reach as `try_receive`, and the code says so
-  (`mailbox.zig:211-213`). The two differ only in how the empty case is
+  zero timeout has the same reach as `try_receive`, and the code says so  
+  (`mailbox.zig:211-213`). The two differ only in how the empty case is  
   reported — an error versus a `false`.
 - **Does the port keep `send_oob`?** It is one priority level, not a priority
-  queue. It exists because the two-channel model folds signals into the data
-  channel as tagged items at the front (`foundation:1612-1672`). A port that
+  queue. It exists because the two-channel model folds signals into the data  
+  channel as tagged items at the front (`foundation:1612-1672`). A port that  
   keeps the three-channel model does not need it.
 
 ---
@@ -1024,28 +1024,28 @@ code needs:
 
 ## 7.1 `design/secondary/context.md` does not list the `lang/` subfolders
 
-Named in the plan (`3tk-staging-plan-001.md`, stage 3TK-1, point 7) and in
-`3tk-status.md` under Open questions. Confirmed, not fixed. Fixing it is
+Named in the plan (`3tk-staging-plan-001.md`, stage 3TK-1, point 7) and in  
+`3tk-status.md` under Open questions. Confirmed, not fixed. Fixing it is  
 outside this stage.
 
 ## 7.2 The `get_wait` hook contradiction
 
-Section 5.2. `matryoshka-api-reference-042.md:1288` and `:1449-1450` say
-`get_wait` calls `on_get`. `src/pool.zig:247` says it does not, and the code
+Section 5.2. `matryoshka-api-reference-042.md:1288` and `:1449-1450` say  
+`get_wait` calls `on_get`. `src/pool.zig:247` says it does not, and the code  
 agrees with the code.
 
 ## 7.3 The architecture note still shows the pre-API-12 shape
 
-`matryoshka-architecture-foundation-4-006.md:2388-2399` shows
-`pub const Mailbox = *PolyNode` with private implementation structs. API 12
-replaced that with public structs and real pointers
-(`api-reference:2094-2101`). The section is labelled "a common pattern", so it
+`matryoshka-architecture-foundation-4-006.md:2388-2399` shows  
+`pub const Mailbox = *PolyNode` with private implementation structs. API 12  
+replaced that with public structs and real pointers  
+(`api-reference:2094-2101`). The section is labelled "a common pattern", so it  
 is not strictly wrong, but a cold reader would take it for current.
 
 ## 7.4 `matryoshka-zig-0.16-notes-003.md` still says `_Mailbox` / `_Pool`
 
-At `:52`, `:77`, `:91`, `:154`, `:178`, `:404`. Those names are gone from
-`src/`. The types are `Mbox` and `Pool`. The file's own header says it was
+At `:52`, `:77`, `:91`, `:154`, `:178`, `:404`. Those names are gone from  
+`src/`. The types are `Mbox` and `Pool`. The file's own header says it was  
 updated for the pointer API (`:4-6`), so the underscore names are leftovers.
 
 ---
@@ -1063,7 +1063,7 @@ updated for the pointer API (`:4-6`), so the underscore names are leftovers.
   while reading (5.2 to 5.6).
 - Four pieces of documentation drift (section 7). None affects `src/`.
 
-The specification (3TK-2) works from this file. It does not need to reopen
+The specification (3TK-2) works from this file. It does not need to reopen  
 `src/`.
 
 ---

@@ -2,6 +2,50 @@
 
 Full session history, newest entries at top. Append-only. Read only when explicitly asked (history audit, "what did we do about X") — not routine context-loading. See design/STATUS.md for the rule and current state.
 
+## 2026-09-14 — plan -073: the RENAME stage.
+
+Owner's call: the repo and its root folder become `matryoshka-ztk`. Sibling  
+ports are otk (Odin) and 3tk (C3); the Odin repo was renamed first, and its  
+docs generation scripts were the trouble spot. Code names stay `matryoshka`.
+
+**Two stages, by the owner's split.** This one writes the plan. RENAME itself  
+runs later, in a fresh clone under the new folder name, after the owner saves,  
+pushes and renames.
+
+**Plan -073.** A copy of -072 with three additions: a change note, a "How to  
+start the RENAME stage" section carrying the prompt to paste and the model  
+(Opus 5), and the RENAME stage itself. The stage opens with four owner rulings  
+to ask before any edit — brand spelling, file renames, the `src/` `//!` URL  
+lines in the owner-edit zone, history rows in design notes — then lists the  
+work: docs generation first, site-facing text, `src/` comments, `design/`.  
+The inventory came from a read-only grep. No absolute path and no repo name  
+was found in the docs scripts; the stage verifies that by running them.
+
+**STATUS.md.** A NAMED STAGE block at the top points at the plan. Next says  
+RENAME is named. Constraints for Next Agent gained the working habits that  
+until now lived only in agent memory, because that memory is tied to the  
+folder path and does not survive the rename. Owner's ruling: everything the  
+next session needs is in STATUS.md and the plan.
+
+**Cascade.** -072 → -073 in `context.md`, `STATUS.md`, `item-list-011.md`,  
+`api-13-carryover-004.md`, `intr-8-slot-based-creation-003.md`. `-072` added to  
+the Superseded versions section. STATUS-LOG.md excluded.
+
+**Post-stage cleanup.** Doc-only. No code touched.
+
+**Gates.** `check_design.sh` exit 1, 84 problems, none from this stage. Two  
+dead backtick refs this stage wrote in -073 were found and fixed. What is  
+left was already on the tree:
+- 70 orphans under `design/secondary/lang/`, not listed in any index.
+- 14 dead links: the superseded versions listed in `context.md` are no longer
+  on disk, and `matryoshka-concepts-002.md` and `matryoshka-zig-0.16-notes-003.md`  
+  point at missing files.
+
+`fix_md_hardbreaks.sh` exit 0. It fixes every `.md` in the repo, so it added  
+trailing spaces to 60 frozen files under `design/secondary/lang/`. That is  
+whitespace only, and still a change to frozen material. Reported to the owner,  
+not reverted: reverting needs git.
+
 ## 2026-08-14 — rules-049.
 
 The one bullet the Open Item 14 ruling left pending, done properly rather than  

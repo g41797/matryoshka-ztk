@@ -25,8 +25,8 @@ Choose **Manual** if any one of these is true:
 
 Otherwise choose **Managed**.
 
-Measured, not assumed. "It feels wasteful" is not on the list. A latency-budgeted
-server is desktop-class hardware that needs Manual, and an embedded Linux box
+Measured, not assumed. "It feels wasteful" is not on the list. A latency-budgeted  
+server is desktop-class hardware that needs Manual, and an embedded Linux box  
 with no budget is fine on Managed.
 
 ---
@@ -53,14 +53,14 @@ the pool's free lists     the API shape
 the hook contract         the assert set
 ```
 
-That is the whole audit. One of those three differences is an allocator. The
+That is the whole audit. One of those three differences is an allocator. The  
 other two are consequences of it.
 
-So the policy is **an allocator, and nothing else**. Everything the compiler
+So the policy is **an allocator, and nothing else**. Everything the compiler  
 needs follows from that.
 
-This matters because the tempting design is two implementations behind a
-`version`, and that design is wrong. Every line that exists in only one mode is
+This matters because the tempting design is two implementations behind a  
+`version`, and that design is wrong. Every line that exists in only one mode is  
 a line your CI tests in only one mode.
 
 ---
@@ -107,8 +107,8 @@ struct Managed
 
 The policy is an **instance**, not a namespace. That is deliberate.
 
-A Manual application may want a per-connection arena, or one arena per mailbox.
-A static allocator forecloses that. `Managed` carries no state, so it costs one
+A Manual application may want a per-connection arena, or one arena per mailbox.  
+A static allocator forecloses that. `Managed` carries no state, so it costs one  
 byte of padding in a struct that already holds a mutex.
 
 Same signature in both modes. The mode is not visible in any call.
@@ -139,7 +139,7 @@ In dub:
 ]
 ```
 
-Managed is the unmarked default, because the mode that needs no rules should be
+Managed is the unmarked default, because the mode that needs no rules should be  
 the one you get by not thinking about it.
 
 Application code, in both modes, unchanged:
@@ -159,12 +159,12 @@ Nothing there names a policy. Nothing there changes between modes.
 
 Two reasons, and both are worth the template noise.
 
-**Both modes compile in one build.** A `version`-gated implementation is only
-ever type-checked in the mode you are building. A templated one lets a single CI
-run instantiate both and catch the error in whichever mode you are not looking
+**Both modes compile in one build.** A `version`-gated implementation is only  
+ever type-checked in the mode you are building. A templated one lets a single CI  
+run instantiate both and catch the error in whichever mode you are not looking  
 at.
 
-**A user with a genuine need can name the impl directly.** Rare, but the door
+**A user with a genuine need can name the impl directly.** Rare, but the door  
 exists without you having to build it later.
 
 ---
@@ -182,8 +182,8 @@ MboxImpl!Managed.send   →  inferred nothrow
 
 Same source. The attribute falls out of what the instantiation actually calls.
 
-In Zig you would thread this by hand, or not have it at all. Here it is free,
-and it is *verified* — if a line in shared code allocates, `Mbox!Manual` stops
+In Zig you would thread this by hand, or not have it at all. Here it is free,  
+and it is *verified* — if a line in shared code allocates, `Mbox!Manual` stops  
 being `@nogc` and the check in the Testing section below fails.
 
 The hook types come from the same place:
@@ -206,18 +206,18 @@ template Hooks(Policy)
 }
 ```
 
-`nothrow` in both. That is not negotiable in either mode — a throwing
+`nothrow` in both. That is not negotiable in either mode — a throwing  
 `on_close` destroys the only remaining reference to every pooled item.
 
-`@nogc` only in Manual, because a `@nogc` hook type would lock out every
+`@nogc` only in Manual, because a `@nogc` hook type would lock out every  
 Managed application without a cast.
 
 ---
 
 ## One thing that must not be templated: the tag
 
-If `_tag` lives inside `PolyHelperImpl!(T, Policy)`, then `Request` has two type
-IDs — one per policy. A pool instantiated one way stops recognising an item
+If `_tag` lives inside `PolyHelperImpl!(T, Policy)`, then `Request` has two type  
+IDs — one per policy. A pool instantiated one way stops recognising an item  
 created the other way.
 
 Lift it out:
@@ -238,7 +238,7 @@ const(void)* TAG() @nogc nothrow @trusted
 
 One tag per type, for the life of the binary, regardless of policy.
 
-The same fix applies to `Pool`'s own tag: put it at module scope so every
+The same fix applies to `Pool`'s own tag: put it at module scope so every  
 `Pool!H` shares one type ID.
 
 Rule of thumb: **template what varies, and nothing that establishes identity.**
@@ -247,12 +247,12 @@ Rule of thumb: **template what varies, and nothing that establishes identity.**
 
 ## The payoff: rules become compile errors
 
-An earlier note listed five rules a no-GC application had to follow. The policy
+An earlier note listed five rules a no-GC application had to follow. The policy  
 makes three of them the compiler's job.
 
 ### Rule: no GC references inside item structs
 
-An item you allocated yourself is not scanned. Anything GC-allocated that it
+An item you allocated yourself is not scanned. Anything GC-allocated that it  
 points at is collectable while the item still points at it.
 
 With a compile-time policy, `PolyHelper` can simply refuse:
@@ -295,7 +295,7 @@ template hasManagedRefs(T)
 }
 ```
 
-So this compiles under Managed and fails under Manual, with a message naming the
+So this compiles under Managed and fails under Manual, with a message naming the  
 type:
 
 ```d
@@ -308,25 +308,25 @@ struct Request
 }
 ```
 
-Be honest about the limit: the trait checks **types, not provenance**. A
-`ubyte*` pointing into GC memory still passes. It catches the mistakes people
+Be honest about the limit: the trait checks **types, not provenance**. A  
+`ubyte*` pointing into GC memory still passes. It catches the mistakes people  
 actually make, not all of them.
 
-If `std.traits` is awkward under `-betterC`, the same trait is twenty lines with
-`__traits(allMembers)`. It is CTFE-only either way, so there is no runtime
+If `std.traits` is awkward under `-betterC`, the same trait is twenty lines with  
+`__traits(allMembers)`. It is CTFE-only either way, so there is no runtime  
 dependency to strip.
 
 ### Rule: same allocator for items and toolkit objects
 
-There is now one place allocation happens. Mixing is not something an
+There is now one place allocation happens. Mixing is not something an  
 application can do by accident, because there is no second code path to reach.
 
 ### Rule: hooks are `@nogc`
 
 Enforced by the hook alias above, under Manual only.
 
-Two of the five remain runtime concerns and no policy can fix them:
-`thread_attachThis` for threads druntime did not create, and anchored
+Two of the five remain runtime concerns and no policy can fix them:  
+`thread_attachThis` for threads druntime did not create, and anchored  
 `MonoTime` deadlines.
 
 ---
@@ -342,10 +342,10 @@ Manual     acquire returns null          →  create returns Status.noMemory
 Managed    new throws OutOfMemoryError   →  the process dies
 ```
 
-The null check in `create` is dead code under Managed. Leave it — it costs a
+The null check in `create` is dead code under Managed. Leave it — it costs a  
 branch and keeps one source.
 
-This is the right outcome. OOM in a GC application is not recoverable in any
+This is the right outcome. OOM in a GC application is not recoverable in any  
 useful sense.
 
 **Destructor timing.**
@@ -357,8 +357,8 @@ Managed    ~this runs when the collector finalizes, later, on another thread
 
 That is a real semantic difference and it will bite someone.
 
-The fix is a rule, not code: **item types have no destructors.** Items are
-transported data. If one needs teardown, do it in `on_put` where the concrete
+The fix is a rule, not code: **item types have no destructors.** Items are  
+transported data. If one needs teardown, do it in `on_put` where the concrete  
 type is known and the timing is yours.
 
 Add it as a `static assert` if you want it enforced:
@@ -372,7 +372,7 @@ static assert(!__traits(hasMember, T, "__dtor"),
 
 ## What must never be forked
 
-The temptation, once `static if (Policy.managed)` exists, is to use it for more
+The temptation, once `static if (Policy.managed)` exists, is to use it for more  
 than allocation. Resist it specifically here:
 
 ```text
@@ -383,20 +383,20 @@ list, mutex, cond   policy-free. They allocate nothing.
 assert set          the same asserts fire in both modes.
 ```
 
-Every `static if (Policy.managed)` outside `acquire`, `release`, and the hook
+Every `static if (Policy.managed)` outside `acquire`, `release`, and the hook  
 aliases is a bug waiting for the mode you did not build.
 
-A useful consequence: because the list, the mutex wrapper and the condvar
-wrapper allocate nothing, they need no policy at all. They stay non-template,
-compile once, and a precompiled Matryoshka library is mode-agnostic. Only the
-templated parts are emitted into the user's compilation, where the mode is
+A useful consequence: because the list, the mutex wrapper and the condvar  
+wrapper allocate nothing, they need no policy at all. They stay non-template,  
+compile once, and a precompiled Matryoshka library is mode-agnostic. Only the  
+templated parts are emitted into the user's compilation, where the mode is  
 known.
 
 ---
 
 ## Testing both modes
 
-This is not optional. Attribute inference means an accidental allocation in
+This is not optional. Attribute inference means an accidental allocation in  
 shared code fails **only** under Manual.
 
 The check is a test that cannot pass unless the whole call graph is clean:
@@ -418,7 +418,7 @@ The check is a test that cannot pass unless the whole call graph is clean:
 }
 ```
 
-The unittest *is* the verification. There is nothing to assert about `@nogc` —
+The unittest *is* the verification. There is nothing to assert about `@nogc` —  
 the attribute on the unittest does it.
 
 CI runs both dub configurations:
@@ -428,8 +428,8 @@ dub test --config=managed
 dub test --config=manual
 ```
 
-And one more check worth having: instantiate every public template against both
-policies in a single module, so a mode-specific compile error surfaces in one
+And one more check worth having: instantiate every public template against both  
+policies in a single module, so a mode-specific compile error surfaces in one  
 build rather than in whichever configuration someone runs next.
 
 ---
@@ -449,7 +449,7 @@ matryoshka/
   package.d       the aliases application code imports
 ```
 
-Five of nine modules are policy-free. That is the audit at the top of this
+Five of nine modules are policy-free. That is the audit at the top of this  
 document, expressed as a directory listing.
 
 ---
@@ -478,7 +478,7 @@ The policy is an allocator.
 
 Template what varies. Never template what establishes identity.
 
-`static if (Policy.managed)` appears in three places: `acquire`, `release`, and
+`static if (Policy.managed)` appears in three places: `acquire`, `release`, and  
 the hook aliases. If it appears in a fourth, something has gone wrong.
 
 Test both modes in one CI run, and let a `@nogc` unittest do the proving.

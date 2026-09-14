@@ -1,19 +1,19 @@
 # Matryoshka and std.concurrency
 
-Two things called "mailbox". They are not the same thing, and the difference is
+Two things called "mailbox". They are not the same thing, and the difference is  
 not a matter of quality.
 
-This note is for a D developer deciding which to use, and for a reviewer asking
+This note is for a D developer deciding which to use, and for a reviewer asking  
 why a project took a dependency instead of using the standard library.
 
 ---
 
 ## The short version
 
-`std.concurrency` is an **actor model**. It gives you isolation, enforced by the
+`std.concurrency` is an **actor model**. It gives you isolation, enforced by the  
 compiler, at the cost of allocating and copying every message.
 
-Matryoshka is **transport plumbing**. It moves one mutable pointer from one
+Matryoshka is **transport plumbing**. It moves one mutable pointer from one  
 thread to another without allocating or copying, and leaves isolation to you.
 
 ```text
@@ -23,7 +23,7 @@ Matryoshka          exactly one owner of shared mutable state, by discipline
 
 Both arrive at "one owner". They arrive from opposite directions.
 
-**Use `std.concurrency` unless you have a specific reason not to.** The reasons
+**Use `std.concurrency` unless you have a specific reason not to.** The reasons  
 are real and this document lists them, but they are reasons, not defaults.
 
 ---
@@ -47,11 +47,11 @@ are real and this document lists them, but they are reasons, not defaults.
 
 The row that matters most is the first.
 
-**A `Tid` is a thread.** It comes from `spawn` or `thisTid`. One per thread, owned
+**A `Tid` is a thread.** It comes from `spawn` or `thisTid`. One per thread, owned  
 by that thread, created with it and gone with it.
 
-**An `Mbox` is an object.** You can have twenty per thread, none at all, store one
-in a struct, pass one to a function, or send one through another mailbox — a
+**An `Mbox` is an object.** You can have twenty per thread, none at all, store one  
+in a struct, pass one to a function, or send one through another mailbox — a  
 mailbox is itself a poly item.
 
 That is not a feature comparison. It is a different shape.
@@ -66,14 +66,14 @@ That is not a feature comparison. It is a different shape.
 send(tid, request);        // Request* — does not compile
 ```
 
-The check is `hasUnsharedAliasing`. Anything with a mutable indirection is
+The check is `hasUnsharedAliasing`. Anything with a mutable indirection is  
 rejected. You may send value types, `immutable`, or `shared`.
 
-That check is the whole safety story. It is what makes `std.concurrency` genuinely
+That check is the whole safety story. It is what makes `std.concurrency` genuinely  
 race-free rather than merely conventional.
 
-It also means it cannot express what Matryoshka does. Moving a mutable
-`Request*` and having the sender lose access is exactly the thing the check
+It also means it cannot express what Matryoshka does. Moving a mutable  
+`Request*` and having the sender lose access is exactly the thing the check  
 forbids — because the compiler cannot see that the sender gave it up.
 
 The workarounds all cost you the guarantee:
@@ -83,11 +83,11 @@ send(tid, cast(shared) request);   // now you are on your own anyway
 send(tid, cast(size_t) request);   // launder the pointer through an integer
 ```
 
-If you are doing either of those, `std.concurrency` is no longer providing the
-safety it advertises. You have kept the allocation and the `Variant` and thrown
+If you are doing either of those, `std.concurrency` is no longer providing the  
+safety it advertises. You have kept the allocation and the `Variant` and thrown  
 away the reason for them.
 
-That is the honest test: **if your messages are pointers to mutable objects,
+That is the honest test: **if your messages are pointers to mutable objects,  
 `std.concurrency` is not doing its job for you.**
 
 ---
@@ -109,14 +109,14 @@ Matryoshka, per send:
 1. lock, link, signal, unlock
 ```
 
-The item's links are already in the item. Nothing is allocated. Nothing is
+The item's links are already in the item. Nothing is allocated. Nothing is  
 copied. The object does not move.
 
-No numbers here, because the ratio depends entirely on payload size and GC
-pressure. The structural claim is enough: one path allocates per message and one
+No numbers here, because the ratio depends entirely on payload size and GC  
+pressure. The structural claim is enough: one path allocates per message and one  
 does not, and the difference compounds through the collector.
 
-For a 64-byte control message at a thousand per second, this is irrelevant. For
+For a 64-byte control message at a thousand per second, this is irrelevant. For  
 a 64 KB buffer at a hundred thousand per second, it is the whole problem.
 
 ---
@@ -133,15 +133,15 @@ Matryoshka          the pool holds a fixed number of items
                     bounds TOTAL items in the system
 ```
 
-Ten mailboxes with a limit of 1000 each bounds you at 10,000 messages. Ten
-mailboxes fed by a pool of 1000 items bounds you at 1000, no matter how they
+Ten mailboxes with a limit of 1000 each bounds you at 10,000 messages. Ten  
+mailboxes fed by a pool of 1000 items bounds you at 1000, no matter how they  
 distribute.
 
-The pool version bounds memory. The per-queue version bounds a queue. For
+The pool version bounds memory. The per-queue version bounds a queue. For  
 middleware, memory is the thing you actually need bounded.
 
-`OnCrowding.throwException` and `OnCrowding.ignore` have no Matryoshka
-equivalent, because an exhausted pool returns `Status.notCreated` and the caller
+`OnCrowding.throwException` and `OnCrowding.ignore` have no Matryoshka  
+equivalent, because an exhausted pool returns `Status.notCreated` and the caller  
 decides.
 
 ---
@@ -150,9 +150,9 @@ decides.
 
 Be clear about this, because the list is not short.
 
-**Compiler-enforced isolation.** The big one. You cannot data-race on a payload.
-Matryoshka's Slot makes single ownership visible and, in D, makes copying a Slot
-a compile error — but nothing stops you keeping the raw pointer you took out of
+**Compiler-enforced isolation.** The big one. You cannot data-race on a payload.  
+Matryoshka's Slot makes single ownership visible and, in D, makes copying a Slot  
+a compile error — but nothing stops you keeping the raw pointer you took out of  
 one.
 
 **Type-dispatched receive.**
@@ -165,7 +165,7 @@ receive(
 );
 ```
 
-That is genuinely pleasant, and Matryoshka's tag-check-then-cast is not as
+That is genuinely pleasant, and Matryoshka's tag-check-then-cast is not as  
 pleasant:
 
 ```d
@@ -173,53 +173,53 @@ if (auto r = fromSlot!Request(s))       { ................ }
 else if (auto c = fromSlot!Command(s))  { ................ }
 ```
 
-**Thread lifecycle.** `spawn`, `spawnLinked`, `ownerTid`, `LinkTerminated`,
-`OwnerTerminated`. Supervision trees fall out of this. Matryoshka has none of
+**Thread lifecycle.** `spawn`, `spawnLinked`, `ownerTid`, `LinkTerminated`,  
+`OwnerTerminated`. Supervision trees fall out of this. Matryoshka has none of  
 it — you bring your own threads and your own shutdown.
 
-**A name registry.** `register("logger", tid)` and `locate("logger")`. Matryoshka
+**A name registry.** `register("logger", tid)` and `locate("logger")`. Matryoshka  
 leaves naming to the application.
 
 **Fibers.** `Generator` and fiber-based `Tid`s. Matryoshka is thread-based.
 
-**Zero dependencies, and every D developer already knows it.** Do not undervalue
-this. A reviewer reading `receive((Request r) { ... })` needs no context. A
+**Zero dependencies, and every D developer already knows it.** Do not undervalue  
+this. A reviewer reading `receive((Request r) { ... })` needs no context. A  
 reviewer reading `mustFromSlot!Request(s)` needs a document.
 
 ---
 
 ## What Matryoshka gives you that std.concurrency does not
 
-**It works without a GC.** This is not a tuning difference. `std.concurrency` is
-GC-only: `Variant`, the message list, and `send` all allocate. There is no
-`@nogc` path and no `-betterC` path. If your application is Manual mode, the
+**It works without a GC.** This is not a tuning difference. `std.concurrency` is  
+GC-only: `Variant`, the message list, and `send` all allocate. There is no  
+`@nogc` path and no `-betterC` path. If your application is Manual mode, the  
 standard library is not an option — not a slow option, not an option.
 
-**Zero copy for large payloads.** The pointer moves. A 1 MB buffer costs the same
+**Zero copy for large payloads.** The pointer moves. A 1 MB buffer costs the same  
 to send as a 16-byte one.
 
-**Zero allocation on the message path.** With a pool, steady-state allocation is
-zero, so collections become rare even in Managed mode. This is the thing that
+**Zero allocation on the message path.** With a pool, steady-state allocation is  
+zero, so collections become rare even in Managed mode. This is the thing that  
 makes a GC application viable at rate.
 
-**Mailboxes as objects.** Many per thread. Stored in structs. Passed as values.
-Created before the thread that will drain them, and outliving it. A mailbox is
+**Mailboxes as objects.** Many per thread. Stored in structs. Passed as values.  
+Created before the thread that will drain them, and outliving it. A mailbox is  
 itself a poly item, so a mailbox can be sent through a mailbox.
 
-**Heterogeneous queues without boxing.** One list, items of different types,
-distinguished by tag, no wrapper allocated per element. `std.concurrency` gets
+**Heterogeneous queues without boxing.** One list, items of different types,  
+distinguished by tag, no wrapper allocated per element. `std.concurrency` gets  
 heterogeneity from `Variant`, which is where the allocation comes from.
 
-**Status codes, not exceptions.** `Status.closed` instead of `OwnerTerminated`
+**Status codes, not exceptions.** `Status.closed` instead of `OwnerTerminated`  
 thrown at you. Necessary for `nothrow`, and necessary for `@nogc`.
 
-**Close returns your items.** `mbx.close()` hands back everything still queued so
-you can return it to the pool. `std.concurrency` has no equivalent; a terminated
+**Close returns your items.** `mbx.close()` hands back everything still queued so  
+you can return it to the pool. `std.concurrency` has no equivalent; a terminated  
 thread's mailbox contents are simply collected.
 
-**Out-of-band messages with defined ordering.** Every OOB precedes every regular
-message, and the invariant holds under contention. `prioritySend` is close, but
-an unhandled priority message throws in the receiver, which is a different
+**Out-of-band messages with defined ordering.** Every OOB precedes every regular  
+message, and the invariant holds under contention. `prioritySend` is close, but  
+an unhandled priority message throws in the receiver, which is a different  
 contract.
 
 ---
@@ -248,7 +248,7 @@ Use **Matryoshka** when any one of these holds:
 [ ] Allocation per message is unacceptable.
 ```
 
-The first box in the second list is the common one. If the application is
+The first box in the second list is the common one. If the application is  
 Manual, there is no decision to make.
 
 ---
@@ -267,11 +267,11 @@ data plane         Matryoshka
                    Wants zero copy and a bounded pool.
 ```
 
-A worker thread can hold both: a `Tid` for lifecycle and an `Mbox*` for work.
+A worker thread can hold both: a `Tid` for lifecycle and an `Mbox*` for work.  
 They do not interfere — different queues, different concerns.
 
-This is usually the right answer for a service, and it is worth saying to a
-reviewer who asks why the standard library was not enough. It was, for half the
+This is usually the right answer for a service, and it is worth saying to a  
+reviewer who asks why the standard library was not enough. It was, for half the  
 problem.
 
 ---
@@ -283,25 +283,25 @@ The cleanest way to see the relationship:
 > `std.concurrency` could be implemented on top of Matryoshka. The reverse is
 > not possible.
 
-An actor layer needs a queue that moves messages between threads. Matryoshka is
-that queue, minus the policy. Add a `Variant` item type, one mailbox per thread,
-`spawn`, and a registry, and you have rebuilt `std.concurrency` — with pooling
+An actor layer needs a queue that moves messages between threads. Matryoshka is  
+that queue, minus the policy. Add a `Variant` item type, one mailbox per thread,  
+`spawn`, and a registry, and you have rebuilt `std.concurrency` — with pooling  
 underneath it.
 
-Going the other way is blocked by the aliasing check. You cannot build zero-copy
+Going the other way is blocked by the aliasing check. You cannot build zero-copy  
 mutable transfer on a transport that refuses mutable aliasing by design.
 
-That asymmetry is the whole comparison. One is a policy; the other is the
+That asymmetry is the whole comparison. One is a policy; the other is the  
 mechanism a policy is built from.
 
 ---
 
 ## One correction worth stating
 
-`std.concurrency`'s `Tid` and the `register`/`locate` registry were designed with
+`std.concurrency`'s `Tid` and the `register`/`locate` registry were designed with  
 out-of-process messaging in mind, and the module documentation says so.
 
-Phobos ships no remote transport. There is no wire format, no serialization
+Phobos ships no remote transport. There is no wire format, no serialization  
 layer, and no network `Tid`. Everything in `std.concurrency` is in-process.
 
 Worth knowing before it appears in a design as an assumed capability.
@@ -338,7 +338,7 @@ Worth knowing before it appears in a design as an assumed capability.
 
 If your messages are values, use `std.concurrency`.
 
-If your messages are objects whose ownership moves, and you cannot afford to
+If your messages are objects whose ownership moves, and you cannot afford to  
 allocate or copy them, that is what Matryoshka is for.
 
 If you are in Manual mode, the question does not arise.

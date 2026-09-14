@@ -1,11 +1,11 @@
 # lang/c3 — the 3tk port
 
-The C3 port of Matryoshka. Everything the port has produced lives here: plans,
-status, log, notes, reviews, and the code at [`3tk/`](3tk/). What binds *every*
+The C3 port of Matryoshka. Everything the port has produced lives here: plans,  
+status, log, notes, reviews, and the code at [`3tk/`](3tk/). What binds *every*  
 port — the portable specification, the ztk audit, the port process — lives in
 [`../common/`](../common/README.md) and is linked, never copied.
 
-**This file is an index.** One line per live file: what it is, and who reads it.
+**This file is an index.** One line per live file: what it is, and who reads it.  
 It re-describes no document's content and rules on nothing.
 
 ## Start here
@@ -18,8 +18,8 @@ It re-describes no document's content and rules on nothing.
 
 ## `ref/` — revised with the source, not frozen
 
-**Every other file in this folder is a finished stage output**, frozen at the
-moment its stage ran. **These are the opposite: they are alive.** A change to
+**Every other file in this folder is a finished stage output**, frozen at the  
+moment its stage ran. **These are the opposite: they are alive.** A change to  
 `3tk/src` revises them in the same stage that changes it.
 
 | File | What it is | Who reads it |
@@ -59,7 +59,7 @@ moment its stage ran. **These are the opposite: they are alive.** A change to
 
 ## The notes
 
-Each is a finished stage's record. The reader column is the readership file's,
+Each is a finished stage's record. The reader column is the readership file's,  
 above, and is not re-argued here.
 
 | File | What it is | Who reads it |
@@ -92,11 +92,11 @@ the compile-failure cases.
 ./3tk/run-sanitizers.sh    # thread on two builds, address on one; exits 2 if its compiler is missing
 ```
 
-The two build scripts take an optional directory; with no argument each runs
-against its own. `check-doc-loop.sh` takes source file names, and with no
-argument reads all eight. `move-module-docs.sh` takes a direction — `in`, `out`
-or `roundtrip` — and module names, and with none moves all eight. The format it
+The two build scripts take an optional directory; with no argument each runs  
+against its own. `check-doc-loop.sh` takes source file names, and with no  
+argument reads all eight. `move-module-docs.sh` takes a direction — `in`, `out`  
+or `roundtrip` — and module names, and with none moves all eight. The format it  
 copies lives in `3tk/doc_blocks.py`, which both scripts read.
 
-`backup/` holds superseded versions and what is no longer read. **The owner
+`backup/` holds superseded versions and what is no longer read. **The owner  
 empties it periodically, so nothing here points into it.**

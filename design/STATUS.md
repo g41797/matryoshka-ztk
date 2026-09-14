@@ -1,5 +1,15 @@
 # matryoshka-tk STATUS
 
+## NAMED STAGE — RENAME
+
+The repo and its root folder become `matryoshka-ztk`. Owner's call, 2026-09-14.  
+Code names stay `matryoshka`. The stage runs in a fresh clone.
+
+- How to start, and the prompt to paste:
+  [the plan](matryoshka-tk-implementation-plan-073.md), "How to start the RENAME stage".
+- The stage itself: the same file, "RENAME".
+- The parked work below stays parked until RENAME is done.
+
 ## PARKED WORK — read before naming a stage
 
 INTR 8 was an unplanned insertion, an API revision ahead of everything on the  
@@ -10,7 +20,7 @@ still parked:
   10. Steps 2 and 3 have since passed green twice. Detail: Next.
 - 13-4b-3, 13-5 and the `polynode` audit. Candidates, unranked. Detail: Next.
 - Three code-level findings, reported and not actioned. Detail:
-  [the plan](matryoshka-tk-implementation-plan-072.md), "Reported, not actioned".
+  [the plan](matryoshka-tk-implementation-plan-073.md), "Reported, not actioned".
 - The rendered autodoc page is unviewed. It is the verification for 13-4.
 - `handle` vs `item` in `mailbox.zig` body text is undecided.
 
@@ -25,7 +35,7 @@ date. Nothing listed here is authorized, and this block authorizes nothing.
 1. Read this file in full. It is current state: what is done, what is in
    flight, what is authorized.
 2. Read Part 0 of [rules-049.md](rules-049.md).
-3. Read the plan, [matryoshka-tk-implementation-plan-072.md](matryoshka-tk-implementation-plan-072.md),
+3. Read the plan, [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md),
    for the stage the owner names. Not before they name it.
 
 These two files are the entry point. This repo has no auto-loading agent  
@@ -60,6 +70,14 @@ instruction, read this file and ask what to work on.
 - A stage that changes design/ must end with kitchen/tools/check_design.sh at exit 0.
 - Redirect kitchen script output to zig-out/ log files: `bash kitchen/script.sh > zig-out/script.log 2>&1`. Read the log file. Do NOT analyze shell stdout.
 - AI-sh scan after every stage that changes *.md or *.zig.
+- Ask the owner questions as numbered plain text. No picker tool.
+- Say "save", not "commit". Say "write a new version", not "cut".
+- Never chain a destructive command after `cd`. A failed `cd` stops the chain but not the next statement.
+- `backup/` is emptied by the owner. Never cite it as a source of truth.
+- Name the model a stage needs, unasked, at its start and end. Say whether to clear or compact.
+- A trailing `\` at line end in `src/*.zig` doc comments is intentional. Keep it.
+- The embedded node is the inner. The embedding struct is the outer. Never "parent".
+- Agent memory is tied to the folder path and does not survive the rename. This file and the plan carry everything.
 - Run kitchen/tools/audit_edges.sh after any stage that changes transfer code (send/receive/close/put) or the api doc pages. Compare the four counts against the baseline in audit-recipe-002.md. DISCARDED or unmatched asserts above zero means a rule was skipped. It is not a gate — it always exits 0.
 
 ## Sources of Truth
@@ -74,7 +92,7 @@ instruction, read this file and ask what to work on.
 - Legacy mailbox: /home/g41797/dev/root/github.com/g41797/mailbox/
 - Odin proto: /home/g41797/dev/root/github.com/g41797/matryoshka/
 - tofu (build infra): /home/g41797/dev/root/github.com/g41797/tofu/
-- Plan: matryoshka-tk-implementation-plan-072.md (slim, state-only)
+- Plan: matryoshka-tk-implementation-plan-073.md (slim, state-only)
 - Rules: rules-049.md
 - API 13 (the book) design note: api-13-book-002.md
 - API 13 carry-over note: api-13-carryover-004.md — what left the book, input for 13-2
@@ -262,21 +280,22 @@ documents that contradicted it. The Hold vocabulary in the architecture doc is
 out of scope by the owner's ruling.
 
 Last completed stage: INTR 8-3, 2026-08-14.  
-Current plan: matryoshka-tk-implementation-plan-072.md.
+Current plan: matryoshka-tk-implementation-plan-073.md.
 
 ## Next
 
 **INTR 8 is closed. 8-1, 8-2 and 8-3 are all done, 2026-08-14.** `src/`, then  
 every caller, then the documents.
 
-**Nothing is authorized.** The owner names the stage.
+**RENAME is the named stage.** Owner's call, 2026-09-14. See the block at the  
+top of this file.
 
 **The audit that ranks the parked work is the recommended next step.** Its input  
 is the PARKED WORK block at the top of this file. Its output is a ruling, which  
 goes into this section and lets that block be deleted. It changes no code.
 
 The candidates, what each costs, and the recommendation on record are in  
-[the plan](matryoshka-tk-implementation-plan-072.md) under "Next". They are a  
+[the plan](matryoshka-tk-implementation-plan-073.md) under "Next". They are a  
 menu, not a queue. Finishing one does not roll into the next — stop and ask. A  
 heading that reads like an ordering is not an instruction to start.
 
