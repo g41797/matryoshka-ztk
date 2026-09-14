@@ -24,12 +24,40 @@ It is kept short for that reason.**
 
 ## What is live now
 
-**`3TK-77` ran 2026-09-14 on Sonnet 5 and closed, and `037` is spent with it.  
+**`3TK-78` ran 2026-09-14 on Sonnet 5 and closed, and `038` is spent with it.  
 No stage is queued.** **Only `3TK-50` remains from any earlier plan, and it waits  
-on the owner.** Plan `037` is spent and still in this folder; `034` and `036`  
-are gone from it too now, `035` and `033` are in `backup/`, and `029` through  
-`032` are gone. **`backup/` is transient, so none of them is a source of  
-truth.**
+on the owner.** Plan `038` is spent and still in this folder; `037` is gone from  
+it too now. **`backup/` is transient, so none of the earlier plans there is a  
+source of truth.**
+
+**`Mailbox.send` takes an optional `usz limit = 0`, per
+`matryoshka-3tk/design/3tk-limited-send-001.md`, now `Adopted, implemented by
+3TK-78`.** `limit == 0` is the original unbounded call, byte-for-byte. `limit
+> 0` scans the ordinary queue under the lock `send_at` already holds and fails
+with the new fault `LIMIT` — one member added to the shared `faultdef` in
+`mtk.c3:56` — if that many outers of the sender's own `typeid` are already
+there. **`send_oob` is untouched**, per its own ruling: no `limit` parameter,
+and `send_at` always runs with `limit = 0` on that path. **A fast path added
+during the stage, not in the plan's steps**: the scan is skipped entirely when
+the target queue's own length is already below `limit`, since then no
+per-typeid count can reach it either.
+
+**One new test and one new example, per the plan's own ask.**
+`test/t_mailbox.c3`'s `send_limit_is_per_typeid` covers a reached limit and
+per-typeid isolation; `examples/f_mailbox/062-send_with_limit.c3` is wired
+into `test/t_examples.c3`. **`run-builds.sh` is still 123 checks, 0 failures,
+four builds green, now 148 tests each** (146 → 148); **the doc loop is 464 of
+464 sentences** (463 → 464, the new `Untouched on `LIMIT`` sentence), 11
+labelled blocks, 0 differing, 0 banned words, roundtrip byte-identical.
+
+**`3tk-api-006.md` and `3tk-reference-012.md` replace `005` and `011`** —
+a real API change, not a rename, so Rule 14 applies; both superseded versions
+are in `matryoshka-3tk/design/backup/` under their old names, moved there with
+a plain `mv`, never `git mv` — **`3tk-rules-007.md:570` already says so, and a
+later stage does not reach for git to move a document.** Every live
+cross-reference to the old numbers, in both repos, was updated; `backup/`
+copies of already-superseded documents that also named `005`/`011` were left
+as they are.
 
 **The repo is `matryoshka-ztk` throughout `lang/` now.** `3TK-77` rewrote the  
 six live files that still said `matryoshka-tk`; `3tk-log.md` stays untouched  
@@ -133,8 +161,10 @@ because the misspelling is the failure the rule exists for.
 **Three documents are new or revised, and one is the source of truth for the  
 rule.** **`3tk-reference-010.md` replaced `009`** and **`3tk-rules-005.md`  
 replaced `004`**; both superseded versions are in  
-`matryoshka-3tk/design/backup/`. **`3TK-75` has since superseded both in turn —  
-`011` and `006` are the live numbers.** **`3tk-decisions-007.md` and `3tk-api-005.md`  
+`matryoshka-3tk/design/backup/`. **`3TK-75` superseded both in turn, to `011`  
+and `006`; `3TK-78` has since superseded the reference again, to `012` — see  
+*What is live now* for the current numbers.** **`3tk-decisions-007.md` and  
+`3tk-api-005.md`  
 were revised in place**, which their own headers ask for, and **every  
 `helper.c3` citation in both was re-resolved against the built tree** — the file  
 moved +16 lines above `create`, +18 at `create` and +20 at `release`.
@@ -340,7 +370,7 @@ resolution in the same stage; it is not a debt for a later one.
 **`3tk-boundaries-001.md` and `3tk-terms-001.md` are spent** and in  
 `matryoshka-3tk/design/backup/` since 2026-09-08 — `3TK-66`'s closing act.  
 **`backup/` is transient, so neither is a source of truth.** Their content is in  
-the source, in [3tk-reference-011.md] and in
+the source, in [3tk-reference-012.md] and in
 [3tk-rules-007.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-rules-007.md).
 `3tk-decisions-007.md` still cites Boundaries by part number, and its header now  
 frames those as **historical markers** — which sitting ruled the entry — with  
@@ -419,7 +449,7 @@ stopped aborting in a checking build. **An internal declaration that has a
 contract keeps a contract-only block — every line a `@` line, no prose** — and  
 `run-builds.sh` now asserts exactly that. **No stage tidies one away.**
 
-**`run-builds.sh` is 123 checks, 0 failures, four builds, 146 tests each, and the doc loop is 463 of 463** — `3TK-75`'s figures, and still the current ones through `3TK-77`, which changed no code. 115, 145 and 458 were `3TK-74`'s; 107 and 443 were `3TK-70`'s through `3TK-73`'s; the two figures moved together because two new negatives run once per build and the helper's three doc blocks grew. The paragraphs below are each stage's own reading at the time it ran.
+**`run-builds.sh` is 123 checks, 0 failures, four builds, 148 tests each, and the doc loop is 464 of 464** — `3TK-78`'s figures. 146 and 463 were `3TK-75`'s through `3TK-77`'s, unchanged across the rename; the check count did not move at `3TK-78` either, since limited send added no new negative and no new module — only two new tests (one unit, one example wrapper) and one new descriptor sentence. 115, 145 and 458 were `3TK-74`'s; 107 and 443 were `3TK-70`'s through `3TK-73`'s; the two figures moved together because two new negatives run once per build and the helper's three doc blocks grew. The paragraphs below are each stage's own reading at the time it ran.
 
 **`run-builds.sh` was 81 → 89 checks, 0 failures, four builds, 143 tests each.**  
 Three checks were added: the six-name module list (`Part 4.5`, replacing the  
@@ -1425,8 +1455,8 @@ scripts take an optional directory and exit 2 on a bad one.
   live copies pushed there after each verified step. **The reference book, the  
   example rules and the pattern catalog live there now, not in this repo's  
   `ref/`**, and since 3TK-60 the api table, the decisions record and the terms  
-  document too: `3tk-reference-011.md`, `3tk-example-rules-006.md`,  
-  `3tk-patterns-004.md`, `3tk-api-005.md`, `3tk-decisions-007.md`,  
+  document too: `3tk-reference-012.md`, `3tk-example-rules-006.md`,  
+  `3tk-patterns-004.md`, `3tk-api-006.md`, `3tk-decisions-007.md`,  
   and **`3tk-rules-007.md`** — 3tk's own rules document, normative, for every  
   rule that binds the C3 port and is not already a rule in the common tk set,  
   created as `001` by `3TK-67` and rewritten by `3TK-70`. `3tk-terms-001.md` and  
@@ -1534,7 +1564,7 @@ entries in
 which cites them by marker as **history** — which sitting ruled the entry — with  
 `007` and `../3tk/src` as what stands where they would differ. The surface, the  
 invariants and *what is deliberately absent* are in
-[3tk-reference-011.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-011.md).
+[3tk-reference-012.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-012.md).
 The rules that bind a stage are in `3tk-rules-007.md`. **The measurements and  
 the narrative are in [3tk-log.md](3tk-log.md), under 3TK-61 and 3TK-66.**
 

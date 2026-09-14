@@ -7,6 +7,76 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-14 — 3TK-78: limited send
+
+**Ran on Sonnet 5 and closed. `038` is spent.** Implemented
+`matryoshka-3tk/design/3tk-limited-send-001.md`, following R-1 … R-8 of the
+plan without re-arguing them. `Mailbox.send` gains an optional `usz limit = 0`
+that bounds how many outers of the sender's own `typeid` may already be
+queued; `limit == 0` is the original unbounded call, byte-for-byte.
+
+**`mtk.c3:56`'s shared `faultdef` gains one member, `LIMIT`, on the same
+line** — no new `error{}` set, per R-2. **`send_at` gained the third
+parameter and the scan, inside the lock it already held (R-4)**: when
+`limit > 0` and the ordinary queue's own length is already at or past
+`limit`, it walks the queue with the existing `InnerQueueIterator`, reading
+`Inner.outer_tid()`, and returns `LIMIT~` the moment the sender's own typeid
+count reaches `limit`, without enqueuing. **`send_oob` is untouched (R-6)**:
+no `limit` parameter, and `send_at` is always called with `limit = 0` on that
+path — restated as an explicit `!oob` guard around the scan, not just an
+unused default.
+
+**One measurement corrected the plan's own reading, mid-stage.** The scan
+first checks the target queue's whole length against `limit`: if the queue
+holds fewer than `limit` outers of any type, no per-typeid count can reach
+`limit` either, so the scan is skipped entirely. This was not in the
+plan's steps 1-3 and was added during implementation review — a fast path
+for the common case (a queue well under its cap), not a behavior change.
+
+**One new test, `send_limit_is_per_typeid` in `test/t_mailbox.c3`**: two
+`Msg` sends at `limit = 2` succeed, a third is refused with `LIMIT` and
+leaves the Slot full, and a `Job` sent at the same mailbox with the same
+limit is unaffected by the two `Msg` already queued — the plan's own
+per-typeid-isolation case. **One new example, `062-send_with_limit.c3`**
+under `examples/f_mailbox` (the group `027`-`032` mailbox patterns already
+live in), wired into `test/t_examples.c3` as `test_example_send_with_limit`.
+`examples/f_mailbox.c3`'s carrier doc gained one line.
+
+**Figures: `run-builds.sh` is still 123 checks, 0 failures, four builds
+green, now 148 tests each** — 146 → 148, the one new unit test and the one
+new example wrapper, no new structural check (this stage added no new
+negative, no new module, nothing Part 4.5/17.2 counts). **The doc loop is
+464 of 464 sentences** — 463 → 464, the one new prose line
+(`Untouched on `LIMIT`, and the sender still has the outer.`) — **11
+labelled blocks, 0 differing, 0 banned words, `move-module-docs.sh
+roundtrip` byte-identical.**
+
+**`3tk-api-005.md` and `3tk-reference-011.md` are `006` and `012`** — both
+revised for a real API change, not a rename, so Rule 14 (a document is
+versioned, not asked about) put the pre-edit text in
+`matryoshka-3tk/design/backup/` under its old name and the file itself
+under the new one, with a plain `mv`. **`3tk-api-006.md`'s faultdef entry
+and its Sending section (`send`, `send_oob`) are rewritten**, and every
+`mailbox.c3:` citation from the send doc block onward was re-resolved
+against the edited source — the two new doc lines in `Mailbox.send`'s
+block shift every later citation in the file by +2, and the scan itself
+sits at `mailbox.c3:460`, inside the +18-line block the fast path and the
+scan add to `send_at`. **`3tk-reference-012.md`'s faults block and its "The
+API — send" section carry the parameter and the fault in prose.** Both
+files' cross-references to each other and every other live document that
+named the old numbers (`3tk-example-rules-006.md`, `3tk-decisions-007.md`,
+`3tk-patterns-004.md`, and this repo's own `ref/3tk-doc-loop-005.md`,
+`check-doc-loop.sh` and `move-module-docs.sh`, which hard-code the
+reference's path) were updated to the new numbers. `backup/` copies of
+older superseded documents that also named `005`/`011` were left as they
+are — they are historical, not live.
+
+**`3tk-limited-send-001.md`'s own status line moved from `Proposal` to
+`Adopted, implemented by 3TK-78`.**
+
+**Not yet copied to `matryoshka-3tk`'s `src`/`test`/`negative`/`examples`,
+or pushed** — that is the owner's step, as always.
+
 ## 2026-09-14 — 3TK-77: the rename, finished under `lang/`
 
 **Ran on Sonnet 5 and closed. `037` is spent.** The repo was renamed from
