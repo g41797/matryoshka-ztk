@@ -46,11 +46,37 @@ stage upgrades `c3c` or rewrites these comments to chase this**; it is a
 `docgen` gap to re-check again against whatever release comes after
 `0.8.4`, not a `src/` defect.
 
-**`3TK-80` ran 2026-09-15 on Sonnet 5 and closed, and `040` is spent with
-it. No stage is queued.** **Only `3TK-50` remains from any earlier plan,
-and it waits on the owner.** Plan `040` is spent and still in this
-folder; `039` is gone from it too now. **`backup/` is transient, so none
-of the earlier plans there is a source of truth.**
+**Flagged, not fixed: `pool.c3`'s module order has drifted, `run-builds.sh`
+catches it, and it is new — not `3TK-79`/`3TK-80`'s 8 pre-existing
+failures.** `EXPECT_MODULE[pool]` (Part 4.5) wants `mtk::pool::hooks;`
+before `mtk::pool;`, the way `bc3506d` had it; the working tree now has
+`mtk::pool;` first, matching `c4de78b` ("Update 3tk comments") — so the
+Gemini rewrite reordered the two sections along with the wording, and no
+stage since has restored the order. `3TK-81` measured it and left it: the
+plan's own *What these stages do not do* rules out any code change, and
+reordering module sections is one. **The owner's call, alongside the 8
+pre-existing failures below.**
+
+**`3TK-82` ran 2026-09-15 on Opus 5 and closed. `041` is spent. No stage is
+queued.** Every comment in `examples/*.c3` is in `src/` style now, with no code changed.
+`check-doc-loop.sh`: 0 differing, 147 of 147 found, 0 banned words.
+`c3c test`: 148 passed. `run-builds.sh`: 114 passed, 9 failed, the same 9 as below.
+**Flagged for the owner, not fixed because they are code:** `drain` is a
+function name in `examples/030` and `examples/039`. `drained` appears in
+three `expect` strings (`015`, `028`, `039`). `object` is in the filename
+`042-the_hook_object_is_the_context.c3`.
+
+**`3TK-81` ran 2026-09-15 on Sonnet 5 and closed.** Five banned-word hits fixed (`lifecycle`, `object` ×3, `drain`), all
+in `helper.c3`/`pool.c3`; the four `::internal` module sections' missing
+`<* *>` blocks restored (Rule 4); `3tk-reference-012.md` re-synced to the
+rewritten `src/` — all 11 module blocks and all 148, then 147 after a concurrent owner edit to mtk.c3's module comment, descriptor sentences.
+**`check-doc-loop.sh` is clean**: 0 differing blocks, 147 of 147 found, 0
+banned words, roundtrip byte-identical. `c3c build` and `c3c test`: green,
+148 tests. `run-builds.sh`: 123 checks, 114 passed, 9 failed — see the
+flag above; 8 of the 9 are `bc3506d`'s, untouched by this stage or `3TK-79`/
+`3TK-80` before it. **Only `3TK-50` remains from any earlier plan,
+and it waits on the owner.** Plan `041` is spent and still in this folder; `040` is gone from it. **`backup/` is
+transient, so none of the earlier plans there is a source of truth.**
 
 **`parked` and `quiet` are banned words now** — `rules-049.md` Part 5 and
 `check-doc-loop.sh`'s `BANNED` copy — **and both are gone from
@@ -1325,14 +1351,25 @@ plans.
 ## The measured numbers
 
 **Re-measure before trusting any of these.** A scan counts only when it has just  
-been run. **`run-builds.sh`, `check-doc-loop.sh`, `move-module-docs.sh roundtrip`  
-and `run-sanitizers.sh` were all run on 2026-09-10 by 3TK-75; the docgen preview  
-was last run on 2026-09-09 by 3TK-70.** The  
-`handle`/`item`/`node` scan was last run 2026-09-04 by 3TK-60.
+been run. **`run-builds.sh`, `check-doc-loop.sh` and `move-module-docs.sh  
+roundtrip` were all run on 2026-09-15 by 3TK-81; `run-sanitizers.sh` was last  
+run on 2026-09-10 by 3TK-75; the docgen preview was last run on 2026-09-09 by  
+3TK-70.** The `handle`/`item`/`node` scan was last run 2026-09-04 by 3TK-60.
 
 ```
-./3tk/run-builds.sh        123 checks, 0 failures, four builds green
-                           146 tests in each build
+./3tk/run-builds.sh        123 checks, 114 passed, 9 failed, four builds
+                           148 tests in each build. 9 -> the 8 bc3506d
+                           failures 3TK-79/3TK-80 traced (internal-section
+                           banners and markers the owner's comment cleanup
+                           removed) plus one new: pool.c3's module order
+                           drifted (mtk::pool before mtk::pool::hooks,
+                           where EXPECT_MODULE wants hooks first) -- traced
+                           to the Gemini rewrite between 3TK-80 and 3TK-81,
+                           not fixed (a code change, out of this stage's
+                           scope), flagged to the owner
+                           146 -> 148 tests is 3TK-78, unchanged since
+                           123 checks, 0 failures is 3TK-78's own green run,
+                           before bc3506d
                            115 -> 123 and 145 -> 146 is 3TK-75: two runtime
                            negatives, unstamped_inner and wrong_type_inner,
                            each run once per build, and one test for the null
@@ -1360,7 +1397,19 @@ was last run on 2026-09-09 by 3TK-70.** The
                            added six banner assertions, four for the files
                            that have internal declarations and two for the
                            two files that must not grow one
-./3tk/check-doc-loop.sh    11 labelled blocks, 0 differing, 463 of 463
+./3tk/check-doc-loop.sh    11 labelled blocks, 0 differing, 147 of 147
+                           sentences, 0 missing, 0 banned words, roundtrip
+                           byte-identical. 463 -> 148 is 3TK-81: Gemini's
+                           rewrite of src/*.c3's comments (between 3TK-80
+                           and 3TK-81, not itself a stage) shortened every
+                           doc comment, so the sentence count fell with the
+                           wording; 3TK-81 re-synced all 11 module blocks
+                           (move-module-docs.sh out) and hand-matched all
+                           147 descriptor sentences into the reference's
+                           existing API prose, additively -- nothing in the
+                           reference was deleted, only the source shrank
+                           --- 3TK-80's reading, superseded ---
+                           11 labelled blocks, 0 differing, 463 of 463
                            sentences, 0 missing, 0 banned words.
                            458 -> 463 is 3TK-75: inner's doc block was
                            rewritten and linked's grew its second arm
@@ -1578,8 +1627,8 @@ Every line begins the same way, because every stage reads this file first:
 Read design/secondary/lang/c3/3tk-status.md.
 ```
 
-**No stage is queued.** `036` is spent, `3TK-50` waits on the owner, and the next  
-plan is the owner's to open.
+**No stage is queued.** `3TK-82` closed and
+[3tk-staging-plan-041.md](3tk-staging-plan-041.md) is spent. `3TK-50` waits on the owner.
 
 For orientation, or to start whatever the owner names:
 
@@ -1685,7 +1734,7 @@ independent of 3TK-58 and does not block it.
 
 ## The stages that have run
 
-**Seventy-nine rows, and the log has an entry for every one.** 3TK-62, 3TK-63 and  
+**Eighty-two rows, and the log has an entry for every one.** 3TK-62, 3TK-63 and  
 3TK-64 were added by 3TK-pre-65, which found them missing; the four of 2026-09-08  
 were added when 030 was written. **The table is in execution order, so 67, 65, 66,  
 68 sit out of numeric order deliberately.** This table is the list, not the  
@@ -1772,6 +1821,9 @@ record.
 | **3TK-75** | the helper stopped writing | 2026-09-10 |
 | **3TK-76** | the sweep | 2026-09-10 |
 | **3TK-77** | the rename, finished under `lang/` | 2026-09-14 |
+| **3TK-80** | word bans, an API rename, and per-item doc comments | 2026-09-15 |
+| **3TK-81** | reference sync after the Gemini comment rewrite | 2026-09-15 |
+| **3TK-82** | example comments in `src/` style | 2026-09-15 |
 
 **Seven rows were added on 2026-09-10 by `3TK-75`**, which found the list had  
 stopped at `3TK-68` while seven stages had run past it. The count above was  

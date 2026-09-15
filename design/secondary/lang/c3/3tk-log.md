@@ -7,6 +7,162 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-15 — 3TK-82: example comments in `src/` style
+
+**Ran on Opus 5 and closed. `041` is spent with it. No stage is queued.**
+
+The job, per `R-4`/`R-5` of `3tk-staging-plan-041.md`: bring the comments in
+`examples/*.c3` to the voice of the owner's rewritten `src/`.
+
+**The style, read out of `src/*.c3`.**
+
+- A module block opens with one short line naming what the module is.
+- A declaration doc starts with a present-tense verb: *Allocates*, *Returns*, *Extracts*.
+- Plain technical words, and every identifier in backticks.
+- It says what the code does and the state it leaves: *empty afterwards*, *untouched on `CLOSED`*.
+- It leaves out design argument, history, other documents and metaphors.
+
+**Where the rules win over `src/`.**
+
+- `helper.c3`'s module block chains facts with commas.
+  - Staccato, `rules-049.md` Part 6, wins.
+  - Example text keeps one fact per sentence and per bullet.
+- An example is one line of intent, then one bullet per step in code order.
+  - `rules-049.md` Part 4, *Description as code*, and `3tk-example-rules-006.md`.
+- One sentence per line, never wrapped. No nested bullets.
+  - `3tk-example-rules-006.md`, *the register is the source register*.
+
+**Exemplar first (rules-007 Rule 11).** `001-empty_slot.c3` was rewritten
+alone, shown, and confirmed by the owner. Steps name what the code does, in
+order, including its checks.
+
+**The sweep.** All 63 other files: 50 numbered examples, 11 group files,
+`outers.c3`, `helpers.c3` and `shc.c3`.
+
+- Every `<* *>` module block rewritten. `helpers.c3`'s `expect` doc too.
+- Seven `//` comments rewritten: `010:19`, `023:27-29`, `042:36`, `046:28`,
+  `061:32-33`, `outers.c3:31-32`.
+- Code unchanged, measured: every file compared equal to its backup with comments stripped.
+
+**Descriptions that did not match their code, corrected to the code.**
+
+- `008` — said a closed mailbox reaches the defer. The code uses `TIMEOUT`.
+- `013` — named `Slot.move`. The code never calls it.
+- `033` — said the worker loops until closed. It answers one request.
+- `053` — said the caller closes the mailbox. It does not.
+- `058` — said *no alias*. The file declares `alias EVENT`.
+
+**Banned words removed from comments** (`rules-049.md` Part 5).
+
+- `drain` — `004`, `025`, `028`, `030`, `034`, `039`, `f_mailbox.c3`.
+- `hands` — `020`, `028`, `h_pool.c3`.
+- `owns` — `023`, `052`, `b_cleanup.c3`, `c_crossing.c3`, `e_infrastructure.c3`, `j_coordinator.c3`, `shc.c3`.
+- `object` — `018`, `042`, `h_pool.c3`.
+- `deliver` — `f_mailbox.c3`.
+
+**Banned words left, because they are code.** Flagged for the owner.
+
+- `drain` as a function name: `030-close_recovery.c3`, `039-available_only.c3`.
+- `drained` inside `expect` message strings: `015:50`, `028:43`, `039:75`.
+- `object` inside a filename: `042-the_hook_object_is_the_context.c3`.
+
+**One reference sentence re-synced, in passing (Rule 13).** The owner fixed
+`mailbox.c3:217`'s `drains` to `moves` during this stage.
+`3tk-reference-012.md:1344` still said `drains`, and the doc loop showed 1
+missing. It now says `moves`.
+
+**Not touched.** `3tk-patterns-004.md` has its own entry text, which sometimes
+matches an example's old intent line. It is a descriptive catalog and outside
+this plan.
+
+**Verification.**
+
+- `c3c build`: clean.
+- `c3c test`: 148 passed, 0 failed.
+- `check-doc-loop.sh`: 0 differing blocks, 147 of 147 found, 0 banned words.
+- `run-builds.sh`: 114 passed, 9 failed.
+  - The same 9 as `3TK-81`: the 8 from `bc3506d` and `pool.c3`'s module order.
+  - None is in `examples/`.
+
+**Scripts and CI (Rule 12): none needed.** No script or `.yml` changed.
+
+**No git.** Touched: 64 files in `examples/`, one line of
+`matryoshka-3tk/design/3tk-reference-012.md`, this log and `3tk-status.md`.
+
+---
+
+## 2026-09-15 — 3TK-81: reference sync after the Gemini comment rewrite
+
+**Ran on Sonnet 5 and closed. `041` is spent with it; `3TK-82` follows,
+queued for Opus 5.** After `3TK-80` closed, the owner had every `src/*.c3`
+comment rewritten by Gemini, in a human-readable style, and CI's example
+generation was removed from the yml. This stage's job, per `R-2`/`R-3` of
+`3tk-staging-plan-041.md`: fix the new text's rule breaks, then re-sync
+`3tk-reference-012.md` to it.
+
+**R-3 — five banned-word hits, all fixed, smallest edit, owner's wording kept.**
+`helper.c3:9` — `lifecycle hooks (`init` and `finish`)` → `the `init` and
+`finish` hooks`. `pool.c3:5` — `object pool` → `pool` (the module summary).
+`pool.c3:352` and `:357` — `object allocation` → `outer allocation` /
+`custom outer allocation` (the two `PoolHooks` doc lines). `pool.c3:380` —
+`drain remaining pooled structures` → `empty remaining pooled structures`.
+No prose/staccato/bullet violations found against `rules-049.md` Parts 4-6 —
+Gemini's rewrite is already short, staccato doc comments; nothing else to fix.
+
+**A sixth rule break, not a banned word: the four `::internal` module
+sections lost their `<* *>` description block.** Rule 4 of `3tk-rules-007.md`
+requires every module to carry one, `::internal` sections included — *"An
+internal page with no description is exactly the page a reader cannot tell
+is internal."* Gemini's rewrite left the `// Internal Implementation
+Details` `//` banner but dropped the block above `module
+mtk::X::internal;` in all four of `inner.c3`, `queue.c3`, `mailbox.c3` and
+`pool.c3`. Restored with four short new descriptions, in the same voice as
+the surrounding rewrite (not the retired prose — that stayed in
+`backup/`-equivalent history, recovered from `matryoshka-3tk`'s git log
+only to confirm what each internal module used to say, not to reuse the
+wording verbatim).
+
+**R-2 — the reference re-synced to the new source, in two passes.**
+First, `move-module-docs.sh out` copied all 11 module `<* *>` blocks
+(the 7 user-facing ones, rewritten by Gemini, plus the 4 internal ones
+just restored) into `3tk-reference-012.md`'s labelled blocks — a
+mechanical copy, no hand-editing. Second, the 148 per-declaration
+descriptor sentences that `check-doc-loop.sh` compares against the
+reference: 135 were missing after the rewrite (the doc-comment wording
+changed everywhere), found by running the check before touching the
+reference. Each missing sentence was added into the reference's existing
+API-group prose in Parts 3-5 — as an additional bullet or clause next to
+the existing narrative it now sits beside, never replacing it, since
+*"the reference is allowed to say more — the source is a subset of it,
+never the reverse."*
+
+**Verification, all green.** `check-doc-loop.sh`: 0 differing module
+blocks (11 of 11, all "same"), 147 of 147 descriptor sentences found (148 before mtk.c3's module comment was shortened mid-stage by a concurrent owner edit, re-synced), 0
+banned words. `move-module-docs.sh roundtrip`: byte-identical. `c3c build`
+and `c3c test mtk-test`: both clean, 148 tests passed. `c3c` version is
+0.8.3, unchanged.
+
+**`run-builds.sh`: 123 checks, 114 passed, 9 failed — one more failure
+than `3TK-80`'s reported 8, and it is new, not this stage's.** The 8 are
+the same ones `3TK-79`/`3TK-80` traced to the owner's own `bc3506d`
+("Clean 3tk comments"): the internal-section banner and marker lines
+`bc3506d` removed, and the stack-banner/layering greps that key on them.
+**The 9th is `pool.c3`'s module order**, `mtk::pool;` /
+`mtk::pool::hooks;` / `mtk::pool::internal;` where
+`run-builds.sh`'s `EXPECT_MODULE[pool]` wants `hooks` first — confirmed
+by diffing against `bc3506d` (correct order there) and against `HEAD`
+(`c4de78b`, "Update 3tk comments" — already the drifted order, so the
+Gemini rewrite reordered the sections, not this stage). **Not fixed** —
+reordering module sections is a code change, and this plan's own *What
+these stages do not do* rules that out (*"They do not change code,
+identifiers or filenames"*). Flagged here and in `3tk-status.md` for the
+owner.
+
+**No git. No file outside `3tk-reference-012.md` and the six `src/*.c3`
+files was touched**, save this log and `3tk-status.md`.
+
+---
+
 ## 2026-09-15 — 3TK-80: word bans, an API rename, and per-item doc comments
 
 **Ran on Sonnet 5 and closed. `040` is spent.** Three follow-ons to
