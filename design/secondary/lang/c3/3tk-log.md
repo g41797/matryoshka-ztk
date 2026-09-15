@@ -7,6 +7,105 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-15 — 3TK-83: example module pages written for the reader
+
+**Ran on Opus 5 and closed. `042` is spent with it. No stage is queued.**
+
+The owner read `shc::a_slot_and_transfer`'s page and found three problems.
+The other group pages had the same ones.
+
+- Catalog numbers the reader has never seen.
+- Sentences about the catalog, not the module.
+- Children listed by filename, which does not link.
+
+**The owner's rulings, 2026-09-15.**
+
+- A rule with no code of its own becomes a plain fact on the group page.
+- `3tk-example-rules-006.md` gains a rule against catalog references in comments, as `007`.
+- `k_new_in_3tk` keeps its name. Only its description changes.
+- The check also catches a bare backticked number.
+
+**The link, measured.** A backticked module path links on the generated page.
+
+- `mergeTargetData` in `docs.html` adds every module to `allDecls`, with its path as `uid`.
+- `highlightC3` links a `::` token whose text matches a `uid`.
+- Rendered in headless Chrome: `shc::a_slot_and_transfer`'s page linked all four module paths in its description.
+
+**Exemplar first (rules-007 Rule 11).** `a_slot_and_transfer.c3` was
+rewritten alone, and the owner confirmed it. The new check read 0 on it and 74
+hits across the 11 unswept files.
+
+**The sweep.**
+
+- The other 10 group files, and `shc.c3`.
+  - Opening line: the subject, not *"catalog entries N through M"*.
+  - Children listed by module path, each with a short hook.
+  - *"This module holds no code of its own."* removed from all 11.
+- Code-less rules turned into facts, taken from `3tk-patterns-004.md`:
+  - entry 2 on `a_`; 14 on `c_`; 21, 22 on `d_`; 41, 43, 44 on `h_`;
+  - 47, 48 on `i_`; 54, 55, 56 on `j_`; 62 on `k_`.
+- `shc.c3` no longer explains `NNN` filenames or catalog rows.
+- `k_new_in_3tk.c3` no longer describes porting history.
+  - Its old *"Entry 62 has no code"* also clashed with `062-send_with_limit.c3`.
+- Three leaf examples fixed:
+  - `019` — *"ztk cannot write"* became why C3 allows it.
+  - `045` — *"from `018`"* became `shc::d_dispatch::dispatch_identity_first`.
+  - `057` — *"3tk"* became *"the toolkit"*.
+- `outers.c3` and `helpers.c3` checked against the rule: nothing to change.
+- `k_new_in_3tk.c3` lists `identity_costs_nothing` and `composite_outer_gives_back` by module name, which differs from their filenames.
+
+**`3tk-example-rules-007.md` written, `006` moved to `backup/` (Rule 14).**
+
+- New MUST: *A comment is written for the docs reader*.
+- The auto-link paragraph records that module paths link.
+- Its check:
+  `catalog|[Ee]ntr(y|ies) [0-9]|[0-9]{3}-[a-z_]+\.c3|`[0-9]{3}`|\b(ztk|otk|dtk)\b|new in 3tk`.
+- Re-anchored: 4 links in `3tk-rules-007.md`, 2 in `3tk-patterns-004.md`,
+  and the live links in `3tk-status.md` and `3tk-staging-plan-042.md`.
+- History left as written: this log, old status table rows, and `backup/`.
+
+**Verification.**
+
+- Code unchanged against the pre-`3TK-82` originals: 0 diffs with comments stripped.
+- New check: 0 hits.
+- `c3c build`: clean. `c3c test`: 148 passed.
+- `check-doc-loop.sh`: 0 differing, 147 of 147 found, 0 banned words.
+- `run-builds.sh`: 114 passed, 9 failed — the same 9 as `3TK-81`.
+
+**Scripts and CI (Rule 12): none needed.** The new check is a `grep` a stage runs, written in the rules file.
+
+**Renamed after the stage, on the owner's request:** the `drain` function names.
+
+- `030-close_recovery.c3`: `drain` → `release_all`.
+- `039-available_only.c3`: `drain` → `take_all_available`.
+- Both are local to their file; nothing in `test/`, `negative/` or the scripts called them.
+- `c3c build` clean, `c3c test` 148 passed.
+
+**Then every remaining `drain` form reworded, on the owner's request.** 15 lines.
+
+- `expect` strings in `examples/015`, `028`, `039`: *emptied*, *received*, *taken*.
+- Comments in `test/t_concurrency.c3`, `test/t_mailbox.c3`, `test/t_pool.c3`.
+- One assert message in `t_pool.c3`: *"the close did not give back everything"*.
+- One local variable in `t_mailbox.c3`: `drained` → `returned`.
+- `grep -wi` for `drain|drains|drained|draining` over `src`, `test`, `negative`, `examples`: 0 hits.
+- `c3c build` clean, `c3c test` 148 passed.
+
+**Then `042` renamed, on the owner's request**, to drop the banned `object`.
+
+- File: `042-the_hook_object_is_the_context.c3` → `042-the_hooks_struct_is_the_context.c3`.
+  - The number is kept, per `3tk-example-rules-007.md`.
+- Module: `shc::h_pool::the_hook_object_is_the_context` → `shc::h_pool::the_hooks_struct_is_the_context`.
+- Followed in `examples/h_pool.c3` and in `test/t_examples.c3`'s wrapper, name and message.
+- No script, `project.json` or other file named it.
+- `c3c build` clean. `c3c test` 148 passed. `check-doc-loop.sh` clean. `run-builds.sh` 114 passed, 9 failed, unchanged.
+- **For the owner's copy to `matryoshka-3tk`:** remove its old `examples/042-the_hook_object_is_the_context.c3`, or both files declare an example and the old module stays.
+
+**No git.** Touched: 15 files in `examples/`, `3tk-example-rules-007.md` (new),
+`3tk-example-rules-006.md` (moved), `3tk-rules-007.md`, `3tk-patterns-004.md`,
+`3tk-staging-plan-042.md`, this log and `3tk-status.md`.
+
+---
+
 ## 2026-09-15 — 3TK-82: example comments in `src/` style
 
 **Ran on Opus 5 and closed. `041` is spent with it. No stage is queued.**

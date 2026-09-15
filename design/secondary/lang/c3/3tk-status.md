@@ -57,14 +57,20 @@ plan's own *What these stages do not do* rules out any code change, and
 reordering module sections is one. **The owner's call, alongside the 8
 pre-existing failures below.**
 
-**`3TK-82` ran 2026-09-15 on Opus 5 and closed. `041` is spent. No stage is
-queued.** Every comment in `examples/*.c3` is in `src/` style now, with no code changed.
+**`3TK-83` ran 2026-09-15 on Opus 5 and closed. `042` is spent. No stage is
+queued.** Example group pages list their examples by module path, with no catalog
+references. **`3tk-example-rules-007.md`** replaces `006` and forbids catalog references,
+file numbers and port history in example comments.
+Its check has 0 hits. `c3c test`: 148 passed. `check-doc-loop.sh`: clean.
+`run-builds.sh`: 114 passed, 9 failed, the same 9 as below.
+
+**`3TK-82` ran 2026-09-15 on Opus 5 and closed. `041` is spent.** Every comment in `examples/*.c3` is in `src/` style now, with no code changed.
 `check-doc-loop.sh`: 0 differing, 147 of 147 found, 0 banned words.
 `c3c test`: 148 passed. `run-builds.sh`: 114 passed, 9 failed, the same 9 as below.
-**Flagged for the owner, not fixed because they are code:** `drain` is a
-function name in `examples/030` and `examples/039`. `drained` appears in
-three `expect` strings (`015`, `028`, `039`). `object` is in the filename
-`042-the_hook_object_is_the_context.c3`.
+No `drain` or `object` is left in `src`, `test`, `negative` or `examples`.
+**`examples/042` is renamed** to `042-the_hooks_struct_is_the_context.c3`.
+When copying to `matryoshka-3tk`, delete the old
+`examples/042-the_hook_object_is_the_context.c3` there.
 
 **`3TK-81` ran 2026-09-15 on Sonnet 5 and closed.** Five banned-word hits fixed (`lifecycle`, `object` ×3, `drain`), all
 in `helper.c3`/`pool.c3`; the four `::internal` module sections' missing
@@ -1115,7 +1121,7 @@ that is the owner's step.
 explicit, and the two wrappers that already broke it.** The owner asked for  
 the "no logic of its own" rule for `test/t_examples.c3` wrappers to be  
 written down explicitly and for the tree to be checked against it before  
-going further. [3tk-example-rules-006.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-example-rules-006.md)  
+going further. [3tk-example-rules-007.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-example-rules-007.md)  
 now spells out that a wrapper may create and tear down shared infrastructure  
 but must not touch a `Slot`, a `Handle` or an `InnerQueue` itself. Checked  
 against every wrapper written by steps 1 through 5: two violated it —  
@@ -1586,7 +1592,7 @@ scripts take an optional directory and exit 2 on a bad one.
   live copies pushed there after each verified step. **The reference book, the  
   example rules and the pattern catalog live there now, not in this repo's  
   `ref/`**, and since 3TK-60 the api table, the decisions record and the terms  
-  document too: `3tk-reference-012.md`, `3tk-example-rules-006.md`,  
+  document too: `3tk-reference-012.md`, `3tk-example-rules-007.md`,  
   `3tk-patterns-004.md`, `3tk-api-006.md`, `3tk-decisions-007.md`,  
   and **`3tk-rules-007.md`** — 3tk's own rules document, normative, for every  
   rule that binds the C3 port and is not already a rule in the common tk set,  
@@ -1627,8 +1633,8 @@ Every line begins the same way, because every stage reads this file first:
 Read design/secondary/lang/c3/3tk-status.md.
 ```
 
-**No stage is queued.** `3TK-82` closed and
-[3tk-staging-plan-041.md](3tk-staging-plan-041.md) is spent. `3TK-50` waits on the owner.
+**No stage is queued.** `3TK-83` closed and
+[3tk-staging-plan-042.md](3tk-staging-plan-042.md) is spent. `3TK-50` waits on the owner.
 
 For orientation, or to start whatever the owner names:
 
@@ -1734,7 +1740,7 @@ independent of 3TK-58 and does not block it.
 
 ## The stages that have run
 
-**Eighty-two rows, and the log has an entry for every one.** 3TK-62, 3TK-63 and  
+**Eighty-three rows, and the log has an entry for every one.** 3TK-62, 3TK-63 and  
 3TK-64 were added by 3TK-pre-65, which found them missing; the four of 2026-09-08  
 were added when 030 was written. **The table is in execution order, so 67, 65, 66,  
 68 sit out of numeric order deliberately.** This table is the list, not the  
@@ -1824,6 +1830,7 @@ record.
 | **3TK-80** | word bans, an API rename, and per-item doc comments | 2026-09-15 |
 | **3TK-81** | reference sync after the Gemini comment rewrite | 2026-09-15 |
 | **3TK-82** | example comments in `src/` style | 2026-09-15 |
+| **3TK-83** | example module pages written for the reader | 2026-09-15 |
 
 **Seven rows were added on 2026-09-10 by `3TK-75`**, which found the list had  
 stopped at `3TK-68` while seven stages had run past it. The count above was  
