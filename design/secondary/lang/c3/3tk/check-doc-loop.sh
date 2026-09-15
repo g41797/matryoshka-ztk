@@ -251,7 +251,7 @@ ledger hands robust seamlessly comprehensive leverage efficient powerful
 facilitate utilize ensure performant ergonomic idiomatic streamline orchestrate
 sophisticated intuitive scalable unlock empower harness deliver fed arm leg
 idempotent fires faces pitch paradigm mindset ownership gained wire wired wires
-wiring object
+wiring object parked
 """.split() + ['on purpose', 'object model', 'execution context',
                'execution model', 'programming model']
 BAN_RE = re.compile(r'\b(%s)\b' % '|'.join(sorted(BANNED, key=len, reverse=True)))

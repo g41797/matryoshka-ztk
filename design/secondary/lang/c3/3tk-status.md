@@ -24,11 +24,93 @@ It is kept short for that reason.**
 
 ## What is live now
 
-**`3TK-78` ran 2026-09-14 on Sonnet 5 and closed, and `038` is spent with it.  
+**Flagged, not fixed: `c3c` 0.8.3's `docgen` drops every `faultdef` doc
+comment.** Confirmed with an isolated two-line repro, outside this repo —
+not a 3tk-specific defect. `c3c` has accepted a `<* *>` block above a
+`faultdef` since 0.7.6 (issue #2427), and it compiles clean, but
+`docgen`'s JSON/HTML output never carries a `docs` field for a
+`"kind":"fault"` entry, where the same output for `"kind":"enum"`
+members does. `mtk.c3`'s eight `faultdef`s (see below) and `pool.c3`'s
+`GetMode` enum values both carry per-item doc comments today; only the
+enum's will render on the generated docs site under this compiler
+version. **No workaround exists in the language** — `faultdef` has no
+brace-block form the way `enum` does, so there is no alternate spelling
+to try. **Checked against `0.8.4`'s own changelog, 2026-09-15: not fixed
+there either.** `0.8.4` (2026-09-11, one release past the `0.8.3` this
+repo builds with) lists `faultset { ... }` parsing as new — a different,
+experimental declaration kind, not `faultdef` — and its docgen entries
+are the same ones `0.8.3` already carried (`attrdef` declarations/docs,
+`alias` doc comments, `@return` contracts). No line in either changelog
+names `faultdef` doc comments or `docgen`'s fault-kind output. **No
+stage upgrades `c3c` or rewrites these comments to chase this**; it is a
+`docgen` gap to re-check again against whatever release comes after
+`0.8.4`, not a `src/` defect.
+
+**`3TK-80` ran 2026-09-15 on Sonnet 5 and closed, and `040` is spent with
+it. No stage is queued.** **Only `3TK-50` remains from any earlier plan,
+and it waits on the owner.** Plan `040` is spent and still in this
+folder; `039` is gone from it too now. **`backup/` is transient, so none
+of the earlier plans there is a source of truth.**
+
+**`parked` and `quiet` are banned words now** — `rules-049.md` Part 5 and
+`check-doc-loop.sh`'s `BANNED` copy — **and both are gone from
+`src/*.c3`'s comments, messages, and identifiers.** `Mailbox.is_quiet` /
+`Pool.is_quiet` are renamed to `is_idle`, the owner's choice over
+`can_release`, `is_release_ready` and `has_no_active_calls`: plain, no
+metaphor, keeps the codebase's `is_X` predicate shape. Call sites in
+`test/t_mailbox.c3` and `test/t_pool.c3` follow; `negative/*.c3`'s
+`parked`-named identifiers are renamed too (`parked_receiver` →
+`waiting_receiver`, `parked_getter` → `waiting_getter`, `struct Parked` →
+`struct Waiting`). **`negative/release_not_quiet_pool.c3`'s filename is
+untouched** — flagged to the owner, not renamed, since it ripples into
+`run-builds.sh`'s test arrays. `3tk-reference-012.md` was re-synced past
+the labelled module blocks this time, into the mailbox/pool API prose and
+a standalone narrative section whose diagram is now
+`OPEN -> CLOSED -> IDLE -> FREED`.
+
+**`mtk.c3`'s `faultdef` is eight separate declarations now, each with its
+own doc comment**, and **`pool.c3`'s `GetMode` enum has one doc comment
+per value**, `Pool.get`'s own doc reworded to match. Both are synced into
+`3tk-reference-012.md`. See *What is live now*'s `docgen` note above:
+the new `faultdef` doc comments are correct C3 but do not render on the
+generated docs site, a `c3c` gap unrelated to how they are written.
+
+**`check-doc-loop.sh` is clean on everything this stage touched**: 0
+banned words, every touched file at 0 missing. `mtk.c3`'s descriptor
+count is 53 (was 42), all from the new `faultdef` doc comments; 8 of
+those 53 remain MISSING, the same pre-existing `VERSION`/`LOC`/`CHECKED`
+gap `3TK-79` already found — `faultdef` no longer contributes to it.
+`pool.c3` grew from 148 to 157 sentences, all found. **`c3c build` and
+`c3c test` (148 tests) are green.** `run-builds.sh` is unchanged at 115
+passed, 8 failed — the same 8 `bc3506d` failures, untouched by this
+stage.
+
+**`3TK-79` ran 2026-09-15 on Opus and closed, and `039` is spent with it.  
 No stage is queued.** **Only `3TK-50` remains from any earlier plan, and it waits  
-on the owner.** Plan `038` is spent and still in this folder; `037` is gone from  
+on the owner.** Plan `039` is spent and still in this folder; `038` is gone from  
 it too now. **`backup/` is transient, so none of the earlier plans there is a  
 source of truth.**
+
+**`src/*.c3`'s comments are rewritten to plain staccato prose**, per
+`3TK-79`, following the owner's own `bc3506d` ("Clean 3tk comments"),
+which stripped internal-module comments to bare directives and removed
+the LE-import banners — neither touched by `3TK-79`. Only comments that
+read AI-generated were rewritten; plain ones were left alone. **No fact
+was dropped** — every rewrite kept the reasoning the original carried,
+stated more directly. `3tk-reference-012.md` was re-synced in the same
+stage, edited in place: all 11 labelled module blocks read `same`
+against source, and the per-declaration descriptor sentences the rewrite
+touched were traced and updated too. **`check-doc-loop.sh` is clean on
+everything this stage touched**: 0 banned words (one "on purpose" hit
+found and fixed), 0 missing descriptor sentences in all 6 `src/*.c3`
+files. The 10 descriptor sentences still reported missing overall are
+`mtk.c3`'s `VERSION`/`LOC`/`faultdef`/`@check`/`CHECKED` doc comments,
+confirmed pre-existing and untouched by this stage. **`run-builds.sh` is
+115 passed, 8 failed — all 8 pre-exist `bc3506d`**, which removed the
+internal-module banner `// For internal usage - everything below this
+line.` from four files (`inner.c3`, `queue.c3`, `mailbox.c3`, `pool.c3`);
+confirmed by diffing that commit. Reported, not fixed — restoring a
+banner the owner deliberately removed is the owner's call.
 
 **`Mailbox.send` takes an optional `usz limit = 0`, per
 `matryoshka-3tk/design/3tk-limited-send-001.md`, now `Adopted, implemented by
@@ -449,7 +531,7 @@ stopped aborting in a checking build. **An internal declaration that has a
 contract keeps a contract-only block — every line a `@` line, no prose** — and  
 `run-builds.sh` now asserts exactly that. **No stage tidies one away.**
 
-**`run-builds.sh` is 123 checks, 0 failures, four builds, 148 tests each, and the doc loop is 464 of 464** — `3TK-78`'s figures. 146 and 463 were `3TK-75`'s through `3TK-77`'s, unchanged across the rename; the check count did not move at `3TK-78` either, since limited send added no new negative and no new module — only two new tests (one unit, one example wrapper) and one new descriptor sentence. 115, 145 and 458 were `3TK-74`'s; 107 and 443 were `3TK-70`'s through `3TK-73`'s; the two figures moved together because two new negatives run once per build and the helper's three doc blocks grew. The paragraphs below are each stage's own reading at the time it ran.
+**`run-builds.sh` is 115 checks passing, 8 failing, and the doc loop's descriptors are 486 of 496** — `3TK-79`'s figures, and not comparable to `3TK-78`'s 123/0 the way earlier rows are comparable to each other: the 8 failures and the higher total sentence count both predate `3TK-79` and trace to the owner's own `bc3506d` between the two stages, not to anything `3TK-79` changed. `3TK-79` touched no check and no test; it is a prose-only stage; see `3TK-79`'s own log entry and *What is live now* above for the breakdown. `123 checks, 0 failures, 148 tests each, doc loop 464 of 464` were `3TK-78`'s own figures, still true of the code and tests `3TK-78` measured — `bc3506d` removed comments, not checks or tests, so the 8 new `run-builds.sh` failures are a banner grep losing its anchor, not a test regressing. 146 and 463 were `3TK-75`'s through `3TK-77`'s, unchanged across the rename; the check count did not move at `3TK-78` either, since limited send added no new negative and no new module — only two new tests (one unit, one example wrapper) and one new descriptor sentence. 115, 145 and 458 were `3TK-74`'s; 107 and 443 were `3TK-70`'s through `3TK-73`'s; the two figures moved together because two new negatives run once per build and the helper's three doc blocks grew. The paragraphs below are each stage's own reading at the time it ran.
 
 **`run-builds.sh` was 81 → 89 checks, 0 failures, four builds, 143 tests each.**  
 Three checks were added: the six-name module list (`Part 4.5`, replacing the  

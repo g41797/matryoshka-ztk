@@ -695,6 +695,9 @@ Words.
   reason, or state who does it.
 - `hatch`, including "escape hatch" — a metaphor where a plain description
   belongs. Name the field: "the `_list` field", "reaching through `_list`".
+- `parked` — a metaphor for a thread blocked on a wait. Say "waiting" and name
+  what it is waiting on: "waiting in `receive`", "waiting on the condition
+  variable".
 - `lifecycle` — AI-sh, and it says nothing a reader can act on. When the
   subject is how a mailbox or a pool is created, used and taken down, the  
   section is called **Usual flow**. When the subject is what state an item is  

@@ -7,6 +7,159 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-15 — 3TK-80: word bans, an API rename, and per-item doc comments
+
+**Ran on Sonnet 5 and closed. `040` is spent.** Three follow-ons to
+`3TK-79`, made the same day and written up as one stage: `parked` and
+`quiet` banned and rewritten out of `src/*.c3`, `Mailbox.is_quiet` /
+`Pool.is_quiet` renamed to `is_idle`, and `mtk.c3`'s `faultdef` and
+`pool.c3`'s `GetMode` given per-item doc comments.
+
+**`parked` and `quiet` join `rules-049.md` Part 5**, ztk's banned-word
+list — the source of truth `check-doc-loop.sh`'s own comment names for
+3tk's scan too — and `check-doc-loop.sh`'s `BANNED` copy got the same two
+words. **Edited in place, not versioned to `-050.md`**: a two-line
+addition to an existing list, not the kind of change Part 0's
+document-versioning gate is for. Flagged to the owner as a live tension
+with that file's own hard gate — never overwrite, version instead — not
+silently resolved.
+
+**Both words were metaphors for a plain fact, and both are gone from
+`src/*.c3`'s comments, messages, and identifiers now.** `parked` meant "a
+thread blocked on a wait" and is now "waiting". `quiet` meant "closed,
+with no call still running" and is now stated that way directly — the
+owner's own flagged example, *"Closing does not make a mailbox quiet:
+release it only after..."*, is now *"A closed mailbox can still have
+calls running on it. Release only after..."*. **`is_quiet` was also a
+public API name, not only a word choice**, and the owner chose `is_idle`
+over `can_release`, `is_release_ready` and `has_no_active_calls`: plain,
+no metaphor, and it keeps the existing `is_X` boolean-predicate shape
+(`is_closed`, `is_empty`, `is_full`, `is_linked`).
+
+**The rename's call-site surface was `src/` (2 declarations) plus
+`test/t_mailbox.c3` and `test/t_pool.c3` (7 lines)**, confirmed by `grep
+-rn "is_quiet"` across the whole 3tk tree — no `negative/*.c3` file calls
+it. `negative/*.c3` still needed the word ban applied to prose and to
+three `parked`-named identifiers that were not call sites:
+`parked_receiver` → `waiting_receiver`, `parked_getter` →
+`waiting_getter`, `struct Parked` → `struct Waiting` (renamed in both
+the mailbox and the pool negative files that declared one).
+**`negative/release_not_quiet_pool.c3`'s filename is untouched** —
+renaming it ripples into `run-builds.sh`'s test-name arrays and its
+printed output, and that is flagged to the owner rather than decided
+here.
+
+**`3tk-reference-012.md` was re-synced well past the labelled module
+blocks this time.** The mailbox/pool `release`/`is_quiet`/`close` API
+prose, `PoolHooks`, and a standalone "closed is not quiet" narrative
+section with its own `OPEN -> CLOSED -> QUIET -> FREED` diagram all
+mirrored the banned word and had to be found and rewritten, not only the
+parts the doc loop's module-block check watches. The diagram is now
+`OPEN -> CLOSED -> IDLE -> FREED`.
+
+**`mtk.c3`'s combined `faultdef` line is eight separate declarations
+now, each with its own doc comment** stating the fault's plain meaning —
+sourced from the `@return?` directives already on the functions that
+raise each one, so nothing was invented. The line's own former doc block
+became a plain `//` comment ahead of the first declaration, since a `<*
+*>` block with nothing directly under it is not a valid attachment.
+**`pool.c3`'s `GetMode` enum got the same treatment**, one doc comment
+per value, and `Pool.get`'s own doc block — which restated the three
+modes in its own words — was reworded to match, so the two do not drift
+apart. Both additions were synced into `3tk-reference-012.md`'s "Faults"
+section and `Pool.get`'s API prose.
+
+**`c3c docgen` drops every `faultdef` doc comment, confirmed by an
+isolated two-line repro outside this repo** — a file with only
+`PERMISSION_DENIED`, the manual's own example, still produced a `"kind":
+"fault"` JSON entry with no `docs` field, where the same run's `enum`
+members did get one. `c3c` has accepted the doc comment since `0.7.6`
+(issue #2427); this is `docgen`'s emitter, not the parser. **Checked
+against `0.8.4`'s own changelog** (one release past the `0.8.3` this repo
+builds with): not fixed there either, and `faultdef` has no brace-block
+form to try as a workaround. **Reported in `3tk-status.md`, not
+chased** — the doc comments are correct C3 and correct for a source
+reader regardless of what the generated site currently shows.
+
+**Figures.** `c3c build` and `c3c test` (148 tests, unchanged) both
+green after every step. `check-doc-loop.sh`: 0 banned words, every
+touched file at 0 missing descriptor sentences, all 11 module blocks
+`same`. `mtk.c3`'s descriptor count is 53 now (was 42), all the growth
+from the eight new `faultdef` doc comments; 8 of those 53 remain
+MISSING overall, the same pre-existing `VERSION`/`LOC`/`CHECKED` gap
+`3TK-79` already found and left. `pool.c3` grew from 148 to 157
+sentences, all found. `run-builds.sh`: 115 passed, 8 failed — the same 8
+that pre-date `bc3506d`, unaffected by this stage.
+
+**Not yet copied to `matryoshka-3tk`'s `src`, or pushed** — that is the
+owner's step, as always.
+
+---
+
+## 2026-09-15 — 3TK-79: comment register rewrite
+
+**Ran on Opus and closed. `039` is spent.** Rewrote the AI-ish comments in
+`src/*.c3` (`mtk.c3`, `inner.c3`, `helper.c3`, `queue.c3`, `pool.c3`,
+`mailbox.c3`) into plain, staccato prose, per `rules-049.md` Parts 4 and 6
+(the prose guidance only — that document is ztk's and its Zig-specific
+autodoc mechanics do not apply). No fact was dropped: every rewrite kept
+the reasoning the original comment carried, just stated more directly and
+in shorter sentences. This followed on the owner's own `bc3506d` ("Clean
+3tk comments"), which had already stripped internal-module comments to
+bare directives and removed the LE-import banners — neither is touched by
+this stage.
+
+**Selective, not total.** A comment that already read plain and direct was
+left alone. The rewrite touched doc blocks and main-module `//` comments;
+nothing else. Per file: `helper.c3` 10 rewrites (heaviest — the two-hook
+rule's reasoning), `pool.c3` 15, `mailbox.c3` 9, `queue.c3` 4, `inner.c3`
+4, `mtk.c3` 1.
+
+**One real defect, caught by review rather than by a check.** The first
+pass of the rewrite silently dropped five sentences from `mtk.c3`'s module
+doc block — the "one import gives the toolkit" / "`We present you
+[[LOC]] lines of source`" paragraph — while reformatting an adjacent
+sentence. Restored verbatim by diffing against
+`matryoshka-3tk/design/3tk-reference-012.md`, which still carried the
+original text. **No later stage re-derives this**: the rewrite pass was
+prose-only by instruction, and this was the one place it silently
+crossed into deletion.
+
+**`3tk-reference-012.md` was re-synced in the same stage (R-4 of `039`),
+edited in place, not versioned to `013`.** Every one of the 7 labelled
+module blocks (`mtk`, `mtk::helper`, `mtk::inner`, `mtk::queue`,
+`mtk::mailbox`, `mtk::pool::hooks`, `mtk::pool`) now reads `same` against
+its source. The doc loop's per-declaration descriptor check also mirrors
+sentences outside the labelled blocks — mostly the `### The API — ...`
+prose sections — and every one of those the rewrite touched was traced
+and updated too: the mailbox/pool `release`-and-`is_quiet` "closed and
+quiet" passages (the owner's own flagged example), `PoolHooks.on_get`/
+`on_put`, `queue.c3`'s `pop_front`, and four sentences in `helper.c3`'s
+create/release/stamp/linked prose.
+
+**One banned-word hit, fixed in both files.** `rules-049.md` Part 5 bans
+"on purpose" — `helper.c3`'s rewritten `release`-returns-`void` sentence
+used it (*"`release` returns `void` on purpose"*). Reworded to *"`release`
+also returns plain `void`"* in `src/helper.c3` and in the reference.
+
+**Figures.** `check-doc-loop.sh`: all 11 module blocks `same`; banned
+words 0 (was 1, fixed); per-file descriptor sentences 0 missing in all 6
+touched files. Overall descriptors 496 sentences, 486 found, 10 missing —
+the 10 are `mtk.c3`'s `VERSION`/`LOC`/`faultdef`/`@check`/`CHECKED`
+declaration doc comments, confirmed by diff to be untouched by this stage
+and never mirrored into the reference before it either; not this stage's
+gap to close. `run-builds.sh`: 115 passed, 8 failed — all 8 pre-exist
+`bc3506d` ("Clean 3tk comments"), which removed the internal-module
+banner `// For internal usage - everything below this line.` from four
+files; confirmed by diffing that commit directly. **Reported, not
+fixed** — restoring a banner the owner deliberately removed is the
+owner's call, not this stage's.
+
+**Not yet copied to `matryoshka-3tk`'s `src`, or pushed** — that is the
+owner's step, as always.
+
+---
+
 ## 2026-09-14 — 3TK-78: limited send
 
 **Ran on Sonnet 5 and closed. `038` is spent.** Implemented
