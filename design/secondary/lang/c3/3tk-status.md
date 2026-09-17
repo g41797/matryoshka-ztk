@@ -62,7 +62,7 @@ pre-existing failures below.**
 `any` is a C3 border type with no place in 3tk's internals: Matryoshka's
 nomenclature is `Inner`/`Outer`/`Slot`/`Mailbox`/`Pool` and 3tk answers for
 safety there; **at the border it converts, and does not police what happens to
-an `any` on the C3 side.** **`grep -rn '\bany\b' src/` returns nothing.**
+an `any` on the C3 side.** **Since `3TK-88`, `any` appears in `src/` only in the border calls of `helper.c3` and in `from_any`/`clear_any`; no `any` is stored.**
 16 bytes either way, so the packing never bought a byte. It supersedes
 `3TK-21` on the owner's word. **`c3c test` 148 unchanged, `run-builds.sh`
 114/9 the same 9, sanitizers 3 of 3, doc loop 149 of 149.** Three documents
@@ -71,9 +71,10 @@ went to a new version — **`3tk-reference-013.md`, `3tk-api-007.md`,
 were repointed. **The charter and the full result are in
 [matryoshka-3tk/design/3tk-inner-without-any-001.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-inner-without-any-001.md).**
 
-**What INTR 12 left for the conversion stage, which has not started.**
-**`Slot`/`Outer` ↔ `any` does not exist** — `OuterHelper.look` takes a `Slot*`
-or an `Inner*`, never an `any`, and `Slot.fill` takes an `Inner*`. **The border
+**What INTR 12 left for the conversion stage. `3TK-88` built the conversions;
+`3TK-89` wrote the `l_bridge` examples; `3TK-90` wrote the README passages. Plan `044` is spent.**
+**`Slot`/`Outer` ↔ `any` exists since `3TK-88`** — `is`, `look`/`take` on
+`any*`, `to_any`/`to_slot`, on `OuterHelper`. **The border
 is two-way**: the HTTP side of the opening system has no Mailbox, listens on an
 `UnboundedChannel(<any>)`, tells outers from io events by `a.type`, and sends
 on through a Mailbox. **An outer keeps its stamp when it leaves**, so the
@@ -91,10 +92,10 @@ staccato. **Its subject document is now
 `001` is in `backup/`. **Three debts are open, none of them README text:**
 `D-1` — `Slot`/`Outer` ↔ `any` does not exist, and *How to start* step 2 and
 the channel section's rules lean on it; `D-2` — no `l_` examples; `D-3` — the
-module `<* *>` blocks. **Plan
-[3tk-staging-plan-044.md](3tk-staging-plan-044.md) is live and `3TK-87` is
-queued:** the `any` border's subject document. `src/` is **718 lines** by
-`count_src_loc.sh`, so the README's *700+* holds.
+module `<* *>` blocks. Plan
+[3tk-staging-plan-044.md](3tk-staging-plan-044.md) is live and `3TK-87`
+ran 2026-09-17 and ruled the `any` border's surface in `3tk-any-border-001.md`. **`3TK-88` built it; `3TK-89` wrote `shc::l_bridge`; `3TK-90` wrote the README passages and closed `D-1`, `D-2`. `044` is spent; `D-3` is open.** `src/` is **810 lines** by
+`count_src_loc.sh` (718 before `3TK-88`), so the README's *700+* holds.
 
 **`3TK-86` ran 2026-09-16 on Opus 5.** The solution half of the README.
 
@@ -550,9 +551,9 @@ resolution in the same stage; it is not a debt for a later one.
 **`backup/` is transient, so neither is a source of truth.** Their content is in  
 the source, in [3tk-reference-013.md] and in
 [3tk-rules-007.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-rules-007.md).
-`3tk-decisions-008.md` still cites Boundaries by part number, and its header now  
+`3tk-decisions-009.md` still cites Boundaries by part number, and its header now  
 frames those as **historical markers** — which sitting ruled the entry — with  
-`008` and `../3tk/src` as what stands where they would differ.
+`009` and `../3tk/src` as what stands where they would differ.
 
 **The sitting of 2026-09-08 ruled six things and changed no code.** They are  
 **`3TK-67` carried all six into effect on 2026-09-08, and the rules among them  
@@ -1014,7 +1015,7 @@ module paths and value identifiers in separate namespaces). *Two:* the field
 
 **This supersedes 3TK-59, which kept *handle* as an English word.** Both  
 rulings are entries in
-[matryoshka-3tk/design/3tk-decisions-008.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-008.md),
+[matryoshka-3tk/design/3tk-decisions-009.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-009.md),
 where dtk will read them. **Both `3tk-terms-001.md` and `3tk-boundaries-001.md` were spent by 3TK-66 on  
 2026-09-08 and are in `matryoshka-3tk/design/backup/`, which is transient.** The  
 two-term ruling is carried by the books themselves now — each states it and dates  
@@ -1110,7 +1111,7 @@ settled the same way by 3TK-54:**
 
 | stage | what it does | start it with |
 |---|---|---|
-| **3TK-87 … 3TK-90** | **The `any` border — plan [3tk-staging-plan-044.md](3tk-staging-plan-044.md).** `Slot`/`Outer` ↔ `any`, both directions; tests and negatives; the `l_` examples; the two README passages. Closes `D-1`, `D-2`. | **`3TK-87` is queued: the subject document.** The prompt is in `044`'s *How to start after a clear*. **Model: Opus 5.** |
+| **3TK-87 … 3TK-90** | **The `any` border — plan [3tk-staging-plan-044.md](3tk-staging-plan-044.md).** `Slot`/`Outer` ↔ `any`, both directions; tests and negatives; the `l_` examples; the two README passages. Closes `D-1`, `D-2`. | **`3TK-87` ran 2026-09-17, Opus 5: surface ruled in [3tk-any-border-001.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-any-border-001.md); `3tk-decisions-009.md`. `3TK-88` ran 2026-09-17, Opus 5: the surface built — `is`, `look`/`take` on `any*`, `to_any`/`to_slot`; `test/t_bridge.c3`; five `negative/any_*`. `c3c test` 157; `run-builds.sh` 135/9, the same 9; doc loop 170 of 170; `3tk-reference-014.md`, `3tk-api-008.md`, `3tk-patterns-005.md`. `3TK-89` ran 2026-09-17, Opus 5: `shc::l_bridge`, two examples; `c3c test` 159. `3TK-90` ran 2026-09-17, Opus 5: README step 2 and the channel rules name `to_any`/`to_slot` and both `l_bridge` examples; `D-1`, `D-2` closed; `c3c test` 159; doc loop clean. `044` is spent.** The prompt is in `044`'s *How to start after a clear*. **Model: Opus 5.** |
 | **3TK-85** | **The problem half of the README.** Ran 2026-09-16, Opus 5. Written in `matryoshka-3tk/README.md`, eight sections, 80 prose lines. Plan [3tk-staging-plan-043.md](3tk-staging-plan-043.md). | **Closed.** `O-4` accepted by running `3TK-86`. |
 | **3TK-86** | **The solution half of the README.** Ran 2026-09-16, Opus 5. Plan [3tk-staging-plan-043.md](3tk-staging-plan-043.md). | **Closed**, with the owner's four revisions after it. |
 | **README closing** | **Plan `043` closed.** Ran 2026-09-17, Opus 5. Subject document to `002`; debts `D-1`..`D-3` recorded; plan `044` written. No README text changed. | **Closed.** |
@@ -1433,7 +1434,7 @@ on 2026-09-15 by 3TK-81; the docgen preview was last run on 2026-09-09 by
 **INTR 12's figures, 2026-09-16.** `run-builds.sh` 114 passed, 9 failed — the  
 same 9. `c3c test` 148, unchanged. `run-sanitizers.sh` 3 of 3 clean.  
 **`check-doc-loop.sh` 0 differing, 149 of 149** — 147 before, plus the two new  
-`Inner` field sentences. **The reference is `3tk-reference-013.md` now**, and  
+`Inner` field sentences. **The reference was `3tk-reference-013.md` then (`014` since `3TK-88`)**, and  
 `check-doc-loop.sh` and `move-module-docs.sh` both point at it.
 
 **The `handle`/`item`/`node` scan was last run 2026-09-04 by 3TK-60.**
@@ -1709,18 +1710,22 @@ Every line begins the same way, because every stage reads this file first:
 Read design/secondary/lang/c3/3tk-status.md.
 ```
 
-**`3TK-87` is queued** — plan [3tk-staging-plan-044.md](3tk-staging-plan-044.md).
-`043` is spent. `3TK-50` waits on the owner.
+**No stage is queued.** Plan [3tk-staging-plan-044.md](3tk-staging-plan-044.md) is spent.
+`043` is spent. `3TK-50` waits on the owner. `D-3`, the module `<* *>` blocks, needs a plan.
+
+**Next, when the owner starts it: `D-3`** — the module `<* *>` blocks, written from
+the README, with the `3tk-reference-014.md` re-sync. The first stage writes the plan.
 
 ```
-Read design/secondary/lang/c3/3tk-status.md and
-design/secondary/lang/c3/3tk-staging-plan-044.md.
-Read matryoshka-3tk/design/3tk-inner-without-any-001.md and
-matryoshka-3tk/design/3tk-readme-creation-002.md — its "What is open".
+Read design/secondary/lang/c3/3tk-status.md.
+Read matryoshka-3tk/design/3tk-readme-creation-002.md — "What is decided", "What is open" and the mapping table.
 Read matryoshka-3tk/design/3tk-rules-007.md
 and design/rules-049.md Parts 4-6.
-Git is disabled. Run 3TK-87.
+Git is disabled. Write staging plan 045 for D-3. No .c3 change. Show the plan and stop.
 ```
+
+**Nothing to copy for `3TK-90`.** It edited `matryoshka-3tk/README.md` and
+`matryoshka-3tk/design/3tk-readme-creation-002.md` in that repo directly.
 
 For orientation, or to start whatever the owner names:
 
@@ -1783,11 +1788,11 @@ transient, so neither is a source of truth and no stage cites either as one.**
 **Where each part of it lives now.** The governing rule, the rulings `RT-1` …  
 `RT-18`, the helper requirements, the proposed shape and the variants are  
 entries in
-[3tk-decisions-008.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-008.md),
+[3tk-decisions-009.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-009.md),
 which cites them by marker as **history** — which sitting ruled the entry — with  
-`008` and `../3tk/src` as what stands where they would differ. The surface, the  
+`009` and `../3tk/src` as what stands where they would differ. The surface, the  
 invariants and *what is deliberately absent* are in
-[3tk-reference-013.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-013.md).
+[3tk-reference-014.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-014.md).
 The rules that bind a stage are in `3tk-rules-007.md`. **The measurements and  
 the narrative are in [3tk-log.md](3tk-log.md), under 3TK-61 and 3TK-66.**
 

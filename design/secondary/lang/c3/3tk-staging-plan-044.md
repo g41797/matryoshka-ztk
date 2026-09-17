@@ -131,6 +131,11 @@ already written.
 
 **4. Show the document. Stop.** `3TK-88` starts from the answers.
 
+**Ran 2026-09-17.** The answers are *What is decided* in
+`matryoshka-3tk/design/3tk-any-border-001.md`. They changed the surface named
+here: `any` is handled like a Slot, by address; `look`/`take` accept `any*`;
+`is(from)` is new for every holder; the pair is `to_any`/`to_slot`.
+
 ### Steps — 3TK-88
 
 - The crossings, in `helper.c3`, on `OuterHelper`.
@@ -141,17 +146,26 @@ already written.
     - an unstamped outer
     - an `any` whose `.type` and `otrtypeid` disagree
 - `run-builds.sh`, in both repos (Rule 12).
-- Re-sync `3tk-reference-013.md` and `3tk-api-007.md` if they change by more
-  than a sentence (Rule 14).
+- `is` replaces `look` at the yes/no sites; `examples/010` off `internal::is_mine`.
+- New versions (Rule 14): `3tk-api-007.md` → `008`, `3tk-reference-013.md` →
+  `014` (repoint `check-doc-loop.sh`, `move-module-docs.sh`),
+  `3tk-patterns-004.md` → `005`.
+
+**Ran 2026-09-17.** Built as listed. `c3c test` 157; `run-builds.sh` 135/9, the same 9; five
+`negative/any_*`; doc loop 170 of 170. `api-008`, `reference-014`, `patterns-005`.
 
 ### Steps — 3TK-89
 
-- The `l_` group, named by this stage.
+- The `l_bridge` group. Named by the owner, 2026-09-17.
 - One file per pattern.
-    - A channel of `any` feeding a Mailbox.
+    - A channel of `any` sending into a Mailbox.
     - Io events and outers told apart on one channel.
 - The group page, and a line in `shc.c3`.
 - `3tk-example-rules-007.md` applies.
+
+**Ran 2026-09-17.** `shc::l_bridge`: `063-from_a_channel_to_a_mailbox.c3`,
+`064-io_and_outers_share_a_channel.c3`, `l_bridge.c3`, a line in `shc.c3`, two wrappers.
+`c3c test` 159; `run-builds.sh` 135/9, the same 9.
 
 ### Steps — 3TK-90
 
@@ -160,6 +174,17 @@ already written.
 - Both name the real calls and the `l_` examples.
 - Staccato, as the rest of the README.
 - `3tk-readme-creation-002.md`: `D-1` and `D-2` closed.
+- **The `fed` family is banned (Part 5), added by the owner 2026-09-17.**
+    - Search the whole family: `feed`, `feeds`, `feeding`, `fed`. Not only the listed spelling.
+    - Search file names and text: `src/`, `test/`, `negative/`, `examples/`, the scripts, `matryoshka-3tk/README.md`, `matryoshka-3tk/design/` outside `backup/`.
+    - A plain `grep -w` misses identifiers: `_` is a word character, so an identifier such as `x_feeds_y` does not match. Treat `_` as a separator:
+      `grep -rniE '(^|[^a-z])(feed(s|ing)?|fed)([^a-z]|$)'`, and `find -iname '*feed*'`.
+    - Every known hit was fixed before `3TK-90`. Re-run live anyway.
+    - Not a hit: the ban list in `check-doc-loop.sh` names `fed` to ban it.
+    - The log is append-only and keeps the old name. Status and this plan name the new one.
+    - `063` was renamed before `3TK-90`: `a_channel_feeds_a_mailbox` → `from_a_channel_to_a_mailbox`.
+
+**Ran 2026-09-17, on Opus 5.** Both passages name `to_any`, `to_slot` and the `l_bridge` examples. `D-1`, `D-2` closed. `fed` family: 0 hits. `c3c test` 159; doc loop clean. **This plan is spent.**
 
 ---
 
@@ -191,4 +216,41 @@ matryoshka-3tk/design/3tk-readme-creation-002.md — its "What is open".
 Read matryoshka-3tk/design/3tk-rules-007.md
 and design/rules-049.md Parts 4-6.
 Git is disabled. Run 3TK-87.
+```
+
+**3TK-88 — Opus 5:**
+
+```
+Read design/secondary/lang/c3/3tk-status.md and
+design/secondary/lang/c3/3tk-staging-plan-044.md.
+Read matryoshka-3tk/design/3tk-any-border-001.md — its "What is decided"
+and "What is open".
+Read matryoshka-3tk/design/3tk-rules-007.md
+and design/rules-049.md Parts 4-6.
+Git is disabled. Run 3TK-88.
+```
+
+**3TK-89 — Opus 5:**
+
+```
+Read design/secondary/lang/c3/3tk-status.md and
+design/secondary/lang/c3/3tk-staging-plan-044.md.
+Read matryoshka-3tk/design/3tk-any-border-001.md — its "What is decided"
+and "The shape in use".
+Read matryoshka-3tk/design/3tk-example-rules-007.md
+and matryoshka-3tk/design/3tk-rules-007.md
+and design/rules-049.md Parts 4-6.
+Git is disabled. Run 3TK-89.
+```
+
+**3TK-90 — Sonnet 5:**
+
+```
+Read design/secondary/lang/c3/3tk-status.md and
+design/secondary/lang/c3/3tk-staging-plan-044.md.
+Read matryoshka-3tk/README.md — "How to start" and "If you already have a channel".
+Read matryoshka-3tk/design/3tk-readme-creation-002.md — its "What is open".
+Read matryoshka-3tk/design/3tk-rules-007.md
+and design/rules-049.md Parts 4-6.
+Git is disabled. Run 3TK-90.
 ```

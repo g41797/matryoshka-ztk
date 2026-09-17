@@ -7,6 +7,128 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-17 — 3TK-90: the README passages
+
+**Ran on Opus 5** (the plan named Sonnet 5; the owner ran it here).
+
+- **`matryoshka-3tk/README.md`, *How to start*, step 2.**
+    - `look` on arrival → `to_any` before `push`, `to_slot` after `pop`.
+    - Names `shc::l_bridge::from_a_channel_to_a_mailbox`.
+- ***If you already have a channel*, the rules.**
+    - *Never cast* names `to_any`, `to_slot`; `is`, `look`, `take` on an `any`; the `must_` forms.
+    - New: your own data shares the channel, `is` says no to it — names `shc::l_bridge::io_and_outers_share_a_channel`.
+    - New: an outer crosses unlinked.
+- **Every call named is in `src/helper.c3`.** `is` has no `must_` form, so it is not listed with them.
+- **`3tk-readme-creation-002.md`: `D-1` and `D-2` closed.** In place (Rule 14): two table cells.
+- `fed` family, live: 0 hits outside `check-doc-loop.sh`'s ban list; no file name.
+- `c3c test` 159. `check-doc-loop.sh`: 0 differing, 0 banned words. `run-builds.sh` not run: no `.c3` change.
+- **Plan `044` is spent.**
+
+---
+
+## 2026-09-17 — after 3TK-89: `063` renamed, the `fed` family
+
+- **The owner banned the whole `fed` family** — `feed`, `feeds`, `feeding`, `fed` — in file names and text. Added to `3TK-90`'s steps.
+- **`063-a_channel_feeds_a_mailbox.c3` → `063-from_a_channel_to_a_mailbox.c3`.** Module, fault, wrapper and group page follow.
+- `examples/i_shutdown.c3` and `3tk-patterns-005.md`: *the mailbox that feeds the workers* → *the mailbox the workers receive from*. In place; one phrase (Rule 14).
+- The entry below keeps the old name.
+
+---
+
+## 2026-09-17 — 3TK-89: the `l_bridge` examples
+
+**Ran on Opus 5.**
+
+- **New group `shc::l_bridge`**: `examples/l_bridge.c3`, and a line in `shc.c3`.
+    - The page states the border's facts: an `any` is handled like a Slot; empty when `.ptr` is null; an outer crosses unlinked; `.type` is a hint.
+- **`063-a_channel_feeds_a_mailbox.c3`** — `shc::l_bridge::a_channel_feeds_a_mailbox`.
+    - A C3 thread makes three `Event`s and pushes each with `must_to_any`; a failed `push` goes back with `must_to_slot`.
+    - The receiving side pops until the channel is closed and empty, `must_to_slot`, `send`.
+    - `receive_all` and release; checks the three codes.
+- **`064-io_and_outers_share_a_channel.c3`** — `shc::l_bridge::io_and_outers_share_a_channel`.
+    - The HTTP side of the opening system: no mailbox, one `UnboundedChannel{any}`.
+    - `is` tells an outer from an io event; an io event is recognised by its own `typeid`, the user's side.
+    - io event → `create` an `Event`, send to the work mailbox; outer back from the worker → `must_to_slot`, read, release.
+    - Closed set: the last branch is `unreachable`.
+- **Measured: a module name is at most 31 characters** (`c3c` 0.8.3). `io_events_and_outers_on_one_channel` (35) was refused; the file and module became `io_and_outers_share_a_channel`.
+- **Wrappers in `test/t_examples.c3`**, two. Infrastructure only: each creates the Mailbox; the channel is the example's subject and the example makes it.
+- **`c3c test` 157 → 159.** `run-builds.sh` 135/9, the same 9 — all in `src/`, none in `examples/`.
+- Comment check of `3tk-example-rules-007.md`: 0 hits. Banned-word scan over the new files: no hit (lowercase `outers` is the term). Doc loop untouched: no `src/` change.
+- `D-2` is not closed here; `3TK-90` closes it with `D-1`.
+- No copy to `matryoshka-3tk`. Git disabled.
+
+---
+
+## 2026-09-17 — 3TK-88: the `any` border built
+
+**Ran on Opus 5.**
+
+- **`helper.c3`: five new members, three widened.**
+    - `is(from)` — `Slot*`, `Inner*`, `any*` → `bool`.
+    - `look`, `must_look` — accept `any*`.
+    - `take`, `must_take` — accept `any*`; both fields cleared.
+    - `to_any`/`must_to_any`, `to_slot`/`must_to_slot`.
+    - All return `Outer*`, as `look` does; the plain form returns null.
+- **`inner.c3`, `mtk::inner::internal`: `from_any` and `clear_any`.**
+    - `from_any` is the one place `.type` then `otrtypeid`, then the stamp, are checked.
+    - Every `any*` branch of the helper goes through it.
+- **All aborts go through `mtk::@check`**, as every other identity check.
+    - Safe build: abort. Fast build: gone.
+    - In a fast build a forged or unstamped `any` answers null, because `from_inner` still compares `otrtypeid`.
+- **Measured: a forged `any` needs the same layout.**
+    - A `Job` dressed as a `Msg` reads the inner at `Msg`'s offset, finds no stamp, and aborts as *unstamped*.
+    - So `negative/any_forged` uses a `Twin` with `Msg`'s layout. Then the *disagree* message is the one that fires.
+- **Tests: `test/t_bridge.c3`, 9 tests.** `c3c test` 148 → **157**, all four builds.
+    - The ruling's shape runs over `UnboundedChannel{any}`, including a failed `push` on a closed channel.
+- **Negatives: five, `negative/any_*`.** `wrong_type_must`, `forged`, `unstamped`, `linked`, `full_target`.
+- **`run-builds.sh`: 114/9 → 135/9, the same 9.** Ported to `matryoshka-3tk/scripts/`.
+    - The five negatives, in all four builds.
+    - The identity-check count: 6 → 10 `check_stamped` sites, plus 7 `from_any` branches and the checks inside it. Both counts seen red on a broken copy (Rule 11).
+    - `examples/010` off the allow-list; `from_any`, `clear_any` added to the internal-name grep.
+- **`is` replaced `look` at 17 yes/no sites.** `examples/017` ×3, `018` ×3, `025`, `027` ×2, `028`, `029` ×4, `035` ×2, `test/t_helper.c3:28`. `examples/010` calls `HOLDER.is`, not `internal::is_mine`.
+- **Sanitizers 3 of 3. Doc loop 170 of 170**, 0 differing, 0 banned.
+- **Documents (Rule 14):**
+    - `3tk-reference-013.md` → `014`. *The four crossings, and `is`*; new *The border — Slot and any*. `check-doc-loop.sh`, `move-module-docs.sh` repointed.
+    - `3tk-api-007.md` → `008`. Every `helper.c3:` and `inner.c3:` citation re-resolved; most were stale before this stage (Rule 13). The other files' citations were not.
+    - `3tk-patterns-004.md` → `005`. Entry 17 dispatches by `is`.
+    - In place: `3tk-any-border-001.md` status BUILT, shape measured; `3tk-readme-creation-002.md` `D-1` row; links in `3tk-example-rules-007.md`, `3tk-decisions-009.md`.
+- **Wording:** "delivered" and "arm" kept out of new text (Part 5).
+- **`src/` is 810 lines** by `count_src_loc.sh`, was 718.
+- No copy to `matryoshka-3tk/src/`. Git disabled.
+
+---
+
+## 2026-09-17 — 3TK-87: the `any` border ruled
+
+**Ran on Opus 5, in discussion with the owner.**
+
+- **An `any` is two values:** `.ptr`, and `.type` as the pointee typeid
+  (`MANUAL.md`). `Outer*` converts to it without a cast; `any_make` can build
+  one that lies.
+- **3tk checks an `any` on its own side, through `OuterHelper`.** `.type` is a
+  hint, `otrtypeid` the truth. 3tk fixes only what it can check.
+- **Owner's idea: an `any` is a kind of Slot, handled by address (`&a`).**
+  Empty when `.ptr == null`.
+- **Surface:** `is(from)` for `Slot*`, `Inner*`, `any*`; `look`/`must_look`/
+  `take`/`must_take` accept `any*`; `to_any(&slot, &a)`, `to_slot(&a, &slot)`,
+  each with a `must_` form.
+- **Always aborts:** `.type` says `Outer` and `otrtypeid` does not; unstamped;
+  linked, both directions; target not empty.
+- **`is` came from measuring:** `look` is used only as a yes/no test at about
+  twenty sites, and `examples/010` reaches into `internal::is_mine`.
+- **Documents:** `3tk-any-border-001.md` new; `3tk-decisions-008.md` → `009`,
+  `008` to `backup/`; live links re-anchored in `3tk-status.md`,
+  `3tk-doc-loop-005.md`, `3tk-api-007.md`, `3tk-port-findings-005.md`;
+  `D-1`/`D-2` in `3tk-readme-creation-002.md` point to the new document.
+- **Plan `044`:** `3TK-88` gains the `is` sites and three new document
+  versions. `3TK-88` queued.
+- **Closed after:** no `must_is` — `is` answers a question, the `must_` calls
+  that return the outer already abort. The group is `l_bridge`; *border* and
+  *bridge* both stay.
+- No `.c3` changed. Git disabled.
+
+---
+
 ## 2026-09-17 — README stage closed; plan 044 written
 
 **Ran on Opus 5. Plan `043` is spent.**
