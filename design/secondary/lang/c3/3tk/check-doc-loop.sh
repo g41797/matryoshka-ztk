@@ -26,7 +26,7 @@
 set -u
 
 ROOT=$(cd "$(dirname "$0")" && pwd) || exit 2
-REF=${REF:-$ROOT/../../../../../../matryoshka-3tk/design/3tk-reference-012.md}
+REF=${REF:-$ROOT/../../../../../../matryoshka-3tk/design/3tk-reference-013.md}
 RULES=${RULES:-$ROOT/../../../../rules-049.md}
 PY=${PYTHON:-python3}
 

@@ -7,6 +7,339 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-17 — README stage closed; plan 044 written
+
+**Ran on Opus 5. Plan `043` is spent.**
+
+- **The README is finished.** 865 lines, staccato. No text changed here.
+- **Correction before closing:** *Zero or two is a compile error* was true but
+  incomplete. The `$assert`s in `inner_offset` (`inner.c3:201-202`) run when
+  the toolkit first uses a struct as an outer.
+    - A struct with two `Inner`s that nothing uses compiles.
+    - An `Inner` inside a nested sub-struct counts as none.
+    - Both measured with throwaway programs; the README line now says so.
+- **`700+ lines of code` holds.** `count_src_loc.sh` gives 718. The 746 of
+  revision 1 counted `import` lines.
+- **Subject document to `002`** (Rule 14); `001` to `backup/`. Rulings 19-25
+  added; size limit lifted; *What is open* rewritten as debts:
+    - `D-1` — `Slot`/`Outer` ↔ `any` missing; README step 2 and the channel
+      rules need a cast today.
+    - `D-2` — no `l_` examples.
+    - `D-3` — module `<* *>` blocks.
+- **Live links re-anchored to `002`:** `3tk-status.md`, plan `043`,
+  `3tk-inner-without-any-001.md`.
+- **Plan `044` written:** `3TK-87` subject document, `3TK-88` surface,
+  `3TK-89` `l_` examples, `3TK-90` README passages. `3TK-87` queued.
+- No `.c3` changed. Git disabled.
+
+---
+
+## 2026-09-17 — README revision 4: staccato formatting
+
+- **Owner's ruling:** content is right, formatting is not. Part 6 staccato:
+  short sentences, bullets, nested bullets. Over 300 lines is accepted.
+- **Done:** one fact per line; multi-sentence lines split; multi-fact bullets
+  nested (4-space indent, for GitHub and Python-Markdown both); blank line
+  before every list; no bold across lines. 865 lines.
+- **Wording:** unchanged, except short lead-ins where a list needed one
+  (*Why the name*, *The names, and what each one is for*, *Where the type
+  lives*, *Count the pushes*, *And more*, *Reading the outer back*) and small
+  rewordings to fit a list ("whether … or" became "how … : over TCP / or from a
+  file"; "rather than guessed at" became a nested "It is not guessed at").
+- Checks run: list-spacing, split bold, banned words — all 0.
+
+---
+
+## 2026-09-17 — README revision 3: second ChatGPT revision merged
+
+- **Owner's direction:** take the slot description; plain English, no smart
+  wording; the family section stays last.
+- **Taken:** the slot description, with a `defer REQ.release` sketch modelled on
+  `examples/007-defer_release_early.c3` (a refused `send` leaves the slot full,
+  `mailbox.c3:317-340`, `examples/031`); "the hard part is between the threads";
+  work still on its way at shutdown; "the request already exists"; more reasons
+  not to copy; the one-sentence idea in the bridge; transfer and lifetime as two
+  jobs; a purpose for each name in *Matryoshka*, plus Helper and Hooks; "use it
+  with whatever you already use"; "not much to the model".
+- **Not taken:** producer/mailbox/worker diagrams; `on_get` as initialization
+  (it allocates, `pool.c3:368`); "polling", "lifecycle", "owns"; `*Inner`;
+  removing *How to start*.
+- Banned-word scan 0.
+
+---
+
+## 2026-09-17 — README revision 2: a ChatGPT revision merged
+
+- **The owner asked for more humanity**, and lifted the size limit.
+- **Base kept:** the structure, every measured fact, the owner's own sections.
+- **Taken:** the gentler opening; *today / tomorrow* message types; the
+  address-only diagram; `Outer` containing `Inner` diagram; the type-check
+  diagram; *Who has it now?* for the slot; the pool loop; mechanism versus
+  policy; hand-allocated outers with `stamp`; *Putting the pieces together*
+  with its diagram; *keep your queue if it works*; *What this toolkit does not
+  do*; *no need to solve everything on the first day*; the closing two lines.
+- **Adjusted to `src/`:** no `any` inside the toolkit (INTR 12); `Inner*`, not
+  `*Inner`; no "polling" among the absences, since `Mailbox.poll` exists;
+  "owner" wording replaced (Part 5); "on purpose" replaced by "deliberately".
+- **Not taken:** the mailbox before its problem; the generic
+  producer/worker/consumer diagram; the *C3* section's `any` and Handle lines.
+- 267 prose lines. Banned-word scan 0. No term before the bridge.
+
+---
+
+## 2026-09-17 — README revision 1, with the owner
+
+- **The owner's edits:** *Examples* removed; the opening line says 700+ lines
+  of code (746 measured, comments and blank lines excluded).
+- **Added on the owner's direction:** *One helper per type does the boring part*,
+  a second C3 block, which changes `O-1`; *How to start*, four steps, stop at
+  any one; the naming reasons in *Matryoshka*, doll reason kept.
+- **From a Gemini revision:** the inner-inside-request link diagram, redrawn
+  narrow; slot diagram labels. **Rejected:** `link = null` for the last inner
+  (wrong, it links to itself), shown pointer arithmetic, bullet reformatting.
+- 216 prose lines. Banned-word scan 0.
+
+---
+
+## 2026-09-16 — 3TK-86: the README's solution half
+
+**Ran on Opus 5. Stopped for the owner.**
+
+- **`O-4` closed:** the owner ran `3TK-86` on the problem half as written.
+- **Written:** ten sections in `matryoshka-3tk/README.md`, in the required
+  order. A bridge, the mailbox, the link inside the request, the inner and
+  outer, the one code block and its note, the slot, the pool, the hooks,
+  *Take what you need*, *Matryoshka* by name, the closing section for the
+  reader with a channel, and *Examples*.
+- **192 prose lines in all**, fenced blocks and badges excluded. Inside the
+  200 aimed at.
+- **Scans, run live:** banned words 0 after two `holds` were reworded; no
+  Matryoshka term before the bridge.
+- **Checked against `src/`:** `Inner`'s two fields `inner.c3:20`; the
+  one-`Inner` `$assert`s `inner.c3:201-202`; `look` null on mismatch
+  `helper.c3:81-98`; `receive` `mailbox.c3:126`, its empty-slot `@check`
+  `:130`; `close` gives back `:221`; `GetMode` `pool.c3:12-28`; `get_wait`
+  never calls `on_get` `:178`; `on_put` leaving the slot full keeps the outer
+  `:431-436`.
+- **Measured:** the ten no-mailbox, no-pool examples and the six `h_pool`
+  examples contain no mailbox call.
+- **Not done:** the `l_` examples are not named, since they do not exist; no
+  docs-site link, since its URL was not measured.
+- **No `.c3` changed.** Subject document revised in place.
+
+---
+
+## 2026-09-16 — 3TK-85: the README's problem half
+
+**Ran on Opus 5. Stopped for the owner, as the plan says.**
+
+- **Written:** `matryoshka-3tk/README.md`, everything before the first
+  Matryoshka term. Eight sections in the required order: the process, threads
+  that pass work, the queue as centre, no allocation on transfer, no knowledge
+  of types, structs that cannot be copied, where requests come from, reuse
+  needs rules.
+- **80 prose lines**, fenced blocks and badges excluded. Three ASCII diagrams.
+- **Banned-word and term scans: 0 hits**, run live.
+- **The one claim about 3tk** — no sockets, files, event loop, scheduler,
+  thread creation — checked against `src/*.c3` imports: `std::thread`,
+  `std::time`, `std::core::mem::alloc`, `std::atomic::types`, `std::core::env`.
+- **No `.c3` changed**, so the build gates were not re-run.
+- **Subject document revised in place:** `O-4`, the voice, opened.
+
+---
+
+## 2026-09-16 — INTR 12: `any` left the inner
+
+**Ran on Opus 5 and closed. An interrupt, not part of plan `043`'s flow.**
+
+**The owner's ruling, 2026-09-16: two worlds, and 3tk is answerable for one.**
+Matryoshka's nomenclature is `Inner`, `Outer`, `Slot`, `Mailbox`, `Pool`, and
+3tk answers for safety there. `any` is C3's, an ordinary value whose user cares
+for it. **At the border 3tk converts, and that is all** — it does not police
+what happens to an `any` on the C3 side, and no check is written that implies
+it does. **So `any` has no place inside the toolkit.**
+
+**What brought it up was a use case, not a tidy-up.** The HTTP side of the
+opening system has no Mailbox. It listens on an `UnboundedChannel(<any>)` and
+receives both outers coming back from workers and io events, tells them apart
+by `a.type`, and either allocates an outer or takes one from the Pool, or —
+when what arrived is already an outer — puts it in a Slot and sends it on. **It
+uses Matryoshka without a Mailbox**, which all six `h_pool` examples already do
+and nothing said out loud.
+
+**`Inner.link` was an `any` whose `.ptr` is not an instance of `.type`.** C3
+0.8.3 has no field privacy, so any module could read it and treat it as a real
+`any` — and get the neighbour on the chain. **The border work put a real `any`
+of the same outer right beside the fake one**, which is the mess the owner
+named.
+
+**The packing never bought a byte.** `struct { any link; }` is 16, two named
+fields are 16, `any` is 16 — measured this stage, and `3TK-21`'s own entry said
+the same when it packed them. **This re-opens `3TK-21` on the owner's word, not
+a stage's.** Its argument was never size; the border is information it did not
+have.
+
+**The three probes ran first (Rule 11), and the one that mattered held.** A
+zeroed `typeid` is falsy and matches no type, so `check_stamped` and Part 5.5
+survive the unpacking — the stage would have stopped and reported otherwise.
+16 bytes and alignment 8 either way. A stamp leaves `link` untouched.
+**All three identical under `--safe=no -O3`.**
+
+**`grep -rn '\bany\b' src/` returns nothing, and that is the stage's own
+proof.** `struct Inner` is `{ Inner* link; typeid otrtypeid; }`.
+**`repoint_to` is a plain assignment and `stamp` now reads nothing at all** —
+both were `any_make` calls. `outer_tid`, `is_mine` and `points_to` read a field
+each. `pool.c3`'s three reads go through `outer_tid()`. **Nine sites outside
+`src/` followed**, and `t_identity.c3`'s comment block, which taught the
+packing as a fact, is rewritten.
+
+**The standing caution retires.** `stamp` was a read-modify-write of the whole
+field, safe only because its three callers are construction-time. It writes
+`otrtypeid` alone now and cannot disturb a chain. **`OuterHelper.inner` still
+verifies rather than writes**, because a reading door that writes is the wrong
+shape whatever the layout is — `3TK-75`'s ruling stands on its own feet.
+
+**No public surface changed and no behaviour changed.** `c3c test` is 148,
+unchanged. `run-builds.sh` is 114 passed, 9 failed — **the same 9**.
+**`run-sanitizers.sh` is 3 of 3 clean**, thread at `-O0` and `-O3` and address
+at `-O0`, which is the run that mattered for a change to the chain field.
+`check-doc-loop.sh` is 0 differing, **149 of 149** — up from 147, the two new
+`Inner` field sentences — and 0 banned words.
+
+**Three documents went to a new version, Rule 14, old ones to `backup/` with a
+plain `mv`.** **`3tk-reference-013.md`** replaces `012`: its section *`any` —
+the pointer and the type, in one value* is now *The two fields*.
+**`3tk-api-007.md`** replaces `006`, where **one promise had become false** —
+`stamp` no longer preserves the chain link, because it no longer touches it.
+**`3tk-decisions-008.md`** replaces `007`, with `3TK-21`'s entry **marked
+superseded rather than deleted** and the border-type ruling recorded beside it.
+`3tk-patterns-004.md`, `3tk-rules-007.md` and `3tk-readme-creation-001.md` were
+edited in place. **`check-doc-loop.sh` and `move-module-docs.sh` were both
+repointed** at the new reference number.
+
+**`3tk-port-findings-005.md` gained a dated note and kept every measurement.**
+`3TK-73` ruled it the argument the port made, not the registry of what stands,
+and a stage that rewrites its measurements to match today's code destroys what
+it is for.
+
+**Every live reference to `012`, `006` and `007` was re-anchored in both
+repos.** Historical sentences that name the version current at the time — this
+log, the per-stage paragraphs in status, a changelog row in port-findings —
+were left exactly as they are.
+
+**Two things fixed in passing, Rule 13.** **`3tk-api-006.md` quoted two asserts
+that do not exist**: `release`'s message on the mailbox and on the pool has said
+*with a call still running on it* since the `quiet` rename, and the file still
+quoted the old wording at line numbers that had moved. Corrected in `007` with
+the real text, `mailbox.c3:65` and `pool.c3:106` — `rules-049.md` Part 4's
+*documented asserts must exist*, and a grep is the check. And **`3TK-84`'s
+`F-1` row**, which said the rejected drafts drew two members where the code had
+one: the code has two now, so the row is kept and reframed — **a claim that was
+never measured is not made true by the code moving under it.**
+
+**What is left for the conversion stage: everything, and nothing is blocked.**
+`Slot`/`Outer` ↔ `any` does not exist — `OuterHelper.look` takes a `Slot*` or an
+`Inner*`, never an `any`, and `Slot.fill` takes an `Inner*`. The border is
+two-way. **An outer keeps its stamp when it leaves**, so the inbound crossing
+can cross-check the `any` against `otrtypeid`. The `l_` examples group is agreed
+and unnamed.
+
+---
+
+## 2026-09-16 — 3TK-84: the README subject document
+
+**Ran on Opus 5 and closed. `043` is its plan, and `3TK-85` is queued.**
+
+`matryoshka-3tk/README.md` has a logo and four badges and no content. Two
+drafts existed and the owner rejected both.
+
+**The owner's words, and they are the whole brief.** *No one needs inner and
+outer. Everyone needs solutions to well-known problems of boring systems.* The
+README describes systems built on Matryoshka — which problem, and how it is
+solved — not a list of features.
+
+**Why draft 1 failed structurally.** Its headings are Matryoshka nouns. The
+reader meets `Inner` in paragraph two and is never told what problem it
+answers. It states no problem at all. Six of its sections are bullet lists of
+capabilities. Its two diagrams are the same generic Producer→Worker→Consumer.
+Reordering would not save it: there is no problem material in it to move to the
+front. **Draft 2 has the right order — problem first, terms last — and is input,
+not a base to polish.**
+
+**Why both failed factually. Six errors, measured against `src/`.**
+
+- `Inner` drawn with two members. `inner.c3:17` is `struct Inner { any link; }`
+  — one `any`, the pointer half the chain link, the type half the `typeid`.
+- `Slot slot = work;` where `work` is an `Outer*`. `inner.c3:45` is
+  `typedef Slot = Inner*`. It does not typecheck.
+- "Handle" used as a main concept. `3TK-59` ended that alias.
+- Modules `inner / mbox / pool / extensions`, none of which exist.
+- `on_get` described as an initialization hook. `pool.c3:368` is the allocation
+  hook, and `GetMode` decides whether it runs at all.
+- Mailbox "timeout support" as a feature bullet, hiding the fixed outcome set.
+
+**Two tiers, and the deep dive has a home already.** The owner's shape from the
+odin version: a base document and a deep dive. The base is the README, and
+nobody reads more than a few hundred lines of one. **The deep dive is per module
+— and it is the module's own `<* *>` block, not a separate document**, because
+`docs.yml` runs `docgen` over `src` and that page is the only version a
+docs-site reader sees. A separate `.md` would be a second copy that drifts.
+**The module blocks are a later plan.** The subject document is the bridge, and
+its mapping table is written for that plan.
+
+**The owner named five deep-dive subjects and said *outer*. There is no `outer`
+module** — the outer is the application's own struct, and its subject is
+`mtk::helper`. **`mtk::queue` is the sixth**, met by any reader who calls
+`close`, `receive_all`, or writes an `on_close`. Rule 13: measured, revised in
+passing, not brought back as a question.
+
+**Size, ruled the same day.** 200 lines of prose aimed at, ~300 the ceiling.
+**Diagram lines do not count** — fenced blocks are outside the budget, because
+Part 6 forbids optimizing a diagram for compactness and the diagrams are what
+this reader looks at first.
+
+**The opening system is the HTTP starter shape**, from
+`matryoshka-http-template/kitchen/docs/matryoshka-http-starter-readme.md`:
+handlers, a shared mailbox, workers. It puts the I/O edge and the process part
+on one picture — the split `manifesto.md` opens with — and 3tk lives on the line
+between them. `035-fan_in.c3`, `036-fan_out.c3`, `034-pipeline.c3` and
+`062-send_with_limit.c3` back every claim it makes. **It is used as one system
+that grows**: handlers and workers, then the reply path, then the pool, so the
+pool and the hooks arrive as answers to a pressure the reader has watched build
+up. **The video transcoder is out** — it makes reuse the opening pressure, and
+reuse is the last step of the required order. **The print server is `O-2`**, the
+owner unsure; its work arrives from nowhere in particular, and the arrival is
+what the reader recognizes.
+
+**ASCII, not mermaid**, although the source file uses mermaid: the same wording
+later goes into `docgen` blocks, where mermaid is nothing.
+
+**What the stage measured.** All six `src/` files, 1,496 lines with comments.
+The six modules and their `::internal` submodules, the eight faults as one
+outcome set, `Inner` and `Slot`'s real surface, `OuterHelper`'s nine calls and
+the two required hooks, `Mailbox`'s seven calls with the faults each can return,
+`Pool`'s surface with `GetMode`'s three policies and the three hooks' real
+signatures, `InnerQueue`, and what the toolkit does not do — measured by absence
+across all six files.
+
+**Two line numbers written from an earlier reading were wrong and the stage
+caught them by re-printing every cited line.** `Slot`'s typedef is `inner.c3:45`,
+not `:43`; the faults are `mtk.c3:26-61`, not `:23-77`.
+
+**One recommendation and one question go back to the owner.** `O-1`: no C3 in
+the README — a wrong snippet costs more trust than no snippet, an honest `Slot`
+example needs four concepts to show one, and the examples tree is where code
+belongs. The counter-argument is recorded: a three-line outer struct is the one
+shape the whole toolkit rests on. `O-2`: the print server.
+
+**No `.c3` file was opened for writing.** `c3c build` and `c3c test` green, 148
+tests. `check-doc-loop.sh` clean: 147 of 147 descriptors, 0 banned words,
+0 differing. `run-builds.sh` unchanged. Banned-word scan over both new
+documents: the only hits are the rule text naming `ownership` in order to ban
+it, and Rules 10 and 11's own names for their shapes.
+
+---
+
 ## 2026-09-15 — 3TK-83: example module pages written for the reader
 
 **Ran on Opus 5 and closed. `042` is spent with it. No stage is queued.**

@@ -1,14 +1,14 @@
 # 3tk — the doc loop
 
 How a `<* *>` block in `3tk/src` and
-[3tk-reference-012.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-012.md)
+[3tk-reference-013.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-013.md)
 are kept saying the same thing.
 
 **This is a procedure, not a stage.** It writes no status row and no log entry.  
 A named stage that uses it writes those. See *What this document is* below.
 
 **Its inputs are fixed**: [../3tk-status.md](../3tk-status.md), this file,
-[3tk-reference-012.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-012.md),
+[3tk-reference-013.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-013.md),
 and the one source file named on the command line. Not a transcript.
 
 **Written by 3TK-39**, from what 3TK-37 did by hand over `helper.c3`.
@@ -35,7 +35,7 @@ rules for moving a module description are `004`'s, word for word.
 ## The invariant
 
 > Every descriptor line in `3tk/src` appears in
-> [3tk-reference-012.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-012.md).
+> [3tk-reference-013.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-013.md).
 
 **The check runs one way only.**
 
@@ -153,7 +153,7 @@ Run doc-loop from-reference on pool.c3.
 - A sentence can be true, be in the reference, and still not belong in a
   source comment.
 - **Design argument and implementation notes go to
-  [3tk-decisions-007.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-007.md).**
+  [3tk-decisions-008.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-008.md).**
   The `// [3tk: ...]` marks that used to index the source into it are gone,  
   ruled and removed 2026-09-08 — nothing checked their content, only their  
   position.
@@ -372,7 +372,7 @@ module.**
   for that module carries.
 - **A sentence refused from a declaration is not thereby refused from a module
   block.** Design argument still goes to
-  [3tk-decisions-007.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-007.md) either way.
+  [3tk-decisions-008.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-008.md) either way.
 
 ## The rules that are elsewhere, by link
 
@@ -389,7 +389,7 @@ state.
 | The banned words, and the scoped bans | [../../../../rules-049.md](../../../../rules-049.md), Part 5 |
 | Staccato, and the markdown rules | [../../../../rules-049.md](../../../../rules-049.md), Part 6 |
 | Moved, never composed | *A description is moved, never composed* above — ruled by 3TK-16, whose plan is spent |
-| What each decision was, and where it lives | [3tk-decisions-007.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-007.md) |
+| What each decision was, and where it lives | [3tk-decisions-008.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-decisions-008.md) |
 
 ## The checker script
 
@@ -517,7 +517,7 @@ question here and does not answer it.
 - A named stage that uses it writes those. Otherwise the log stops being
   history and becomes a transcript.
 - **Its inputs are fixed**: [../3tk-status.md](../3tk-status.md), this file,
-  [3tk-reference-012.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-012.md),
+  [3tk-reference-013.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-013.md),
   and the one source file.
 
 ## Where it stood when this was written
