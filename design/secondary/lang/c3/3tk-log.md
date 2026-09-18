@@ -7,6 +7,26 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-18 — 3TK-94: per-OS CI workflows via setup-c3
+
+**Ran on Sonnet 5. Git disabled. `matryoshka-3tk` only — no `.c3` code
+changed, CI and README only.**
+
+- **`matryoshka-3tk/.github/workflows/linux.yml`, `sanitizers.yml`**: the
+  manual `curl`/`tar` install of `c3c` replaced with the `ManuLinares/setup-c3@v1`
+  action, pinned `version: 0.8.3`. Matrix, build and test steps unchanged in
+  both files; `sanitizers.yml`'s sanitizer matrix and clang install untouched.
+- **`mac.yml`, `windows.yml` added**, mirroring `linux.yml`'s matrix
+  (`safe: [yes, no]` × `opt: [O0, O3]`) and Build/Test steps, `runs-on:
+  macos-latest` / `windows-latest` respectively, same `setup-c3` install step.
+  One-file-per-OS pattern matches `matryoshka-ztk`'s own workflows.
+- **`docs.yml` untouched** — out of scope.
+- **`matryoshka-3tk/README.md`**: Windows and macOS status badges added next
+  to the existing Linux badge, before the Sanitizers/Docs badges, matching
+  `matryoshka-ztk/README.md`'s badge block.
+
+---
+
 ## 2026-09-18 — 3TK-93: verify and close D-3, plan 045 spent
 
 **Ran on Sonnet 5, plan `045`'s last stage. Git disabled. No `.c3` code

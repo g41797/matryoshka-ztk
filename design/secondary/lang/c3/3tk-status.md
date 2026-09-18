@@ -24,6 +24,14 @@ It is kept short for that reason.**
 
 ## What is live now
 
+**`3TK-94` ran 2026-09-18 on Sonnet 5 and closed.** `matryoshka-3tk`'s CI
+moved to one workflow file per OS: `linux.yml` and `sanitizers.yml` now
+install `c3c` via `ManuLinares/setup-c3@v1` (`version: 0.8.3`) instead of
+curl/tar; `mac.yml` and `windows.yml` were added, mirroring `linux.yml`'s
+matrix and steps. `README.md` gained Windows and macOS badges alongside the
+existing Linux one. `docs.yml` untouched. No plan queued; only `3TK-50`
+remains open, waiting on the owner, unchanged.
+
 **`3TK-93` ran 2026-09-18 on Sonnet 5 and closed. Plan `045` is spent.** It
 verified `3TK-92`'s work and closed `D-3`: `check-doc-loop.sh` clean, 424 of
 424 sentences found, 0 banned words; `c3c build` and `c3c test` green, 159
