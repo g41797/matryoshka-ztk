@@ -7,6 +7,154 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ---
 
+## 2026-09-18 — 3TK-93: verify and close D-3, plan 045 spent
+
+**Ran on Sonnet 5, plan `045`'s last stage. Git disabled. No `.c3` code
+changed and no doc-comment prose changed — checks and record-keeping only.**
+
+- **`check-doc-loop.sh`, all files: clean.** 424 of 424 sentences found, 0
+  differing, 0 banned words across `helper.c3`, `inner.c3`, `mailbox.c3`,
+  `mtk.c3`, `pool.c3`, `queue.c3` and `3tk-reference-015.md`.
+- **`c3c build` and `c3c test`: green, 159 passed.**
+- **`run-builds.sh`: 135 passed, 9 failed — the same 9** the plan expected:
+  `pool.c3`'s module order and the internal-banner drift it causes, flagged
+  and not fixed by earlier stages, untouched here.
+- **Every claim owed by a module block is greppable in `src/`** — checked by
+  hand against `pool.c3`'s `GetMode`, hooks and `in_pool` lines, and no
+  `.md` file name appears inside any `.c3` comment.
+- **`3tk-readme-creation-003.md` updated in `matryoshka-3tk`**: the `D-3` row
+  in *What is open* now names `3TK-92` and `3TK-93` and reads closed; a
+  changelog row records the closure. The mapping table's helper row already
+  carried no *once D-1 closes* phrasing, so that ask needed no edit.
+- **`3tk-status.md`**: `D-3` closed, plan `045` spent, nothing queued. Only
+  `3TK-50` remains open, unchanged, waiting on the owner.
+
+---
+
+## 2026-09-18 — 3TK-92: the five public module blocks, and the hooks page
+
+**Ran on Opus 5, plan `045`. Git disabled. No `.c3` code changed — comments
+only, and no declaration block was touched.**
+
+- **Six blocks written, in the plan's order**: `mtk::inner`, `mtk::helper`,
+  `mtk::mailbox`, `mtk::pool`, `mtk::pool::hooks`, then `mtk` last. Each is
+  written from its README passages and its owed list, in the README's voice,
+  and each claim was read off `src/*.c3` before it was written.
+- **The blocks are 47 to 62 lines**, against `3TK-91`'s 31-line `mtk::queue`
+  exemplar, whose owed list was the smallest of the six. Shape is the
+  exemplar's throughout: a lead, then `##` sections, one bullet per line, no
+  nested bullet, no numbered list, every name in backticks.
+- **`mtk::helper` carries the `any` crossings whole**, since the README's *If
+  you already have a channel* is gone: `to_any`, `to_slot`, their `must_`
+  forms, the `any*` cases of `is`/`look`/`take`, and the six things the
+  crossing checks. It is the longest block, 62 lines, and that is why.
+- **`mtk::pool::hooks` is rewritten as user surface**, per `045-O-4`: what each
+  hook is for, how to answer it, and what to know before writing one — the lock
+  is released while a hook runs, and `in_pool` is a stale hint either side of
+  it. The four `::internal` blocks were left as they are, their missing
+  `For internal usage.` marker still flagged and not fixed.
+- **`mtk`'s block names the outcome set and does not list the eight faults**,
+  per `045-O-5`. It names the six modules, the five words, safe mode and what
+  `@check` costs, and the two tokens.
+- **No ASCII diagram was written.** `045-O-3` allows one, fenced, but not where
+  the README already draws the same thing — and for these six subjects it
+  does. Nothing was owed that a diagram says better than a line.
+- **The reference is `3tk-reference-015.md`** (Rule 14). Six labelled blocks
+  re-synced byte for byte; `014` moved to `matryoshka-3tk/design/backup/` with a
+  plain `mv`. `check-doc-loop.sh` and `move-module-docs.sh` repointed, and every
+  live `014` link in both repos re-anchored — four documents in
+  `matryoshka-3tk/design/`, `ref/3tk-doc-loop-005.md`, and plan `045`'s own
+  live line. The `3TK-91` step records in `045` keep `014`, being what that
+  stage did.
+- **A defect the check caught, worth recording.** The first sync wrote
+  `mtk::pool::hooks`'s block from a non-greedy match that began at the file's
+  first `<* *>`, so the labelled block swallowed 40 lines of `pool.c3` source.
+  `check-doc-loop.sh` reported one `DIFFERS` and 19 banned-word hits in the
+  reference, and both went away with the fix. **The banned-word hits were the
+  swallowed code, not prose.**
+- **Verification.** `c3c build` green; `c3c test` 159 passed. Doc loop: 0
+  differing blocks, 424 of 424 descriptor sentences, 0 banned words. All six
+  pages rendered through the real `formatDocText` and read — no stray
+  paragraph, no flattened bullet, no mangled name.
+
+## 2026-09-18 — the README round, and its closing pass
+
+**Ran on Opus 5, with the owner, over one long round. No plan, no `.c3` change,
+git disabled.** The owner reopened `matryoshka-3tk/README.md` after it had been
+declared finished, edited it by hand, and the session worked against his edits.
+
+- **Ten small fixes** from his own pass: a placeholder line, `outers` used
+  before the term exists, `'outer'` in single quotes, two missing `---` rules,
+  the pool described as keeping *requests* where it keeps any type it was given,
+  a quoted phrase made italic, step 4 of *How to start* given a body.
+- **`init` and `finish` moved** out of the helper example into *The one struct
+  you write*, where the reader writes them. **Then corrected**: they are
+  required as soon as the helper creates or releases the struct, since both
+  `$assert`s live in `create` and `release`.
+- **New: *One struct, two addresses*.** The reader's habit is a cast, so the
+  crossing is taught as one — *a cast the helper makes safe* — then the two
+  things it adds. **The claim that a cast cannot move the address was withdrawn
+  during the round**: a hand-written offset can, and breaks when a field moves.
+  It ends with the handle picture: the inner is a handle bolted to one case, and
+  the mailbox and the pool are the porter who never opens it. **Anchor was
+  refused** — an anchor stops movement.
+- **`Inner` is last in the README's `Request` now**, everywhere it is drawn, and
+  the page says it may sit anywhere. With the inner first the two addresses are
+  the same number, and the new section would have rested on a coincidence.
+- **New: *Show cases*.** `shc` was named three times and never explained.
+- ***Only the address moves* → *The slot — read this one twice, at least***, and
+  rewritten. **The old opening was wrong**: it framed the slot as a guard
+  against two threads touching one request. It is neither a guard nor about
+  threads. A request passes to someone else a few times — a mailbox, a pool,
+  `release`, a channel — and the slot is where you read whether it went. Added:
+  the everyday-slot picture, why an error return is not enough, and the stacked
+  `defer` pattern from `examples/009-refused_put_fallback.c3`.
+- ***If you already have a channel* removed by the owner**, which also removed
+  the README's only account of `to_any`, `to_slot` and `is`. **Recorded as
+  `mtk::helper`'s debt.**
+- **The three pieces were said to stack, and they do not.** The staircase
+  picture is gone; the page now says the mailbox and the pool know nothing about
+  each other — neither imports the other — and names `Pool + your hooks`.
+- **A full claim-by-claim re-read against `src/`** found two wrong lines, both
+  fixed above and in the glossary. Everything else held, `on_put`'s keep/drop
+  direction and `get_wait` never creating included.
+- **Scans, live.** Three `hands` hits in the custody sense, Part 5, reworded to
+  *passes to someone else*. No other banned word; every list has its blank line;
+  fences balance. **Five prose paragraphs of the session's own writing were
+  broken into bullets** after a length check.
+- **New script, `matryoshka-3tk/scripts/count_readme_loc.sh`** — README lines
+  minus blanks and `---` rules. **Rule 12 waived by the owner: it stays in
+  `matryoshka-3tk` only.**
+- **`3tk-readme-creation-003.md` replaces `002`**, Rule 14, `002` to `backup/`
+  with a plain `mv`. Rulings 26–34; the mapping table re-sourced; every live
+  link re-anchored in both repos, the log left as it is.
+- 744 lines of text, `src/` 810. `c3c build`, `c3c test` 159, `check-doc-loop.sh`
+  clean — no `.c3` file was touched.
+
+---
+
+## 2026-09-17 — 3TK-91: the probe, the exemplar, the questions
+
+**Ran on Opus 5.** Plan `045`, stage one.
+
+- **The `docgen` renderer measured**, in the scratchpad, by running
+  `formatDocText` out of the generated `docs.html` rather than reading it.
+  **Nested bullets flatten, a wrapped bullet breaks in two, numbered lists do
+  not render, and a bare `push_back` or `Inner*` is mangled into italics.**
+  Headings, bullets, paragraph breaks, inline code and fenced ASCII render.
+  **Written into the plan. A later stage does not re-probe.**
+- **`mtk::queue`'s owed facts measured with `file:line`.** Nothing was missing
+  from `src/`.
+- **The exemplar block**, 31 lines, in `src/queue.c3` and byte-for-byte in
+  `3tk-reference-014.md`, edited in place since one block moved.
+- `check-doc-loop.sh`: 0 differing, 36 of 36 on `queue.c3`, 192 of 192 overall,
+  0 banned. `c3c build` green, `c3c test` 159.
+- **`O-1`..`O-5` put to the owner with a recommendation each.** `3TK-92` waits.
+- **Flagged, not fixed:** the `::internal` blocks do not carry Rule 2's marker,
+  `For internal usage.` — `O-4`.
+
+---
+
 ## 2026-09-17 — 3TK-90: the README passages
 
 **Ran on Opus 5** (the plan named Sonnet 5; the owner ran it here).

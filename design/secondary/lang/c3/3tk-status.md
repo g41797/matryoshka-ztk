@@ -24,6 +24,78 @@ It is kept short for that reason.**
 
 ## What is live now
 
+**`3TK-93` ran 2026-09-18 on Sonnet 5 and closed. Plan `045` is spent.** It
+verified `3TK-92`'s work and closed `D-3`: `check-doc-loop.sh` clean, 424 of
+424 sentences found, 0 banned words; `c3c build` and `c3c test` green, 159
+passed; `run-builds.sh` 135 passed, the same 9 pre-existing failures. Every
+claim in a module block is greppable in `src/`, and no `.md` name is inside
+any `.c3` comment. **`3tk-readme-creation-003.md`'s `D-3` row is closed in
+place**, with a changelog row; the mapping table's helper row already read
+without the *once D-1 closes* phrasing this stage was asked to remove, so
+nothing there changed. **All three debts from the README round — `D-1`,
+`D-2`, `D-3` — are closed. No plan is queued. Only `3TK-50` remains open, and
+it waits on the owner, unchanged.**
+
+**The README round closed 2026-09-18, on Opus 5. `matryoshka-3tk/README.md` is
+the owner's again, and `3TK-92` starts from it.** The owner reopened the
+finished README by hand and revised it with the session over one round: no
+staging plan, no `.c3` change, git disabled throughout. **Two sections are new**
+— *One struct, two addresses*, which teaches the inner-to-outer crossing as a
+cast the helper makes safe and closes with the handle picture, and *Show cases*.
+***Only the address moves* is now *The slot — read this one twice, at least***,
+rewritten around what the slot really tracks: a request passes to someone else a
+few times in its life, and the slot is where you look afterwards. ***If you
+already have a channel* is gone**, and with it the README's only account of the
+`any` crossings — **so `mtk::helper`'s block now owes that subject whole.**
+**The subject document is
+[matryoshka-3tk/design/3tk-readme-creation-003.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-readme-creation-003.md)**;
+`002` is in that repo's `backup/`. Rulings 26–34 are the round's, and the
+mapping table is re-sourced there and in
+[3tk-staging-plan-045.md](3tk-staging-plan-045.md). **Every claim on the page
+was re-checked against `src/` and two were wrong**: `init`/`finish` are required
+*as soon as the helper creates or releases your struct*, not unconditionally —
+the two `$assert`s are inside `create` and `release` — and the glossary still
+said a slot *shows who has a struct right now*. **The page is 744 lines of text
+by the new `matryoshka-3tk/scripts/count_readme_loc.sh`**, `src/` is 810, so its
+*800+* and *700+* both hold. **Not ported to this repo's `scripts/`, by the
+owner's word: that script stays in `matryoshka-3tk` only.** `c3c build`,
+`c3c test` 159 and `check-doc-loop.sh` all green, unchanged — the round touched
+no `.c3` file. **Still recorded and not written, the owner's call:** install and
+requirements, a link to the generated docs site, project status and a license
+line, and the eight faults are counted on the page but never named.
+
+**`3TK-92` ran 2026-09-18 on Opus 5 and closed. The six public module blocks are
+the deep dive now.** `mtk::inner`,
+`mtk::helper`, `mtk::mailbox`, `mtk::pool`, `mtk::pool::hooks` and `mtk` are
+written, in that order, from the README's passages and each row's owed list;
+`mtk::queue` is `3TK-91`'s exemplar and is unchanged. **The blocks are 47 to 62
+lines** against the exemplar's 31. **`mtk::helper` carries the `any` crossings
+whole** — `to_any`, `to_slot`, the `must_` forms, the `any*` cases of
+`is`/`look`/`take`, and what the crossing checks — since the README no longer
+explains them. **`mtk::pool::hooks` is rewritten as user surface** and **the four
+`::internal` blocks are untouched, their missing marker still flagged**
+(`045-O-4`). **`mtk` names the outcome set and does not list the eight faults**
+(`045-O-5`). **No ASCII diagram was written**: `045-O-3` allows one, but not
+where the README already draws the same thing, and for these six it does. **No
+declaration block was touched and no code changed.** **The reference is
+[3tk-reference-015.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-reference-015.md)**;
+`014` is in that repo's `backup/`, `check-doc-loop.sh` and `move-module-docs.sh`
+are repointed, and every live `014` link in both repos is re-anchored. **`c3c
+build` green, `c3c test` 159, `run-builds.sh` 135 passed and the same 9 failed,
+doc loop 0 differing and 424 of 424 with 0 banned words.** All six pages were
+rendered through the real `formatDocText` and read. **`D-3` is closed by the
+work and `3TK-93` records it.**
+
+**`3TK-91` ran 2026-09-17 on Opus 5 and closed.** The `docgen` renderer is
+measured and written into `3tk-staging-plan-045.md` — it is a line formatter,
+not CommonMark: **nested bullets flatten, a wrapped bullet breaks, numbered
+lists do not render, and a name outside backticks is mangled by `_` and `*`**.
+Headings, bullets, blank-line paragraphs, inline code and fenced ASCII all
+render. **`mtk::queue`'s block is the exemplar**, 31 lines, in `src/queue.c3`
+and byte-for-byte in `3tk-reference-014.md`. `check-doc-loop.sh`: 0 differing,
+192 of 192, 0 banned. **`045-O-1`..`045-O-5` are with the owner and `3TK-92` waits on
+them.**
+
 **Flagged, not fixed: `c3c` 0.8.3's `docgen` drops every `faultdef` doc
 comment.** Confirmed with an isolated two-line repro, outside this repo —
 not a 3tk-specific defect. `c3c` has accepted a `<* *>` block above a
@@ -88,7 +160,7 @@ named by that stage. It is the first group with no catalog entry behind it;
 **The README stage closed 2026-09-17, on Opus 5. Plan `043` is spent.**
 `matryoshka-3tk/README.md` is finished after four owner revisions, 865 lines,
 staccato. **Its subject document is now
-[matryoshka-3tk/design/3tk-readme-creation-002.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-readme-creation-002.md)**;
+[matryoshka-3tk/design/3tk-readme-creation-003.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-readme-creation-003.md)**;
 `001` is in `backup/`. **Three debts are open, none of them README text:**
 `D-1` — `Slot`/`Outer` ↔ `any` does not exist, and *How to start* step 2 and
 the channel section's rules lean on it; `D-2` — no `l_` examples; `D-3` — the
@@ -105,7 +177,7 @@ Matryoshka term. **`O-4`, the voice, was accepted by running `3TK-86`.**
 **`3TK-84` ran 2026-09-16 on Opus 5 and closed. Plan `043` is live.** The 3tk README is being written, over several stages, for
 the reader `kitchen/docs/addendums/why-boring.md` describes. **Its subject
 document is
-[matryoshka-3tk/design/3tk-readme-creation-002.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-readme-creation-002.md)**
+[matryoshka-3tk/design/3tk-readme-creation-003.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-readme-creation-003.md)**
 — a stage reads its *What is decided* and *What is open* sections first and
 needs nothing else to continue. **Two tiers: the README is the base, and the
 deep dive is each module's own `<* *>` block**, which is a later plan, not
@@ -1718,14 +1790,14 @@ the README, with the `3tk-reference-014.md` re-sync. The first stage writes the 
 
 ```
 Read design/secondary/lang/c3/3tk-status.md.
-Read matryoshka-3tk/design/3tk-readme-creation-002.md — "What is decided", "What is open" and the mapping table.
+Read matryoshka-3tk/design/3tk-readme-creation-003.md — "What is decided", "What is open" and the mapping table.
 Read matryoshka-3tk/design/3tk-rules-007.md
 and design/rules-049.md Parts 4-6.
 Git is disabled. Write staging plan 045 for D-3. No .c3 change. Show the plan and stop.
 ```
 
 **Nothing to copy for `3TK-90`.** It edited `matryoshka-3tk/README.md` and
-`matryoshka-3tk/design/3tk-readme-creation-002.md` in that repo directly.
+`matryoshka-3tk/design/3tk-readme-creation-003.md` in that repo directly.
 
 For orientation, or to start whatever the owner names:
 
