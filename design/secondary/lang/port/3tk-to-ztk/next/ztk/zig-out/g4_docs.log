@@ -1,0 +1,34 @@
+== 1. dead cross-references ==
+== 2. retired vocabulary ==
+== 3. banned and AI-sh words ==
+BANNED     drain  ztk/tests/outers.zig:146:pub fn drain(q: *m.Queue, alloc: std.mem.Allocator) void {
+BANNED     drain  ztk/tests/layer2_mbox.zig:33:        o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:75:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:87:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:153:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:172:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:235:    o.drain(&first, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:298:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:322:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:346:    o.drain(&all, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:507:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:526:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:547:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_mbox.zig:567:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_threads.zig:31:        o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_threads.zig:224:    o.drain(&rem, alloc);
+BANNED     drain  ztk/tests/layer2_threads.zig:262:    o.drain(&rem, alloc);
+BANNED     unlock  ztk/src/internal/cond_timeout.zig:24:    mutex.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:212:        defer self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:260:        defer self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:284:        defer self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:324:        defer self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:352:        defer self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:384:        defer self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:394:        defer self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:425:        self._mu.unlock(io);
+BANNED     unlock  ztk/src/mbox.zig:456:        defer self._mu.unlock(io);
+== 4. the staging plan keeps up with the log ==
+  plan version 3, 3 stage(s) in the log
+
+27 hit(s)

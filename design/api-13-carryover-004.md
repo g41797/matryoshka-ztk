@@ -156,7 +156,7 @@ kitchen pages against the book.
 
 ### `lifecycle`
 
-`lifecycle` is a banned word — Part 5 of [rules-049.md](rules-049.md). The  
+`lifecycle` is a banned word — Part 5 of [rules-050.md](rules-050.md). The  
 glossary gate does not cover it, so the manual scan is the only check, and the  
 live footprint is large.
 
@@ -174,7 +174,7 @@ Notes.
 
 - The book itself is clean. One changelog row names the word to record an
   earlier removal, which Part 5 of the rules allows.
-- `design/rules-049.md` names it to ban it, and is exempt.
+- `design/rules-050.md` names it to ban it, and is exempt.
 - `design/matryoshka-tk-implementation-plan-073.md` names it in the rows that
   recorded the ban.
 - The `src/matryoshka.zig` hit was one line, and 13-2 already had the file open.
@@ -216,7 +216,7 @@ Eight textual sites. Seven distinct ones — `PolyHelper.moveFromSlot` appears
 twice, once per helper variant, from one piece of source.
 
 - Section 2 of this note says five.
-- Part 4 of [rules-049.md](rules-049.md) says seven.
+- Part 4 of [rules-050.md](rules-050.md) says seven.
 - The rules file is right about the distinct count and could still be read as
   the textual one.
 
@@ -245,7 +245,7 @@ Scoped away from `hold`/`holder`/`held` in
 [matryoshka-architecture-foundation-4-006.md](matryoshka-architecture-foundation-4-006.md).
 That vocabulary was chosen on 2026-07-09 to replace a banned family of words,  
 and it now names sections and the `HELD` state. Part 5 of
-[rules-049.md](rules-049.md) carries the word itself.
+[rules-050.md](rules-050.md) carries the word itself.
 
 ---
 
@@ -253,8 +253,8 @@ and it now names sections and the `HELD` state. Part 5 of
 
 - [api-13-book-002.md](api-13-book-002.md) — the design note this stage runs
   from. Sections 3, 7 and 10 point here.
-- [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md) — the book.
-- [rules-049.md](rules-049.md) — banned words, Part 5. Doc comments, Part 4.
+- [matryoshka-api-reference-043.md](matryoshka-api-reference-043.md) — the book.
+- [rules-050.md](rules-050.md) — banned words, Part 5. Doc comments, Part 4.
 - [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md) —
   the 13-2 entry names this note as its input.
 

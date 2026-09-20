@@ -2,8 +2,8 @@
 
 Written 2026-09-17.
 
-**Provenance.** Follows `044`, which is spent: `3TK-90` closed `D-1` and `D-2`
-on 2026-09-17. **Only `3TK-50` remains from any earlier plan, and it waits on
+**Provenance.** Follows `044`, which is spent: `3TK-90` closed `D-1` and `D-2`  
+on 2026-09-17. **Only `3TK-50` remains from any earlier plan, and it waits on  
 the owner.**
 
 State is in [3tk-status.md](3tk-status.md). Narrative is in
@@ -13,8 +13,8 @@ and [design/rules-049.md](../../../rules-049.md) Parts 4-6.**
 
 **Its input is
 [3tk-readme-creation-003.md](https://github.com/g41797/matryoshka-3tk/blob/main/design/3tk-readme-creation-003.md)**:
-*What is decided*, debt `D-3` in *What is open*, and *The module mapping
-table*. **The finished `matryoshka-3tk/README.md` is the wording source.**
+*What is decided*, debt `D-3` in *What is open*, and *The module mapping  
+table*. **The finished `matryoshka-3tk/README.md` is the wording source.**  
 **`src/*.c3` is the only source of truth for any fact.**
 
 **Git is disabled for every stage of this plan.**
@@ -49,12 +49,12 @@ table*. **The finished `matryoshka-3tk/README.md` is the wording source.**
     - See *What is live now* in the status file.
     - Not fixed in `0.8.4` either.
 - **This is no longer a reason to write anything.** `045-O-5` was ruled `c` on
-  2026-09-18: the faults are documented at their declarations, and no block
+  2026-09-18: the faults are documented at their declarations, and no block  
   repeats them to work around a compiler gap.
 
 ## What the stages work against
 
-**The eleven modules**, measured 2026-09-17 from
+**The eleven modules**, measured 2026-09-17 from  
 `design/secondary/lang/c3/3tk/src/`. Re-print before trusting a line.
 
 | module | file:line | in the mapping table |
@@ -96,10 +96,10 @@ table*. **The finished `matryoshka-3tk/README.md` is the wording source.**
       surface; `to` vs `as` vs `must`; the one-`Inner` check.
 - `mtk::helper`
     - source: *One helper per type does the boring part*; *One struct, two
-      addresses*; the `defer` sketches in *The slot — read this one twice, at
+      addresses*; the `defer` sketches in *The slot — read this one twice, at  
       least*.
     - owed: the two required methods and the empty body; `look`/`take`/
-      `must_*`; `stamp`; `inner`, `linked`; **the `any` crossings** — `is`,
+      `must_*`; `stamp`; `inner`, `linked`; **the `any` crossings** — `is`,  
       `to_any`, `to_slot`, `look`/`take` on `any*`.
     - **The README no longer explains the crossings.** *If you already have a
       channel* is gone, so the whole subject is this block's.
@@ -118,7 +118,7 @@ table*. **The finished `matryoshka-3tk/README.md` is the wording source.**
       reader meets it.
     - **Done.** `3TK-91`'s exemplar.
 
-**All six are written. `3TK-92` closed the five on 2026-09-18**, and
+**All six are written. `3TK-92` closed the five on 2026-09-18**, and  
 `mtk::pool::hooks` with them. **`3TK-93` records it and closes `D-3`.**
 
 **What the README round changed under the stages' feet, 2026-09-18.**
@@ -181,14 +181,14 @@ table*. **The finished `matryoshka-3tk/README.md` is the wording source.**
     - **Every fault is already documented at its own declaration** —
       `mtk.c3:23-61`, one `<* *>` block each, correct C3.
     - **Measured 2026-09-18, on the real `src/`:** `docgen` 0.8.3 emits all
-      eight as `"kind":"fault"` with no `docs` field at all, so the site shows
+      eight as `"kind":"fault"` with no `docs` field at all, so the site shows  
       eight bare names. **The gap is the compiler's, and the source is right.**
     - **So a block that repeated them would be a second source of truth, kept
       in step by hand, and dead the day `c3c` is fixed.**
 
 ## What is open
 
-**Nothing. `045-O-1`..`045-O-5` were ruled by the owner on 2026-09-18 and the
+**Nothing. `045-O-1`..`045-O-5` were ruled by the owner on 2026-09-18 and the  
 rulings are in *What is decided* above.**
 
 - `045-O-1` — b. Only what the block owes.
@@ -270,8 +270,8 @@ Lines as they are after the exemplar.
 - `c3c build` green. `c3c test`: 159 passed.
 - Rendered and read.
 
-**Seen and not fixed.** `mtk::queue::internal`'s block reads *The insert guard
-shared by the intrusive containers. Not part of the public API.* — not Rule 2's
+**Seen and not fixed.** `mtk::queue::internal`'s block reads *The insert guard  
+shared by the intrusive containers. Not part of the public API.* — not Rule 2's  
 marker. The same for the other `::internal` blocks. `045-O-4`.
 
 ## The stages
@@ -289,7 +289,7 @@ marker. The same for the other `::internal` blocks. `045-O-4`.
 - `3TK-92` writes prose that is the published deep dive, and every sentence is
   a claim checked against `src/`.
 
-**Why Sonnet 5 for the last.** It runs checks and records rulings already
+**Why Sonnet 5 for the last.** It runs checks and records rulings already  
 made.
 
 ### Steps — 3TK-91
@@ -326,7 +326,7 @@ made.
 
 **4. Put `045-O-1`..`045-O-5` to the owner.** Options and a recommendation each.
 
-**5. Show the exemplar and the questions. Stop.** `3TK-92` starts from the
+**5. Show the exemplar and the questions. Stop.** `3TK-92` starts from the  
 answers, recorded in this plan's *What is decided*.
 
 ### Steps — 3TK-92

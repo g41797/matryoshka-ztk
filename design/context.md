@@ -10,24 +10,26 @@
 One line per doc: the link, then what the doc is.
 
 Not a changelog. How a doc reached its current version is narrative, and  
-narrative lives in [STATUS-LOG.md](STATUS-LOG.md). See rules-049.md,  
+narrative lives in [STATUS-LOG.md](STATUS-LOG.md). See rules-050.md,  
 "Status file ownership".
 
 `design/` holds the current picture of Matryoshka. Snapshots, superseded  
 drafts, session logs and unstarted intentions live in  
-[secondary/](secondary/context.md) and are frozen. See rules-049.md,  
+[secondary/](secondary/context.md) and are frozen. See rules-050.md,  
 "Where a doc lives".
 
 ## State
 
 - [STATUS.md](STATUS.md) — where we are and what is next. Read in full each session.
-- [matryoshka-ztk-implementation-plan-074.md](matryoshka-ztk-implementation-plan-074.md) — forward-looking work + one line per completed stage.
+- [matryoshka-ztk-implementation-plan-080.md](matryoshka-ztk-implementation-plan-080.md) — forward-looking work + one line per completed stage. Describes the old tree at the repo root.
+- [secondary/lang/port/3tk-to-ztk/3tk-to-ztk-005.md](secondary/lang/port/3tk-to-ztk/3tk-to-ztk-005.md) — BKP: the 3tk backport's subject document. Method, survey, rulings with their reasoning, the dropped apply groups, the direction change, continue prompts.
+- `secondary/lang/port/3tk-to-ztk/next/` — the rewritten toolkit: its own status, stage menu, log and project root. Not listed file by file; `check_design.sh` prunes `secondary/lang` and that tree carries its own gate.
 - [STATUS-LOG.md](STATUS-LOG.md) — session narrative, by date. Do not read by default.
 
 ## Sources of truth
 
-- [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md) — the book. Seven parts: introduction, the Zig mechanisms, then one part each for polynode, mailbox and pool in the same five-piece shape, the cross-tool material, and what sits beyond the toolkit. Signatures, types, error sets, preconditions and the cancel contract live in the three tool parts. The assert mechanism does not — that is in `src/` doc comments.
-- [rules-049.md](rules-049.md) — coding, doc, and process rules. Includes the banned-word list.
+- [matryoshka-api-reference-043.md](matryoshka-api-reference-043.md) — the book. Seven parts: introduction, the Zig mechanisms, then one part each for polynode, mailbox and pool in the same five-piece shape, the cross-tool material, and what sits beyond the toolkit. Signatures, types, error sets, preconditions and the cancel contract live in the three tool parts. The assert mechanism does not — that is in `src/` doc comments.
+- [rules-050.md](rules-050.md) — coding, doc, and process rules. Includes the banned-word list.
 - [patterns-029.md](patterns-029.md) — unified pattern and idiom catalog.
 - [matryoshka-zig-0.16-notes-003.md](matryoshka-zig-0.16-notes-003.md) — Zig 0.16 constraints, the cancellation contract, and what comptime bought.
 
@@ -71,7 +73,7 @@ drafts, session logs and unstarted intentions live in
 
 Kept as historical record. Owner's ruling, 2026-08-14.
 
-Part 0 of rules-049.md forbids deleting them, and `check_design.sh` reports any  
+Part 0 of rules-050.md forbids deleting them, and `check_design.sh` reports any  
 unlisted `design/` file as an orphan. One line here satisfies both. Nothing in  
 `design/` is deleted to pass the gate.
 
@@ -81,8 +83,13 @@ section, naming what replaced it. See Decisions in STATUS.md.
 Read the current version instead. These are here so nothing is lost.
 
 - [matryoshka-tk-implementation-plan-072.md](matryoshka-tk-implementation-plan-072.md) — superseded by -073.
-- [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md) — superseded by matryoshka-ztk-implementation-plan-074.md.
+- [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implementation-plan-073.md) — superseded by -074, which the owner deleted on 2026-09-20. The current plan is named in STATUS.md.
 - [matryoshka-concepts-002.md](matryoshka-concepts-002.md) — superseded by -003.
+- [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md) — superseded by -043.
+- [matryoshka-ztk-implementation-plan-078.md](matryoshka-ztk-implementation-plan-078.md) — superseded by -079.
+- [matryoshka-ztk-implementation-plan-079.md](matryoshka-ztk-implementation-plan-079.md) — superseded by -080.
+- [matryoshka-ztk-implementation-plan-077.md](matryoshka-ztk-implementation-plan-077.md) — superseded by -078.
+- [rules-049.md](rules-049.md) — superseded by -050.
 
 ## Secondary
 

@@ -1,0 +1,112 @@
+negative
++- run exe 302_create_into_full_slot w
+thread 603111 panic: an acquisition needs an empty Slot on entry
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/internal/check.zig:26:43: 0x1025b77 in check (302_create_into_full_slot)
+    if (std.debug.runtime_safety and !ok) @panic(msg);
+                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x102561d in _start (302_create_into_full_slot)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/cc295735bf62edb15ae2f8e90b6b0d3e/302_create_into_full_slot
+
+negative
++- run exe 304_append_linked w
+thread 603146 panic: the outer is already on a chain
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/internal/check.zig:26:43: 0x107e318 in check (304_append_linked)
+    if (std.debug.runtime_safety and !ok) @panic(msg);
+                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x1025a23 in callMain (304_append_linked)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x102570d in _start (304_append_linked)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/9ab1c3c63c5a6fa101ecf6b8442814ca/304_append_linked
+
+negative
++- run exe 310_destroy_open_mailbox w
+thread 603161 panic: Mbox.destroy: the mailbox must be closed first
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/mbox.zig:428:13: 0x1076e24 in destroy (310_destroy_open_mailbox)
+            @panic("Mbox.destroy: the mailbox must be closed first");
+            ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x1025bd3 in callMain (310_destroy_open_mailbox)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x10258bd in _start (310_destroy_open_mailbox)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/dfe18217932bac20e651986be5442657/310_destroy_open_mailbox
+
+negative
++- run exe 312_destroy_while_receiving w
+thread 603211 panic: Mbox.destroy: a call is still running on the mailbox
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/mbox.zig:431:13: 0x10777e3 in destroy (312_destroy_while_receiving)
+            @panic("Mbox.destroy: a call is still running on the mailbox");
+            ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x1025f03 in callMain (312_destroy_while_receiving)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x1025bed in _start (312_destroy_while_receiving)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/0d7bd230fdec4019387fcfd8f980537a/312_destroy_while_receiving
+
+negative
++- run exe 303_overwrite_slot w
+thread 603235 panic: never overwrite a full Slot
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/internal/check.zig:26:43: 0x107e267 in check (303_overwrite_slot)
+    if (std.debug.runtime_safety and !ok) @panic(msg);
+                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x1025993 in callMain (303_overwrite_slot)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x102567d in _start (303_overwrite_slot)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/56255c01f56fca75769717bfe7b2832b/303_overwrite_slot
+
+negative
++- run exe 305_append_twice w
+thread 603262 panic: the outer is already on a chain
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/internal/check.zig:26:43: 0x107e318 in check (305_append_twice)
+    if (std.debug.runtime_safety and !ok) @panic(msg);
+                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x1025a23 in callMain (305_append_twice)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x102570d in _start (305_append_twice)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/9f3bd4df6a05d1c05cb506bd4ad7dea8/305_append_twice
+
+negative
++- run exe 301_wrong_type_must w
+thread 603307 panic: mustMoveFromSlot: asked for 301_wrong_type_must.Chunk, found 301_wrong_type_must.Msg
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/helper.zig:178:28: 0x107e362 in wrongType__anon_26642 (301_wrong_type_must)
+            std.debug.panic(
+                           ^
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/helper.zig:125:57: 0x1076436 in mustMoveFromSlot (301_wrong_type_must)
+            const out = fromInner(item) orelse wrongType("mustMoveFromSlot", item.id);
+                                                        ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x1025a73 in callMain (301_wrong_type_must)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x102575d in _start (301_wrong_type_must)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/9544006c3a8b8dbb913a73f278ae1fbe/301_wrong_type_must
+
+negative
++- run exe 300_unstamped_append w
+thread 603312 panic: the outer was never stamped: make it with create, or stamp it once
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/internal/check.zig:26:43: 0x107e287 in check (300_unstamped_append)
+    if (std.debug.runtime_safety and !ok) @panic(msg);
+                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x10259b3 in callMain (300_unstamped_append)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x102569d in _start (300_unstamped_append)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/1bcf84cdbe39672f5bf7747e76a137a6/300_unstamped_append
+

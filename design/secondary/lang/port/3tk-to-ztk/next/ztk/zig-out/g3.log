@@ -1,0 +1,17 @@
+Sun Sep 20 02:16:27 PM IDT 2026
+Build Summary: 3/3 steps succeeded
+install success
++- install matryoshka success
+   +- compile lib matryoshka Debug x86_64-macos success 51ms MaxRSS:91M
+
+Build Summary: 3/3 steps succeeded
+install success
++- install matryoshka success
+   +- compile lib matryoshka Debug aarch64-macos success 42ms MaxRSS:91M
+
+Build Summary: 3/3 steps succeeded
+install success
++- install matryoshka success
+   +- compile lib matryoshka Debug x86_64-windows success 48ms MaxRSS:91M
+
+Sun Sep 20 02:16:27 PM IDT 2026

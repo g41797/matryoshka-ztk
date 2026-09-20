@@ -9,42 +9,42 @@ Current state is in [3tk-status.md](3tk-status.md).
 
 ## 2026-09-18 — 3TK-94: per-OS CI workflows via setup-c3
 
-**Ran on Sonnet 5. Git disabled. `matryoshka-3tk` only — no `.c3` code
+**Ran on Sonnet 5. Git disabled. `matryoshka-3tk` only — no `.c3` code  
 changed, CI and README only.**
 
 - **`matryoshka-3tk/.github/workflows/linux.yml`, `sanitizers.yml`**: the
-  manual `curl`/`tar` install of `c3c` replaced with the `ManuLinares/setup-c3@v1`
-  action, pinned `version: 0.8.3`. Matrix, build and test steps unchanged in
+  manual `curl`/`tar` install of `c3c` replaced with the `ManuLinares/setup-c3@v1`  
+  action, pinned `version: 0.8.3`. Matrix, build and test steps unchanged in  
   both files; `sanitizers.yml`'s sanitizer matrix and clang install untouched.
 - **`mac.yml`, `windows.yml` added**, mirroring `linux.yml`'s matrix
-  (`safe: [yes, no]` × `opt: [O0, O3]`) and Build/Test steps, `runs-on:
-  macos-latest` / `windows-latest` respectively, same `setup-c3` install step.
+  (`safe: [yes, no]` × `opt: [O0, O3]`) and Build/Test steps, `runs-on:  
+  macos-latest` / `windows-latest` respectively, same `setup-c3` install step.  
   One-file-per-OS pattern matches `matryoshka-ztk`'s own workflows.
 - **`docs.yml` untouched** — out of scope.
 - **`matryoshka-3tk/README.md`**: Windows and macOS status badges added next
-  to the existing Linux badge, before the Sanitizers/Docs badges, matching
+  to the existing Linux badge, before the Sanitizers/Docs badges, matching  
   `matryoshka-ztk/README.md`'s badge block.
 
 ---
 
 ## 2026-09-18 — 3TK-93: verify and close D-3, plan 045 spent
 
-**Ran on Sonnet 5, plan `045`'s last stage. Git disabled. No `.c3` code
+**Ran on Sonnet 5, plan `045`'s last stage. Git disabled. No `.c3` code  
 changed and no doc-comment prose changed — checks and record-keeping only.**
 
 - **`check-doc-loop.sh`, all files: clean.** 424 of 424 sentences found, 0
-  differing, 0 banned words across `helper.c3`, `inner.c3`, `mailbox.c3`,
+  differing, 0 banned words across `helper.c3`, `inner.c3`, `mailbox.c3`,  
   `mtk.c3`, `pool.c3`, `queue.c3` and `3tk-reference-015.md`.
 - **`c3c build` and `c3c test`: green, 159 passed.**
 - **`run-builds.sh`: 135 passed, 9 failed — the same 9** the plan expected:
-  `pool.c3`'s module order and the internal-banner drift it causes, flagged
+  `pool.c3`'s module order and the internal-banner drift it causes, flagged  
   and not fixed by earlier stages, untouched here.
 - **Every claim owed by a module block is greppable in `src/`** — checked by
-  hand against `pool.c3`'s `GetMode`, hooks and `in_pool` lines, and no
+  hand against `pool.c3`'s `GetMode`, hooks and `in_pool` lines, and no  
   `.md` file name appears inside any `.c3` comment.
 - **`3tk-readme-creation-003.md` updated in `matryoshka-3tk`**: the `D-3` row
-  in *What is open* now names `3TK-92` and `3TK-93` and reads closed; a
-  changelog row records the closure. The mapping table's helper row already
+  in *What is open* now names `3TK-92` and `3TK-93` and reads closed; a  
+  changelog row records the closure. The mapping table's helper row already  
   carried no *once D-1 closes* phrasing, so that ask needed no edit.
 - **`3tk-status.md`**: `D-3` closed, plan `045` spent, nothing queued. Only
   `3TK-50` remains open, unchanged, waiting on the owner.
@@ -53,100 +53,100 @@ changed and no doc-comment prose changed — checks and record-keeping only.**
 
 ## 2026-09-18 — 3TK-92: the five public module blocks, and the hooks page
 
-**Ran on Opus 5, plan `045`. Git disabled. No `.c3` code changed — comments
+**Ran on Opus 5, plan `045`. Git disabled. No `.c3` code changed — comments  
 only, and no declaration block was touched.**
 
 - **Six blocks written, in the plan's order**: `mtk::inner`, `mtk::helper`,
-  `mtk::mailbox`, `mtk::pool`, `mtk::pool::hooks`, then `mtk` last. Each is
-  written from its README passages and its owed list, in the README's voice,
+  `mtk::mailbox`, `mtk::pool`, `mtk::pool::hooks`, then `mtk` last. Each is  
+  written from its README passages and its owed list, in the README's voice,  
   and each claim was read off `src/*.c3` before it was written.
 - **The blocks are 47 to 62 lines**, against `3TK-91`'s 31-line `mtk::queue`
-  exemplar, whose owed list was the smallest of the six. Shape is the
-  exemplar's throughout: a lead, then `##` sections, one bullet per line, no
+  exemplar, whose owed list was the smallest of the six. Shape is the  
+  exemplar's throughout: a lead, then `##` sections, one bullet per line, no  
   nested bullet, no numbered list, every name in backticks.
 - **`mtk::helper` carries the `any` crossings whole**, since the README's *If
-  you already have a channel* is gone: `to_any`, `to_slot`, their `must_`
-  forms, the `any*` cases of `is`/`look`/`take`, and the six things the
+  you already have a channel* is gone: `to_any`, `to_slot`, their `must_`  
+  forms, the `any*` cases of `is`/`look`/`take`, and the six things the  
   crossing checks. It is the longest block, 62 lines, and that is why.
 - **`mtk::pool::hooks` is rewritten as user surface**, per `045-O-4`: what each
-  hook is for, how to answer it, and what to know before writing one — the lock
-  is released while a hook runs, and `in_pool` is a stale hint either side of
-  it. The four `::internal` blocks were left as they are, their missing
+  hook is for, how to answer it, and what to know before writing one — the lock  
+  is released while a hook runs, and `in_pool` is a stale hint either side of  
+  it. The four `::internal` blocks were left as they are, their missing  
   `For internal usage.` marker still flagged and not fixed.
 - **`mtk`'s block names the outcome set and does not list the eight faults**,
-  per `045-O-5`. It names the six modules, the five words, safe mode and what
+  per `045-O-5`. It names the six modules, the five words, safe mode and what  
   `@check` costs, and the two tokens.
 - **No ASCII diagram was written.** `045-O-3` allows one, fenced, but not where
-  the README already draws the same thing — and for these six subjects it
+  the README already draws the same thing — and for these six subjects it  
   does. Nothing was owed that a diagram says better than a line.
 - **The reference is `3tk-reference-015.md`** (Rule 14). Six labelled blocks
-  re-synced byte for byte; `014` moved to `matryoshka-3tk/design/backup/` with a
-  plain `mv`. `check-doc-loop.sh` and `move-module-docs.sh` repointed, and every
-  live `014` link in both repos re-anchored — four documents in
-  `matryoshka-3tk/design/`, `ref/3tk-doc-loop-005.md`, and plan `045`'s own
-  live line. The `3TK-91` step records in `045` keep `014`, being what that
+  re-synced byte for byte; `014` moved to `matryoshka-3tk/design/backup/` with a  
+  plain `mv`. `check-doc-loop.sh` and `move-module-docs.sh` repointed, and every  
+  live `014` link in both repos re-anchored — four documents in  
+  `matryoshka-3tk/design/`, `ref/3tk-doc-loop-005.md`, and plan `045`'s own  
+  live line. The `3TK-91` step records in `045` keep `014`, being what that  
   stage did.
 - **A defect the check caught, worth recording.** The first sync wrote
-  `mtk::pool::hooks`'s block from a non-greedy match that began at the file's
-  first `<* *>`, so the labelled block swallowed 40 lines of `pool.c3` source.
-  `check-doc-loop.sh` reported one `DIFFERS` and 19 banned-word hits in the
-  reference, and both went away with the fix. **The banned-word hits were the
+  `mtk::pool::hooks`'s block from a non-greedy match that began at the file's  
+  first `<* *>`, so the labelled block swallowed 40 lines of `pool.c3` source.  
+  `check-doc-loop.sh` reported one `DIFFERS` and 19 banned-word hits in the  
+  reference, and both went away with the fix. **The banned-word hits were the  
   swallowed code, not prose.**
 - **Verification.** `c3c build` green; `c3c test` 159 passed. Doc loop: 0
-  differing blocks, 424 of 424 descriptor sentences, 0 banned words. All six
-  pages rendered through the real `formatDocText` and read — no stray
+  differing blocks, 424 of 424 descriptor sentences, 0 banned words. All six  
+  pages rendered through the real `formatDocText` and read — no stray  
   paragraph, no flattened bullet, no mangled name.
 
 ## 2026-09-18 — the README round, and its closing pass
 
-**Ran on Opus 5, with the owner, over one long round. No plan, no `.c3` change,
-git disabled.** The owner reopened `matryoshka-3tk/README.md` after it had been
+**Ran on Opus 5, with the owner, over one long round. No plan, no `.c3` change,  
+git disabled.** The owner reopened `matryoshka-3tk/README.md` after it had been  
 declared finished, edited it by hand, and the session worked against his edits.
 
 - **Ten small fixes** from his own pass: a placeholder line, `outers` used
-  before the term exists, `'outer'` in single quotes, two missing `---` rules,
-  the pool described as keeping *requests* where it keeps any type it was given,
+  before the term exists, `'outer'` in single quotes, two missing `---` rules,  
+  the pool described as keeping *requests* where it keeps any type it was given,  
   a quoted phrase made italic, step 4 of *How to start* given a body.
 - **`init` and `finish` moved** out of the helper example into *The one struct
-  you write*, where the reader writes them. **Then corrected**: they are
-  required as soon as the helper creates or releases the struct, since both
+  you write*, where the reader writes them. **Then corrected**: they are  
+  required as soon as the helper creates or releases the struct, since both  
   `$assert`s live in `create` and `release`.
 - **New: *One struct, two addresses*.** The reader's habit is a cast, so the
-  crossing is taught as one — *a cast the helper makes safe* — then the two
-  things it adds. **The claim that a cast cannot move the address was withdrawn
-  during the round**: a hand-written offset can, and breaks when a field moves.
-  It ends with the handle picture: the inner is a handle bolted to one case, and
-  the mailbox and the pool are the porter who never opens it. **Anchor was
+  crossing is taught as one — *a cast the helper makes safe* — then the two  
+  things it adds. **The claim that a cast cannot move the address was withdrawn  
+  during the round**: a hand-written offset can, and breaks when a field moves.  
+  It ends with the handle picture: the inner is a handle bolted to one case, and  
+  the mailbox and the pool are the porter who never opens it. **Anchor was  
   refused** — an anchor stops movement.
 - **`Inner` is last in the README's `Request` now**, everywhere it is drawn, and
-  the page says it may sit anywhere. With the inner first the two addresses are
+  the page says it may sit anywhere. With the inner first the two addresses are  
   the same number, and the new section would have rested on a coincidence.
 - **New: *Show cases*.** `shc` was named three times and never explained.
 - ***Only the address moves* → *The slot — read this one twice, at least***, and
-  rewritten. **The old opening was wrong**: it framed the slot as a guard
-  against two threads touching one request. It is neither a guard nor about
-  threads. A request passes to someone else a few times — a mailbox, a pool,
-  `release`, a channel — and the slot is where you read whether it went. Added:
-  the everyday-slot picture, why an error return is not enough, and the stacked
+  rewritten. **The old opening was wrong**: it framed the slot as a guard  
+  against two threads touching one request. It is neither a guard nor about  
+  threads. A request passes to someone else a few times — a mailbox, a pool,  
+  `release`, a channel — and the slot is where you read whether it went. Added:  
+  the everyday-slot picture, why an error return is not enough, and the stacked  
   `defer` pattern from `examples/009-refused_put_fallback.c3`.
 - ***If you already have a channel* removed by the owner**, which also removed
-  the README's only account of `to_any`, `to_slot` and `is`. **Recorded as
+  the README's only account of `to_any`, `to_slot` and `is`. **Recorded as  
   `mtk::helper`'s debt.**
 - **The three pieces were said to stack, and they do not.** The staircase
-  picture is gone; the page now says the mailbox and the pool know nothing about
+  picture is gone; the page now says the mailbox and the pool know nothing about  
   each other — neither imports the other — and names `Pool + your hooks`.
 - **A full claim-by-claim re-read against `src/`** found two wrong lines, both
-  fixed above and in the glossary. Everything else held, `on_put`'s keep/drop
+  fixed above and in the glossary. Everything else held, `on_put`'s keep/drop  
   direction and `get_wait` never creating included.
 - **Scans, live.** Three `hands` hits in the custody sense, Part 5, reworded to
-  *passes to someone else*. No other banned word; every list has its blank line;
-  fences balance. **Five prose paragraphs of the session's own writing were
+  *passes to someone else*. No other banned word; every list has its blank line;  
+  fences balance. **Five prose paragraphs of the session's own writing were  
   broken into bullets** after a length check.
 - **New script, `matryoshka-3tk/scripts/count_readme_loc.sh`** — README lines
-  minus blanks and `---` rules. **Rule 12 waived by the owner: it stays in
+  minus blanks and `---` rules. **Rule 12 waived by the owner: it stays in  
   `matryoshka-3tk` only.**
 - **`3tk-readme-creation-003.md` replaces `002`**, Rule 14, `002` to `backup/`
-  with a plain `mv`. Rulings 26–34; the mapping table re-sourced; every live
+  with a plain `mv`. Rulings 26–34; the mapping table re-sourced; every live  
   link re-anchored in both repos, the log left as it is.
 - 744 lines of text, `src/` 810. `c3c build`, `c3c test` 159, `check-doc-loop.sh`
   clean — no `.c3` file was touched.
@@ -158,10 +158,10 @@ declared finished, edited it by hand, and the session worked against his edits.
 **Ran on Opus 5.** Plan `045`, stage one.
 
 - **The `docgen` renderer measured**, in the scratchpad, by running
-  `formatDocText` out of the generated `docs.html` rather than reading it.
-  **Nested bullets flatten, a wrapped bullet breaks in two, numbered lists do
-  not render, and a bare `push_back` or `Inner*` is mangled into italics.**
-  Headings, bullets, paragraph breaks, inline code and fenced ASCII render.
+  `formatDocText` out of the generated `docs.html` rather than reading it.  
+  **Nested bullets flatten, a wrapped bullet breaks in two, numbered lists do  
+  not render, and a bare `push_back` or `Inner*` is mangled into italics.**  
+  Headings, bullets, paragraph breaks, inline code and fenced ASCII render.  
   **Written into the plan. A later stage does not re-probe.**
 - **`mtk::queue`'s owed facts measured with `file:line`.** Nothing was missing
   from `src/`.
@@ -271,27 +271,27 @@ declared finished, edited it by hand, and the session worked against his edits.
 **Ran on Opus 5, in discussion with the owner.**
 
 - **An `any` is two values:** `.ptr`, and `.type` as the pointee typeid
-  (`MANUAL.md`). `Outer*` converts to it without a cast; `any_make` can build
+  (`MANUAL.md`). `Outer*` converts to it without a cast; `any_make` can build  
   one that lies.
 - **3tk checks an `any` on its own side, through `OuterHelper`.** `.type` is a
   hint, `otrtypeid` the truth. 3tk fixes only what it can check.
 - **Owner's idea: an `any` is a kind of Slot, handled by address (`&a`).**
   Empty when `.ptr == null`.
 - **Surface:** `is(from)` for `Slot*`, `Inner*`, `any*`; `look`/`must_look`/
-  `take`/`must_take` accept `any*`; `to_any(&slot, &a)`, `to_slot(&a, &slot)`,
+  `take`/`must_take` accept `any*`; `to_any(&slot, &a)`, `to_slot(&a, &slot)`,  
   each with a `must_` form.
 - **Always aborts:** `.type` says `Outer` and `otrtypeid` does not; unstamped;
   linked, both directions; target not empty.
 - **`is` came from measuring:** `look` is used only as a yes/no test at about
   twenty sites, and `examples/010` reaches into `internal::is_mine`.
 - **Documents:** `3tk-any-border-001.md` new; `3tk-decisions-008.md` → `009`,
-  `008` to `backup/`; live links re-anchored in `3tk-status.md`,
-  `3tk-doc-loop-005.md`, `3tk-api-007.md`, `3tk-port-findings-005.md`;
+  `008` to `backup/`; live links re-anchored in `3tk-status.md`,  
+  `3tk-doc-loop-005.md`, `3tk-api-007.md`, `3tk-port-findings-005.md`;  
   `D-1`/`D-2` in `3tk-readme-creation-002.md` point to the new document.
 - **Plan `044`:** `3TK-88` gains the `is` sites and three new document
   versions. `3TK-88` queued.
 - **Closed after:** no `must_is` — `is` answers a question, the `must_` calls
-  that return the outer already abort. The group is `l_bridge`; *border* and
+  that return the outer already abort. The group is `l_bridge`; *border* and  
   *bridge* both stay.
 - No `.c3` changed. Git disabled.
 
@@ -303,7 +303,7 @@ declared finished, edited it by hand, and the session worked against his edits.
 
 - **The README is finished.** 865 lines, staccato. No text changed here.
 - **Correction before closing:** *Zero or two is a compile error* was true but
-  incomplete. The `$assert`s in `inner_offset` (`inner.c3:201-202`) run when
+  incomplete. The `$assert`s in `inner_offset` (`inner.c3:201-202`) run when  
   the toolkit first uses a struct as an outer.
     - A struct with two `Inner`s that nothing uses compiles.
     - An `Inner` inside a nested sub-struct counts as none.
@@ -329,12 +329,12 @@ declared finished, edited it by hand, and the session worked against his edits.
 - **Owner's ruling:** content is right, formatting is not. Part 6 staccato:
   short sentences, bullets, nested bullets. Over 300 lines is accepted.
 - **Done:** one fact per line; multi-sentence lines split; multi-fact bullets
-  nested (4-space indent, for GitHub and Python-Markdown both); blank line
+  nested (4-space indent, for GitHub and Python-Markdown both); blank line  
   before every list; no bold across lines. 865 lines.
 - **Wording:** unchanged, except short lead-ins where a list needed one
-  (*Why the name*, *The names, and what each one is for*, *Where the type
-  lives*, *Count the pushes*, *And more*, *Reading the outer back*) and small
-  rewordings to fit a list ("whether … or" became "how … : over TCP / or from a
+  (*Why the name*, *The names, and what each one is for*, *Where the type  
+  lives*, *Count the pushes*, *And more*, *Reading the outer back*) and small  
+  rewordings to fit a list ("whether … or" became "how … : over TCP / or from a  
   file"; "rather than guessed at" became a nested "It is not guessed at").
 - Checks run: list-spacing, split bold, banned words — all 0.
 
@@ -345,14 +345,14 @@ declared finished, edited it by hand, and the session worked against his edits.
 - **Owner's direction:** take the slot description; plain English, no smart
   wording; the family section stays last.
 - **Taken:** the slot description, with a `defer REQ.release` sketch modelled on
-  `examples/007-defer_release_early.c3` (a refused `send` leaves the slot full,
-  `mailbox.c3:317-340`, `examples/031`); "the hard part is between the threads";
-  work still on its way at shutdown; "the request already exists"; more reasons
-  not to copy; the one-sentence idea in the bridge; transfer and lifetime as two
-  jobs; a purpose for each name in *Matryoshka*, plus Helper and Hooks; "use it
+  `examples/007-defer_release_early.c3` (a refused `send` leaves the slot full,  
+  `mailbox.c3:317-340`, `examples/031`); "the hard part is between the threads";  
+  work still on its way at shutdown; "the request already exists"; more reasons  
+  not to copy; the one-sentence idea in the bridge; transfer and lifetime as two  
+  jobs; a purpose for each name in *Matryoshka*, plus Helper and Hooks; "use it  
   with whatever you already use"; "not much to the model".
 - **Not taken:** producer/mailbox/worker diagrams; `on_get` as initialization
-  (it allocates, `pool.c3:368`); "polling", "lifecycle", "owns"; `*Inner`;
+  (it allocates, `pool.c3:368`); "polling", "lifecycle", "owns"; `*Inner`;  
   removing *How to start*.
 - Banned-word scan 0.
 
@@ -363,13 +363,13 @@ declared finished, edited it by hand, and the session worked against his edits.
 - **The owner asked for more humanity**, and lifted the size limit.
 - **Base kept:** the structure, every measured fact, the owner's own sections.
 - **Taken:** the gentler opening; *today / tomorrow* message types; the
-  address-only diagram; `Outer` containing `Inner` diagram; the type-check
-  diagram; *Who has it now?* for the slot; the pool loop; mechanism versus
-  policy; hand-allocated outers with `stamp`; *Putting the pieces together*
-  with its diagram; *keep your queue if it works*; *What this toolkit does not
+  address-only diagram; `Outer` containing `Inner` diagram; the type-check  
+  diagram; *Who has it now?* for the slot; the pool loop; mechanism versus  
+  policy; hand-allocated outers with `stamp`; *Putting the pieces together*  
+  with its diagram; *keep your queue if it works*; *What this toolkit does not  
   do*; *no need to solve everything on the first day*; the closing two lines.
 - **Adjusted to `src/`:** no `any` inside the toolkit (INTR 12); `Inner*`, not
-  `*Inner`; no "polling" among the absences, since `Mailbox.poll` exists;
+  `*Inner`; no "polling" among the absences, since `Mailbox.poll` exists;  
   "owner" wording replaced (Part 5); "on purpose" replaced by "deliberately".
 - **Not taken:** the mailbox before its problem; the generic
   producer/worker/consumer diagram; the *C3* section's `any` and Handle lines.
@@ -382,10 +382,10 @@ declared finished, edited it by hand, and the session worked against his edits.
 - **The owner's edits:** *Examples* removed; the opening line says 700+ lines
   of code (746 measured, comments and blank lines excluded).
 - **Added on the owner's direction:** *One helper per type does the boring part*,
-  a second C3 block, which changes `O-1`; *How to start*, four steps, stop at
+  a second C3 block, which changes `O-1`; *How to start*, four steps, stop at  
   any one; the naming reasons in *Matryoshka*, doll reason kept.
 - **From a Gemini revision:** the inner-inside-request link diagram, redrawn
-  narrow; slot diagram labels. **Rejected:** `link = null` for the last inner
+  narrow; slot diagram labels. **Rejected:** `link = null` for the last inner  
   (wrong, it links to itself), shown pointer arithmetic, bullet reformatting.
 - 216 prose lines. Banned-word scan 0.
 
@@ -397,19 +397,19 @@ declared finished, edited it by hand, and the session worked against his edits.
 
 - **`O-4` closed:** the owner ran `3TK-86` on the problem half as written.
 - **Written:** ten sections in `matryoshka-3tk/README.md`, in the required
-  order. A bridge, the mailbox, the link inside the request, the inner and
-  outer, the one code block and its note, the slot, the pool, the hooks,
-  *Take what you need*, *Matryoshka* by name, the closing section for the
+  order. A bridge, the mailbox, the link inside the request, the inner and  
+  outer, the one code block and its note, the slot, the pool, the hooks,  
+  *Take what you need*, *Matryoshka* by name, the closing section for the  
   reader with a channel, and *Examples*.
 - **192 prose lines in all**, fenced blocks and badges excluded. Inside the
   200 aimed at.
 - **Scans, run live:** banned words 0 after two `holds` were reworded; no
   Matryoshka term before the bridge.
 - **Checked against `src/`:** `Inner`'s two fields `inner.c3:20`; the
-  one-`Inner` `$assert`s `inner.c3:201-202`; `look` null on mismatch
-  `helper.c3:81-98`; `receive` `mailbox.c3:126`, its empty-slot `@check`
-  `:130`; `close` gives back `:221`; `GetMode` `pool.c3:12-28`; `get_wait`
-  never calls `on_get` `:178`; `on_put` leaving the slot full keeps the outer
+  one-`Inner` `$assert`s `inner.c3:201-202`; `look` null on mismatch  
+  `helper.c3:81-98`; `receive` `mailbox.c3:126`, its empty-slot `@check`  
+  `:130`; `close` gives back `:221`; `GetMode` `pool.c3:12-28`; `get_wait`  
+  never calls `on_get` `:178`; `on_put` leaving the slot full keeps the outer  
   `:431-436`.
 - **Measured:** the ten no-mailbox, no-pool examples and the six `h_pool`
   examples contain no mailbox call.
@@ -424,14 +424,14 @@ declared finished, edited it by hand, and the session worked against his edits.
 **Ran on Opus 5. Stopped for the owner, as the plan says.**
 
 - **Written:** `matryoshka-3tk/README.md`, everything before the first
-  Matryoshka term. Eight sections in the required order: the process, threads
-  that pass work, the queue as centre, no allocation on transfer, no knowledge
-  of types, structs that cannot be copied, where requests come from, reuse
+  Matryoshka term. Eight sections in the required order: the process, threads  
+  that pass work, the queue as centre, no allocation on transfer, no knowledge  
+  of types, structs that cannot be copied, where requests come from, reuse  
   needs rules.
 - **80 prose lines**, fenced blocks and badges excluded. Three ASCII diagrams.
 - **Banned-word and term scans: 0 hits**, run live.
 - **The one claim about 3tk** — no sockets, files, event loop, scheduler,
-  thread creation — checked against `src/*.c3` imports: `std::thread`,
+  thread creation — checked against `src/*.c3` imports: `std::thread`,  
   `std::time`, `std::core::mem::alloc`, `std::atomic::types`, `std::core::env`.
 - **No `.c3` changed**, so the build gates were not re-run.
 - **Subject document revised in place:** `O-4`, the voice, opened.
@@ -442,96 +442,96 @@ declared finished, edited it by hand, and the session worked against his edits.
 
 **Ran on Opus 5 and closed. An interrupt, not part of plan `043`'s flow.**
 
-**The owner's ruling, 2026-09-16: two worlds, and 3tk is answerable for one.**
-Matryoshka's nomenclature is `Inner`, `Outer`, `Slot`, `Mailbox`, `Pool`, and
-3tk answers for safety there. `any` is C3's, an ordinary value whose user cares
-for it. **At the border 3tk converts, and that is all** — it does not police
-what happens to an `any` on the C3 side, and no check is written that implies
+**The owner's ruling, 2026-09-16: two worlds, and 3tk is answerable for one.**  
+Matryoshka's nomenclature is `Inner`, `Outer`, `Slot`, `Mailbox`, `Pool`, and  
+3tk answers for safety there. `any` is C3's, an ordinary value whose user cares  
+for it. **At the border 3tk converts, and that is all** — it does not police  
+what happens to an `any` on the C3 side, and no check is written that implies  
 it does. **So `any` has no place inside the toolkit.**
 
-**What brought it up was a use case, not a tidy-up.** The HTTP side of the
-opening system has no Mailbox. It listens on an `UnboundedChannel(<any>)` and
-receives both outers coming back from workers and io events, tells them apart
-by `a.type`, and either allocates an outer or takes one from the Pool, or —
-when what arrived is already an outer — puts it in a Slot and sends it on. **It
-uses Matryoshka without a Mailbox**, which all six `h_pool` examples already do
+**What brought it up was a use case, not a tidy-up.** The HTTP side of the  
+opening system has no Mailbox. It listens on an `UnboundedChannel(<any>)` and  
+receives both outers coming back from workers and io events, tells them apart  
+by `a.type`, and either allocates an outer or takes one from the Pool, or —  
+when what arrived is already an outer — puts it in a Slot and sends it on. **It  
+uses Matryoshka without a Mailbox**, which all six `h_pool` examples already do  
 and nothing said out loud.
 
-**`Inner.link` was an `any` whose `.ptr` is not an instance of `.type`.** C3
-0.8.3 has no field privacy, so any module could read it and treat it as a real
-`any` — and get the neighbour on the chain. **The border work put a real `any`
-of the same outer right beside the fake one**, which is the mess the owner
+**`Inner.link` was an `any` whose `.ptr` is not an instance of `.type`.** C3  
+0.8.3 has no field privacy, so any module could read it and treat it as a real  
+`any` — and get the neighbour on the chain. **The border work put a real `any`  
+of the same outer right beside the fake one**, which is the mess the owner  
 named.
 
-**The packing never bought a byte.** `struct { any link; }` is 16, two named
-fields are 16, `any` is 16 — measured this stage, and `3TK-21`'s own entry said
-the same when it packed them. **This re-opens `3TK-21` on the owner's word, not
-a stage's.** Its argument was never size; the border is information it did not
+**The packing never bought a byte.** `struct { any link; }` is 16, two named  
+fields are 16, `any` is 16 — measured this stage, and `3TK-21`'s own entry said  
+the same when it packed them. **This re-opens `3TK-21` on the owner's word, not  
+a stage's.** Its argument was never size; the border is information it did not  
 have.
 
-**The three probes ran first (Rule 11), and the one that mattered held.** A
-zeroed `typeid` is falsy and matches no type, so `check_stamped` and Part 5.5
-survive the unpacking — the stage would have stopped and reported otherwise.
-16 bytes and alignment 8 either way. A stamp leaves `link` untouched.
+**The three probes ran first (Rule 11), and the one that mattered held.** A  
+zeroed `typeid` is falsy and matches no type, so `check_stamped` and Part 5.5  
+survive the unpacking — the stage would have stopped and reported otherwise.  
+16 bytes and alignment 8 either way. A stamp leaves `link` untouched.  
 **All three identical under `--safe=no -O3`.**
 
-**`grep -rn '\bany\b' src/` returns nothing, and that is the stage's own
-proof.** `struct Inner` is `{ Inner* link; typeid otrtypeid; }`.
-**`repoint_to` is a plain assignment and `stamp` now reads nothing at all** —
-both were `any_make` calls. `outer_tid`, `is_mine` and `points_to` read a field
-each. `pool.c3`'s three reads go through `outer_tid()`. **Nine sites outside
-`src/` followed**, and `t_identity.c3`'s comment block, which taught the
+**`grep -rn '\bany\b' src/` returns nothing, and that is the stage's own  
+proof.** `struct Inner` is `{ Inner* link; typeid otrtypeid; }`.  
+**`repoint_to` is a plain assignment and `stamp` now reads nothing at all** —  
+both were `any_make` calls. `outer_tid`, `is_mine` and `points_to` read a field  
+each. `pool.c3`'s three reads go through `outer_tid()`. **Nine sites outside  
+`src/` followed**, and `t_identity.c3`'s comment block, which taught the  
 packing as a fact, is rewritten.
 
-**The standing caution retires.** `stamp` was a read-modify-write of the whole
-field, safe only because its three callers are construction-time. It writes
-`otrtypeid` alone now and cannot disturb a chain. **`OuterHelper.inner` still
-verifies rather than writes**, because a reading door that writes is the wrong
+**The standing caution retires.** `stamp` was a read-modify-write of the whole  
+field, safe only because its three callers are construction-time. It writes  
+`otrtypeid` alone now and cannot disturb a chain. **`OuterHelper.inner` still  
+verifies rather than writes**, because a reading door that writes is the wrong  
 shape whatever the layout is — `3TK-75`'s ruling stands on its own feet.
 
-**No public surface changed and no behaviour changed.** `c3c test` is 148,
-unchanged. `run-builds.sh` is 114 passed, 9 failed — **the same 9**.
-**`run-sanitizers.sh` is 3 of 3 clean**, thread at `-O0` and `-O3` and address
-at `-O0`, which is the run that mattered for a change to the chain field.
-`check-doc-loop.sh` is 0 differing, **149 of 149** — up from 147, the two new
+**No public surface changed and no behaviour changed.** `c3c test` is 148,  
+unchanged. `run-builds.sh` is 114 passed, 9 failed — **the same 9**.  
+**`run-sanitizers.sh` is 3 of 3 clean**, thread at `-O0` and `-O3` and address  
+at `-O0`, which is the run that mattered for a change to the chain field.  
+`check-doc-loop.sh` is 0 differing, **149 of 149** — up from 147, the two new  
 `Inner` field sentences — and 0 banned words.
 
-**Three documents went to a new version, Rule 14, old ones to `backup/` with a
-plain `mv`.** **`3tk-reference-013.md`** replaces `012`: its section *`any` —
-the pointer and the type, in one value* is now *The two fields*.
-**`3tk-api-007.md`** replaces `006`, where **one promise had become false** —
-`stamp` no longer preserves the chain link, because it no longer touches it.
-**`3tk-decisions-008.md`** replaces `007`, with `3TK-21`'s entry **marked
-superseded rather than deleted** and the border-type ruling recorded beside it.
-`3tk-patterns-004.md`, `3tk-rules-007.md` and `3tk-readme-creation-001.md` were
-edited in place. **`check-doc-loop.sh` and `move-module-docs.sh` were both
+**Three documents went to a new version, Rule 14, old ones to `backup/` with a  
+plain `mv`.** **`3tk-reference-013.md`** replaces `012`: its section *`any` —  
+the pointer and the type, in one value* is now *The two fields*.  
+**`3tk-api-007.md`** replaces `006`, where **one promise had become false** —  
+`stamp` no longer preserves the chain link, because it no longer touches it.  
+**`3tk-decisions-008.md`** replaces `007`, with `3TK-21`'s entry **marked  
+superseded rather than deleted** and the border-type ruling recorded beside it.  
+`3tk-patterns-004.md`, `3tk-rules-007.md` and `3tk-readme-creation-001.md` were  
+edited in place. **`check-doc-loop.sh` and `move-module-docs.sh` were both  
 repointed** at the new reference number.
 
-**`3tk-port-findings-005.md` gained a dated note and kept every measurement.**
-`3TK-73` ruled it the argument the port made, not the registry of what stands,
-and a stage that rewrites its measurements to match today's code destroys what
+**`3tk-port-findings-005.md` gained a dated note and kept every measurement.**  
+`3TK-73` ruled it the argument the port made, not the registry of what stands,  
+and a stage that rewrites its measurements to match today's code destroys what  
 it is for.
 
-**Every live reference to `012`, `006` and `007` was re-anchored in both
-repos.** Historical sentences that name the version current at the time — this
-log, the per-stage paragraphs in status, a changelog row in port-findings —
+**Every live reference to `012`, `006` and `007` was re-anchored in both  
+repos.** Historical sentences that name the version current at the time — this  
+log, the per-stage paragraphs in status, a changelog row in port-findings —  
 were left exactly as they are.
 
-**Two things fixed in passing, Rule 13.** **`3tk-api-006.md` quoted two asserts
-that do not exist**: `release`'s message on the mailbox and on the pool has said
-*with a call still running on it* since the `quiet` rename, and the file still
-quoted the old wording at line numbers that had moved. Corrected in `007` with
-the real text, `mailbox.c3:65` and `pool.c3:106` — `rules-049.md` Part 4's
-*documented asserts must exist*, and a grep is the check. And **`3TK-84`'s
-`F-1` row**, which said the rejected drafts drew two members where the code had
-one: the code has two now, so the row is kept and reframed — **a claim that was
+**Two things fixed in passing, Rule 13.** **`3tk-api-006.md` quoted two asserts  
+that do not exist**: `release`'s message on the mailbox and on the pool has said  
+*with a call still running on it* since the `quiet` rename, and the file still  
+quoted the old wording at line numbers that had moved. Corrected in `007` with  
+the real text, `mailbox.c3:65` and `pool.c3:106` — `rules-049.md` Part 4's  
+*documented asserts must exist*, and a grep is the check. And **`3TK-84`'s  
+`F-1` row**, which said the rejected drafts drew two members where the code had  
+one: the code has two now, so the row is kept and reframed — **a claim that was  
 never measured is not made true by the code moving under it.**
 
-**What is left for the conversion stage: everything, and nothing is blocked.**
-`Slot`/`Outer` ↔ `any` does not exist — `OuterHelper.look` takes a `Slot*` or an
-`Inner*`, never an `any`, and `Slot.fill` takes an `Inner*`. The border is
-two-way. **An outer keeps its stamp when it leaves**, so the inbound crossing
-can cross-check the `any` against `otrtypeid`. The `l_` examples group is agreed
+**What is left for the conversion stage: everything, and nothing is blocked.**  
+`Slot`/`Outer` ↔ `any` does not exist — `OuterHelper.look` takes a `Slot*` or an  
+`Inner*`, never an `any`, and `Slot.fill` takes an `Inner*`. The border is  
+two-way. **An outer keeps its stamp when it leaves**, so the inbound crossing  
+can cross-check the `any` against `otrtypeid`. The `l_` examples group is agreed  
 and unnamed.
 
 ---
@@ -540,20 +540,20 @@ and unnamed.
 
 **Ran on Opus 5 and closed. `043` is its plan, and `3TK-85` is queued.**
 
-`matryoshka-3tk/README.md` has a logo and four badges and no content. Two
+`matryoshka-3tk/README.md` has a logo and four badges and no content. Two  
 drafts existed and the owner rejected both.
 
-**The owner's words, and they are the whole brief.** *No one needs inner and
-outer. Everyone needs solutions to well-known problems of boring systems.* The
-README describes systems built on Matryoshka — which problem, and how it is
+**The owner's words, and they are the whole brief.** *No one needs inner and  
+outer. Everyone needs solutions to well-known problems of boring systems.* The  
+README describes systems built on Matryoshka — which problem, and how it is  
 solved — not a list of features.
 
-**Why draft 1 failed structurally.** Its headings are Matryoshka nouns. The
-reader meets `Inner` in paragraph two and is never told what problem it
-answers. It states no problem at all. Six of its sections are bullet lists of
-capabilities. Its two diagrams are the same generic Producer→Worker→Consumer.
-Reordering would not save it: there is no problem material in it to move to the
-front. **Draft 2 has the right order — problem first, terms last — and is input,
+**Why draft 1 failed structurally.** Its headings are Matryoshka nouns. The  
+reader meets `Inner` in paragraph two and is never told what problem it  
+answers. It states no problem at all. Six of its sections are bullet lists of  
+capabilities. Its two diagrams are the same generic Producer→Worker→Consumer.  
+Reordering would not save it: there is no problem material in it to move to the  
+front. **Draft 2 has the right order — problem first, terms last — and is input,  
 not a base to polish.**
 
 **Why both failed factually. Six errors, measured against `src/`.**
@@ -568,64 +568,64 @@ not a base to polish.**
   hook, and `GetMode` decides whether it runs at all.
 - Mailbox "timeout support" as a feature bullet, hiding the fixed outcome set.
 
-**Two tiers, and the deep dive has a home already.** The owner's shape from the
-odin version: a base document and a deep dive. The base is the README, and
-nobody reads more than a few hundred lines of one. **The deep dive is per module
-— and it is the module's own `<* *>` block, not a separate document**, because
-`docs.yml` runs `docgen` over `src` and that page is the only version a
-docs-site reader sees. A separate `.md` would be a second copy that drifts.
-**The module blocks are a later plan.** The subject document is the bridge, and
+**Two tiers, and the deep dive has a home already.** The owner's shape from the  
+odin version: a base document and a deep dive. The base is the README, and  
+nobody reads more than a few hundred lines of one. **The deep dive is per module  
+— and it is the module's own `<* *>` block, not a separate document**, because  
+`docs.yml` runs `docgen` over `src` and that page is the only version a  
+docs-site reader sees. A separate `.md` would be a second copy that drifts.  
+**The module blocks are a later plan.** The subject document is the bridge, and  
 its mapping table is written for that plan.
 
-**The owner named five deep-dive subjects and said *outer*. There is no `outer`
-module** — the outer is the application's own struct, and its subject is
-`mtk::helper`. **`mtk::queue` is the sixth**, met by any reader who calls
-`close`, `receive_all`, or writes an `on_close`. Rule 13: measured, revised in
+**The owner named five deep-dive subjects and said *outer*. There is no `outer`  
+module** — the outer is the application's own struct, and its subject is  
+`mtk::helper`. **`mtk::queue` is the sixth**, met by any reader who calls  
+`close`, `receive_all`, or writes an `on_close`. Rule 13: measured, revised in  
 passing, not brought back as a question.
 
-**Size, ruled the same day.** 200 lines of prose aimed at, ~300 the ceiling.
-**Diagram lines do not count** — fenced blocks are outside the budget, because
-Part 6 forbids optimizing a diagram for compactness and the diagrams are what
+**Size, ruled the same day.** 200 lines of prose aimed at, ~300 the ceiling.  
+**Diagram lines do not count** — fenced blocks are outside the budget, because  
+Part 6 forbids optimizing a diagram for compactness and the diagrams are what  
 this reader looks at first.
 
-**The opening system is the HTTP starter shape**, from
-`matryoshka-http-template/kitchen/docs/matryoshka-http-starter-readme.md`:
-handlers, a shared mailbox, workers. It puts the I/O edge and the process part
-on one picture — the split `manifesto.md` opens with — and 3tk lives on the line
-between them. `035-fan_in.c3`, `036-fan_out.c3`, `034-pipeline.c3` and
-`062-send_with_limit.c3` back every claim it makes. **It is used as one system
-that grows**: handlers and workers, then the reply path, then the pool, so the
-pool and the hooks arrive as answers to a pressure the reader has watched build
-up. **The video transcoder is out** — it makes reuse the opening pressure, and
-reuse is the last step of the required order. **The print server is `O-2`**, the
-owner unsure; its work arrives from nowhere in particular, and the arrival is
+**The opening system is the HTTP starter shape**, from  
+`matryoshka-http-template/kitchen/docs/matryoshka-http-starter-readme.md`:  
+handlers, a shared mailbox, workers. It puts the I/O edge and the process part  
+on one picture — the split `manifesto.md` opens with — and 3tk lives on the line  
+between them. `035-fan_in.c3`, `036-fan_out.c3`, `034-pipeline.c3` and  
+`062-send_with_limit.c3` back every claim it makes. **It is used as one system  
+that grows**: handlers and workers, then the reply path, then the pool, so the  
+pool and the hooks arrive as answers to a pressure the reader has watched build  
+up. **The video transcoder is out** — it makes reuse the opening pressure, and  
+reuse is the last step of the required order. **The print server is `O-2`**, the  
+owner unsure; its work arrives from nowhere in particular, and the arrival is  
 what the reader recognizes.
 
-**ASCII, not mermaid**, although the source file uses mermaid: the same wording
+**ASCII, not mermaid**, although the source file uses mermaid: the same wording  
 later goes into `docgen` blocks, where mermaid is nothing.
 
-**What the stage measured.** All six `src/` files, 1,496 lines with comments.
-The six modules and their `::internal` submodules, the eight faults as one
-outcome set, `Inner` and `Slot`'s real surface, `OuterHelper`'s nine calls and
-the two required hooks, `Mailbox`'s seven calls with the faults each can return,
-`Pool`'s surface with `GetMode`'s three policies and the three hooks' real
-signatures, `InnerQueue`, and what the toolkit does not do — measured by absence
+**What the stage measured.** All six `src/` files, 1,496 lines with comments.  
+The six modules and their `::internal` submodules, the eight faults as one  
+outcome set, `Inner` and `Slot`'s real surface, `OuterHelper`'s nine calls and  
+the two required hooks, `Mailbox`'s seven calls with the faults each can return,  
+`Pool`'s surface with `GetMode`'s three policies and the three hooks' real  
+signatures, `InnerQueue`, and what the toolkit does not do — measured by absence  
 across all six files.
 
-**Two line numbers written from an earlier reading were wrong and the stage
-caught them by re-printing every cited line.** `Slot`'s typedef is `inner.c3:45`,
+**Two line numbers written from an earlier reading were wrong and the stage  
+caught them by re-printing every cited line.** `Slot`'s typedef is `inner.c3:45`,  
 not `:43`; the faults are `mtk.c3:26-61`, not `:23-77`.
 
-**One recommendation and one question go back to the owner.** `O-1`: no C3 in
-the README — a wrong snippet costs more trust than no snippet, an honest `Slot`
-example needs four concepts to show one, and the examples tree is where code
-belongs. The counter-argument is recorded: a three-line outer struct is the one
+**One recommendation and one question go back to the owner.** `O-1`: no C3 in  
+the README — a wrong snippet costs more trust than no snippet, an honest `Slot`  
+example needs four concepts to show one, and the examples tree is where code  
+belongs. The counter-argument is recorded: a three-line outer struct is the one  
 shape the whole toolkit rests on. `O-2`: the print server.
 
-**No `.c3` file was opened for writing.** `c3c build` and `c3c test` green, 148
-tests. `check-doc-loop.sh` clean: 147 of 147 descriptors, 0 banned words,
-0 differing. `run-builds.sh` unchanged. Banned-word scan over both new
-documents: the only hits are the rule text naming `ownership` in order to ban
+**No `.c3` file was opened for writing.** `c3c build` and `c3c test` green, 148  
+tests. `check-doc-loop.sh` clean: 147 of 147 descriptors, 0 banned words,  
+0 differing. `run-builds.sh` unchanged. Banned-word scan over both new  
+documents: the only hits are the rule text naming `ownership` in order to ban  
 it, and Rules 10 and 11's own names for their shapes.
 
 ---
@@ -634,7 +634,7 @@ it, and Rules 10 and 11's own names for their shapes.
 
 **Ran on Opus 5 and closed. `042` is spent with it. No stage is queued.**
 
-The owner read `shc::a_slot_and_transfer`'s page and found three problems.
+The owner read `shc::a_slot_and_transfer`'s page and found three problems.  
 The other group pages had the same ones.
 
 - Catalog numbers the reader has never seen.
@@ -654,8 +654,8 @@ The other group pages had the same ones.
 - `highlightC3` links a `::` token whose text matches a `uid`.
 - Rendered in headless Chrome: `shc::a_slot_and_transfer`'s page linked all four module paths in its description.
 
-**Exemplar first (rules-007 Rule 11).** `a_slot_and_transfer.c3` was
-rewritten alone, and the owner confirmed it. The new check read 0 on it and 74
+**Exemplar first (rules-007 Rule 11).** `a_slot_and_transfer.c3` was  
+rewritten alone, and the owner confirmed it. The new check read 0 on it and 74  
 hits across the 11 unswept files.
 
 **The sweep.**
@@ -723,8 +723,8 @@ hits across the 11 unswept files.
 - `c3c build` clean. `c3c test` 148 passed. `check-doc-loop.sh` clean. `run-builds.sh` 114 passed, 9 failed, unchanged.
 - **For the owner's copy to `matryoshka-3tk`:** remove its old `examples/042-the_hook_object_is_the_context.c3`, or both files declare an example and the old module stays.
 
-**No git.** Touched: 15 files in `examples/`, `3tk-example-rules-007.md` (new),
-`3tk-example-rules-006.md` (moved), `3tk-rules-007.md`, `3tk-patterns-004.md`,
+**No git.** Touched: 15 files in `examples/`, `3tk-example-rules-007.md` (new),  
+`3tk-example-rules-006.md` (moved), `3tk-rules-007.md`, `3tk-patterns-004.md`,  
 `3tk-staging-plan-042.md`, this log and `3tk-status.md`.
 
 ---
@@ -733,7 +733,7 @@ hits across the 11 unswept files.
 
 **Ran on Opus 5 and closed. `041` is spent with it. No stage is queued.**
 
-The job, per `R-4`/`R-5` of `3tk-staging-plan-041.md`: bring the comments in
+The job, per `R-4`/`R-5` of `3tk-staging-plan-041.md`: bring the comments in  
 `examples/*.c3` to the voice of the owner's rewritten `src/`.
 
 **The style, read out of `src/*.c3`.**
@@ -754,11 +754,11 @@ The job, per `R-4`/`R-5` of `3tk-staging-plan-041.md`: bring the comments in
 - One sentence per line, never wrapped. No nested bullets.
   - `3tk-example-rules-006.md`, *the register is the source register*.
 
-**Exemplar first (rules-007 Rule 11).** `001-empty_slot.c3` was rewritten
-alone, shown, and confirmed by the owner. Steps name what the code does, in
+**Exemplar first (rules-007 Rule 11).** `001-empty_slot.c3` was rewritten  
+alone, shown, and confirmed by the owner. Steps name what the code does, in  
 order, including its checks.
 
-**The sweep.** All 63 other files: 50 numbered examples, 11 group files,
+**The sweep.** All 63 other files: 50 numbered examples, 11 group files,  
 `outers.c3`, `helpers.c3` and `shc.c3`.
 
 - Every `<* *>` module block rewritten. `helpers.c3`'s `expect` doc too.
@@ -788,13 +788,13 @@ order, including its checks.
 - `drained` inside `expect` message strings: `015:50`, `028:43`, `039:75`.
 - `object` inside a filename: `042-the_hook_object_is_the_context.c3`.
 
-**One reference sentence re-synced, in passing (Rule 13).** The owner fixed
-`mailbox.c3:217`'s `drains` to `moves` during this stage.
-`3tk-reference-012.md:1344` still said `drains`, and the doc loop showed 1
+**One reference sentence re-synced, in passing (Rule 13).** The owner fixed  
+`mailbox.c3:217`'s `drains` to `moves` during this stage.  
+`3tk-reference-012.md:1344` still said `drains`, and the doc loop showed 1  
 missing. It now says `moves`.
 
-**Not touched.** `3tk-patterns-004.md` has its own entry text, which sometimes
-matches an example's old intent line. It is a descriptive catalog and outside
+**Not touched.** `3tk-patterns-004.md` has its own entry text, which sometimes  
+matches an example's old intent line. It is a descriptive catalog and outside  
 this plan.
 
 **Verification.**
@@ -808,348 +808,348 @@ this plan.
 
 **Scripts and CI (Rule 12): none needed.** No script or `.yml` changed.
 
-**No git.** Touched: 64 files in `examples/`, one line of
+**No git.** Touched: 64 files in `examples/`, one line of  
 `matryoshka-3tk/design/3tk-reference-012.md`, this log and `3tk-status.md`.
 
 ---
 
 ## 2026-09-15 — 3TK-81: reference sync after the Gemini comment rewrite
 
-**Ran on Sonnet 5 and closed. `041` is spent with it; `3TK-82` follows,
-queued for Opus 5.** After `3TK-80` closed, the owner had every `src/*.c3`
-comment rewritten by Gemini, in a human-readable style, and CI's example
-generation was removed from the yml. This stage's job, per `R-2`/`R-3` of
-`3tk-staging-plan-041.md`: fix the new text's rule breaks, then re-sync
+**Ran on Sonnet 5 and closed. `041` is spent with it; `3TK-82` follows,  
+queued for Opus 5.** After `3TK-80` closed, the owner had every `src/*.c3`  
+comment rewritten by Gemini, in a human-readable style, and CI's example  
+generation was removed from the yml. This stage's job, per `R-2`/`R-3` of  
+`3tk-staging-plan-041.md`: fix the new text's rule breaks, then re-sync  
 `3tk-reference-012.md` to it.
 
-**R-3 — five banned-word hits, all fixed, smallest edit, owner's wording kept.**
-`helper.c3:9` — `lifecycle hooks (`init` and `finish`)` → `the `init` and
-`finish` hooks`. `pool.c3:5` — `object pool` → `pool` (the module summary).
-`pool.c3:352` and `:357` — `object allocation` → `outer allocation` /
-`custom outer allocation` (the two `PoolHooks` doc lines). `pool.c3:380` —
-`drain remaining pooled structures` → `empty remaining pooled structures`.
-No prose/staccato/bullet violations found against `rules-049.md` Parts 4-6 —
+**R-3 — five banned-word hits, all fixed, smallest edit, owner's wording kept.**  
+`helper.c3:9` — `lifecycle hooks (`init` and `finish`)` → `the `init` and  
+`finish` hooks`. `pool.c3:5` — `object pool` → `pool` (the module summary).  
+`pool.c3:352` and `:357` — `object allocation` → `outer allocation` /  
+`custom outer allocation` (the two `PoolHooks` doc lines). `pool.c3:380` —  
+`drain remaining pooled structures` → `empty remaining pooled structures`.  
+No prose/staccato/bullet violations found against `rules-049.md` Parts 4-6 —  
 Gemini's rewrite is already short, staccato doc comments; nothing else to fix.
 
-**A sixth rule break, not a banned word: the four `::internal` module
-sections lost their `<* *>` description block.** Rule 4 of `3tk-rules-007.md`
-requires every module to carry one, `::internal` sections included — *"An
-internal page with no description is exactly the page a reader cannot tell
-is internal."* Gemini's rewrite left the `// Internal Implementation
-Details` `//` banner but dropped the block above `module
-mtk::X::internal;` in all four of `inner.c3`, `queue.c3`, `mailbox.c3` and
-`pool.c3`. Restored with four short new descriptions, in the same voice as
-the surrounding rewrite (not the retired prose — that stayed in
-`backup/`-equivalent history, recovered from `matryoshka-3tk`'s git log
-only to confirm what each internal module used to say, not to reuse the
+**A sixth rule break, not a banned word: the four `::internal` module  
+sections lost their `<* *>` description block.** Rule 4 of `3tk-rules-007.md`  
+requires every module to carry one, `::internal` sections included — *"An  
+internal page with no description is exactly the page a reader cannot tell  
+is internal."* Gemini's rewrite left the `// Internal Implementation  
+Details` `//` banner but dropped the block above `module  
+mtk::X::internal;` in all four of `inner.c3`, `queue.c3`, `mailbox.c3` and  
+`pool.c3`. Restored with four short new descriptions, in the same voice as  
+the surrounding rewrite (not the retired prose — that stayed in  
+`backup/`-equivalent history, recovered from `matryoshka-3tk`'s git log  
+only to confirm what each internal module used to say, not to reuse the  
 wording verbatim).
 
-**R-2 — the reference re-synced to the new source, in two passes.**
-First, `move-module-docs.sh out` copied all 11 module `<* *>` blocks
-(the 7 user-facing ones, rewritten by Gemini, plus the 4 internal ones
-just restored) into `3tk-reference-012.md`'s labelled blocks — a
-mechanical copy, no hand-editing. Second, the 148 per-declaration
-descriptor sentences that `check-doc-loop.sh` compares against the
-reference: 135 were missing after the rewrite (the doc-comment wording
-changed everywhere), found by running the check before touching the
-reference. Each missing sentence was added into the reference's existing
-API-group prose in Parts 3-5 — as an additional bullet or clause next to
-the existing narrative it now sits beside, never replacing it, since
-*"the reference is allowed to say more — the source is a subset of it,
+**R-2 — the reference re-synced to the new source, in two passes.**  
+First, `move-module-docs.sh out` copied all 11 module `<* *>` blocks  
+(the 7 user-facing ones, rewritten by Gemini, plus the 4 internal ones  
+just restored) into `3tk-reference-012.md`'s labelled blocks — a  
+mechanical copy, no hand-editing. Second, the 148 per-declaration  
+descriptor sentences that `check-doc-loop.sh` compares against the  
+reference: 135 were missing after the rewrite (the doc-comment wording  
+changed everywhere), found by running the check before touching the  
+reference. Each missing sentence was added into the reference's existing  
+API-group prose in Parts 3-5 — as an additional bullet or clause next to  
+the existing narrative it now sits beside, never replacing it, since  
+*"the reference is allowed to say more — the source is a subset of it,  
 never the reverse."*
 
-**Verification, all green.** `check-doc-loop.sh`: 0 differing module
-blocks (11 of 11, all "same"), 147 of 147 descriptor sentences found (148 before mtk.c3's module comment was shortened mid-stage by a concurrent owner edit, re-synced), 0
-banned words. `move-module-docs.sh roundtrip`: byte-identical. `c3c build`
-and `c3c test mtk-test`: both clean, 148 tests passed. `c3c` version is
+**Verification, all green.** `check-doc-loop.sh`: 0 differing module  
+blocks (11 of 11, all "same"), 147 of 147 descriptor sentences found (148 before mtk.c3's module comment was shortened mid-stage by a concurrent owner edit, re-synced), 0  
+banned words. `move-module-docs.sh roundtrip`: byte-identical. `c3c build`  
+and `c3c test mtk-test`: both clean, 148 tests passed. `c3c` version is  
 0.8.3, unchanged.
 
-**`run-builds.sh`: 123 checks, 114 passed, 9 failed — one more failure
-than `3TK-80`'s reported 8, and it is new, not this stage's.** The 8 are
-the same ones `3TK-79`/`3TK-80` traced to the owner's own `bc3506d`
-("Clean 3tk comments"): the internal-section banner and marker lines
-`bc3506d` removed, and the stack-banner/layering greps that key on them.
-**The 9th is `pool.c3`'s module order**, `mtk::pool;` /
-`mtk::pool::hooks;` / `mtk::pool::internal;` where
-`run-builds.sh`'s `EXPECT_MODULE[pool]` wants `hooks` first — confirmed
-by diffing against `bc3506d` (correct order there) and against `HEAD`
-(`c4de78b`, "Update 3tk comments" — already the drifted order, so the
-Gemini rewrite reordered the sections, not this stage). **Not fixed** —
-reordering module sections is a code change, and this plan's own *What
-these stages do not do* rules that out (*"They do not change code,
-identifiers or filenames"*). Flagged here and in `3tk-status.md` for the
+**`run-builds.sh`: 123 checks, 114 passed, 9 failed — one more failure  
+than `3TK-80`'s reported 8, and it is new, not this stage's.** The 8 are  
+the same ones `3TK-79`/`3TK-80` traced to the owner's own `bc3506d`  
+("Clean 3tk comments"): the internal-section banner and marker lines  
+`bc3506d` removed, and the stack-banner/layering greps that key on them.  
+**The 9th is `pool.c3`'s module order**, `mtk::pool;` /  
+`mtk::pool::hooks;` / `mtk::pool::internal;` where  
+`run-builds.sh`'s `EXPECT_MODULE[pool]` wants `hooks` first — confirmed  
+by diffing against `bc3506d` (correct order there) and against `HEAD`  
+(`c4de78b`, "Update 3tk comments" — already the drifted order, so the  
+Gemini rewrite reordered the sections, not this stage). **Not fixed** —  
+reordering module sections is a code change, and this plan's own *What  
+these stages do not do* rules that out (*"They do not change code,  
+identifiers or filenames"*). Flagged here and in `3tk-status.md` for the  
 owner.
 
-**No git. No file outside `3tk-reference-012.md` and the six `src/*.c3`
+**No git. No file outside `3tk-reference-012.md` and the six `src/*.c3`  
 files was touched**, save this log and `3tk-status.md`.
 
 ---
 
 ## 2026-09-15 — 3TK-80: word bans, an API rename, and per-item doc comments
 
-**Ran on Sonnet 5 and closed. `040` is spent.** Three follow-ons to
-`3TK-79`, made the same day and written up as one stage: `parked` and
-`quiet` banned and rewritten out of `src/*.c3`, `Mailbox.is_quiet` /
-`Pool.is_quiet` renamed to `is_idle`, and `mtk.c3`'s `faultdef` and
+**Ran on Sonnet 5 and closed. `040` is spent.** Three follow-ons to  
+`3TK-79`, made the same day and written up as one stage: `parked` and  
+`quiet` banned and rewritten out of `src/*.c3`, `Mailbox.is_quiet` /  
+`Pool.is_quiet` renamed to `is_idle`, and `mtk.c3`'s `faultdef` and  
 `pool.c3`'s `GetMode` given per-item doc comments.
 
-**`parked` and `quiet` join `rules-049.md` Part 5**, ztk's banned-word
-list — the source of truth `check-doc-loop.sh`'s own comment names for
-3tk's scan too — and `check-doc-loop.sh`'s `BANNED` copy got the same two
-words. **Edited in place, not versioned to `-050.md`**: a two-line
-addition to an existing list, not the kind of change Part 0's
-document-versioning gate is for. Flagged to the owner as a live tension
-with that file's own hard gate — never overwrite, version instead — not
+**`parked` and `quiet` join `rules-049.md` Part 5**, ztk's banned-word  
+list — the source of truth `check-doc-loop.sh`'s own comment names for  
+3tk's scan too — and `check-doc-loop.sh`'s `BANNED` copy got the same two  
+words. **Edited in place, not versioned to `-050.md`**: a two-line  
+addition to an existing list, not the kind of change Part 0's  
+document-versioning gate is for. Flagged to the owner as a live tension  
+with that file's own hard gate — never overwrite, version instead — not  
 silently resolved.
 
-**Both words were metaphors for a plain fact, and both are gone from
-`src/*.c3`'s comments, messages, and identifiers now.** `parked` meant "a
-thread blocked on a wait" and is now "waiting". `quiet` meant "closed,
-with no call still running" and is now stated that way directly — the
-owner's own flagged example, *"Closing does not make a mailbox quiet:
-release it only after..."*, is now *"A closed mailbox can still have
-calls running on it. Release only after..."*. **`is_quiet` was also a
-public API name, not only a word choice**, and the owner chose `is_idle`
-over `can_release`, `is_release_ready` and `has_no_active_calls`: plain,
-no metaphor, and it keeps the existing `is_X` boolean-predicate shape
+**Both words were metaphors for a plain fact, and both are gone from  
+`src/*.c3`'s comments, messages, and identifiers now.** `parked` meant "a  
+thread blocked on a wait" and is now "waiting". `quiet` meant "closed,  
+with no call still running" and is now stated that way directly — the  
+owner's own flagged example, *"Closing does not make a mailbox quiet:  
+release it only after..."*, is now *"A closed mailbox can still have  
+calls running on it. Release only after..."*. **`is_quiet` was also a  
+public API name, not only a word choice**, and the owner chose `is_idle`  
+over `can_release`, `is_release_ready` and `has_no_active_calls`: plain,  
+no metaphor, and it keeps the existing `is_X` boolean-predicate shape  
 (`is_closed`, `is_empty`, `is_full`, `is_linked`).
 
-**The rename's call-site surface was `src/` (2 declarations) plus
-`test/t_mailbox.c3` and `test/t_pool.c3` (7 lines)**, confirmed by `grep
--rn "is_quiet"` across the whole 3tk tree — no `negative/*.c3` file calls
-it. `negative/*.c3` still needed the word ban applied to prose and to
-three `parked`-named identifiers that were not call sites:
-`parked_receiver` → `waiting_receiver`, `parked_getter` →
-`waiting_getter`, `struct Parked` → `struct Waiting` (renamed in both
-the mailbox and the pool negative files that declared one).
-**`negative/release_not_quiet_pool.c3`'s filename is untouched** —
-renaming it ripples into `run-builds.sh`'s test-name arrays and its
-printed output, and that is flagged to the owner rather than decided
+**The rename's call-site surface was `src/` (2 declarations) plus  
+`test/t_mailbox.c3` and `test/t_pool.c3` (7 lines)**, confirmed by `grep  
+-rn "is_quiet"` across the whole 3tk tree — no `negative/*.c3` file calls  
+it. `negative/*.c3` still needed the word ban applied to prose and to  
+three `parked`-named identifiers that were not call sites:  
+`parked_receiver` → `waiting_receiver`, `parked_getter` →  
+`waiting_getter`, `struct Parked` → `struct Waiting` (renamed in both  
+the mailbox and the pool negative files that declared one).  
+**`negative/release_not_quiet_pool.c3`'s filename is untouched** —  
+renaming it ripples into `run-builds.sh`'s test-name arrays and its  
+printed output, and that is flagged to the owner rather than decided  
 here.
 
-**`3tk-reference-012.md` was re-synced well past the labelled module
-blocks this time.** The mailbox/pool `release`/`is_quiet`/`close` API
-prose, `PoolHooks`, and a standalone "closed is not quiet" narrative
-section with its own `OPEN -> CLOSED -> QUIET -> FREED` diagram all
-mirrored the banned word and had to be found and rewritten, not only the
-parts the doc loop's module-block check watches. The diagram is now
+**`3tk-reference-012.md` was re-synced well past the labelled module  
+blocks this time.** The mailbox/pool `release`/`is_quiet`/`close` API  
+prose, `PoolHooks`, and a standalone "closed is not quiet" narrative  
+section with its own `OPEN -> CLOSED -> QUIET -> FREED` diagram all  
+mirrored the banned word and had to be found and rewritten, not only the  
+parts the doc loop's module-block check watches. The diagram is now  
 `OPEN -> CLOSED -> IDLE -> FREED`.
 
-**`mtk.c3`'s combined `faultdef` line is eight separate declarations
-now, each with its own doc comment** stating the fault's plain meaning —
-sourced from the `@return?` directives already on the functions that
-raise each one, so nothing was invented. The line's own former doc block
-became a plain `//` comment ahead of the first declaration, since a `<*
-*>` block with nothing directly under it is not a valid attachment.
-**`pool.c3`'s `GetMode` enum got the same treatment**, one doc comment
-per value, and `Pool.get`'s own doc block — which restated the three
-modes in its own words — was reworded to match, so the two do not drift
-apart. Both additions were synced into `3tk-reference-012.md`'s "Faults"
+**`mtk.c3`'s combined `faultdef` line is eight separate declarations  
+now, each with its own doc comment** stating the fault's plain meaning —  
+sourced from the `@return?` directives already on the functions that  
+raise each one, so nothing was invented. The line's own former doc block  
+became a plain `//` comment ahead of the first declaration, since a `<*  
+*>` block with nothing directly under it is not a valid attachment.  
+**`pool.c3`'s `GetMode` enum got the same treatment**, one doc comment  
+per value, and `Pool.get`'s own doc block — which restated the three  
+modes in its own words — was reworded to match, so the two do not drift  
+apart. Both additions were synced into `3tk-reference-012.md`'s "Faults"  
 section and `Pool.get`'s API prose.
 
-**`c3c docgen` drops every `faultdef` doc comment, confirmed by an
-isolated two-line repro outside this repo** — a file with only
-`PERMISSION_DENIED`, the manual's own example, still produced a `"kind":
-"fault"` JSON entry with no `docs` field, where the same run's `enum`
-members did get one. `c3c` has accepted the doc comment since `0.7.6`
-(issue #2427); this is `docgen`'s emitter, not the parser. **Checked
-against `0.8.4`'s own changelog** (one release past the `0.8.3` this repo
-builds with): not fixed there either, and `faultdef` has no brace-block
-form to try as a workaround. **Reported in `3tk-status.md`, not
-chased** — the doc comments are correct C3 and correct for a source
+**`c3c docgen` drops every `faultdef` doc comment, confirmed by an  
+isolated two-line repro outside this repo** — a file with only  
+`PERMISSION_DENIED`, the manual's own example, still produced a `"kind":  
+"fault"` JSON entry with no `docs` field, where the same run's `enum`  
+members did get one. `c3c` has accepted the doc comment since `0.7.6`  
+(issue #2427); this is `docgen`'s emitter, not the parser. **Checked  
+against `0.8.4`'s own changelog** (one release past the `0.8.3` this repo  
+builds with): not fixed there either, and `faultdef` has no brace-block  
+form to try as a workaround. **Reported in `3tk-status.md`, not  
+chased** — the doc comments are correct C3 and correct for a source  
 reader regardless of what the generated site currently shows.
 
-**Figures.** `c3c build` and `c3c test` (148 tests, unchanged) both
-green after every step. `check-doc-loop.sh`: 0 banned words, every
-touched file at 0 missing descriptor sentences, all 11 module blocks
-`same`. `mtk.c3`'s descriptor count is 53 now (was 42), all the growth
-from the eight new `faultdef` doc comments; 8 of those 53 remain
-MISSING overall, the same pre-existing `VERSION`/`LOC`/`CHECKED` gap
-`3TK-79` already found and left. `pool.c3` grew from 148 to 157
-sentences, all found. `run-builds.sh`: 115 passed, 8 failed — the same 8
+**Figures.** `c3c build` and `c3c test` (148 tests, unchanged) both  
+green after every step. `check-doc-loop.sh`: 0 banned words, every  
+touched file at 0 missing descriptor sentences, all 11 module blocks  
+`same`. `mtk.c3`'s descriptor count is 53 now (was 42), all the growth  
+from the eight new `faultdef` doc comments; 8 of those 53 remain  
+MISSING overall, the same pre-existing `VERSION`/`LOC`/`CHECKED` gap  
+`3TK-79` already found and left. `pool.c3` grew from 148 to 157  
+sentences, all found. `run-builds.sh`: 115 passed, 8 failed — the same 8  
 that pre-date `bc3506d`, unaffected by this stage.
 
-**Not yet copied to `matryoshka-3tk`'s `src`, or pushed** — that is the
+**Not yet copied to `matryoshka-3tk`'s `src`, or pushed** — that is the  
 owner's step, as always.
 
 ---
 
 ## 2026-09-15 — 3TK-79: comment register rewrite
 
-**Ran on Opus and closed. `039` is spent.** Rewrote the AI-ish comments in
-`src/*.c3` (`mtk.c3`, `inner.c3`, `helper.c3`, `queue.c3`, `pool.c3`,
-`mailbox.c3`) into plain, staccato prose, per `rules-049.md` Parts 4 and 6
-(the prose guidance only — that document is ztk's and its Zig-specific
-autodoc mechanics do not apply). No fact was dropped: every rewrite kept
-the reasoning the original comment carried, just stated more directly and
-in shorter sentences. This followed on the owner's own `bc3506d` ("Clean
-3tk comments"), which had already stripped internal-module comments to
-bare directives and removed the LE-import banners — neither is touched by
+**Ran on Opus and closed. `039` is spent.** Rewrote the AI-ish comments in  
+`src/*.c3` (`mtk.c3`, `inner.c3`, `helper.c3`, `queue.c3`, `pool.c3`,  
+`mailbox.c3`) into plain, staccato prose, per `rules-049.md` Parts 4 and 6  
+(the prose guidance only — that document is ztk's and its Zig-specific  
+autodoc mechanics do not apply). No fact was dropped: every rewrite kept  
+the reasoning the original comment carried, just stated more directly and  
+in shorter sentences. This followed on the owner's own `bc3506d` ("Clean  
+3tk comments"), which had already stripped internal-module comments to  
+bare directives and removed the LE-import banners — neither is touched by  
 this stage.
 
-**Selective, not total.** A comment that already read plain and direct was
-left alone. The rewrite touched doc blocks and main-module `//` comments;
-nothing else. Per file: `helper.c3` 10 rewrites (heaviest — the two-hook
-rule's reasoning), `pool.c3` 15, `mailbox.c3` 9, `queue.c3` 4, `inner.c3`
+**Selective, not total.** A comment that already read plain and direct was  
+left alone. The rewrite touched doc blocks and main-module `//` comments;  
+nothing else. Per file: `helper.c3` 10 rewrites (heaviest — the two-hook  
+rule's reasoning), `pool.c3` 15, `mailbox.c3` 9, `queue.c3` 4, `inner.c3`  
 4, `mtk.c3` 1.
 
-**One real defect, caught by review rather than by a check.** The first
-pass of the rewrite silently dropped five sentences from `mtk.c3`'s module
+**One real defect, caught by review rather than by a check.** The first  
+pass of the rewrite silently dropped five sentences from `mtk.c3`'s module  
 doc block — the "one import gives the toolkit" / "`We present you
 [[LOC]] lines of source`" paragraph — while reformatting an adjacent
-sentence. Restored verbatim by diffing against
-`matryoshka-3tk/design/3tk-reference-012.md`, which still carried the
-original text. **No later stage re-derives this**: the rewrite pass was
-prose-only by instruction, and this was the one place it silently
+sentence. Restored verbatim by diffing against  
+`matryoshka-3tk/design/3tk-reference-012.md`, which still carried the  
+original text. **No later stage re-derives this**: the rewrite pass was  
+prose-only by instruction, and this was the one place it silently  
 crossed into deletion.
 
-**`3tk-reference-012.md` was re-synced in the same stage (R-4 of `039`),
-edited in place, not versioned to `013`.** Every one of the 7 labelled
-module blocks (`mtk`, `mtk::helper`, `mtk::inner`, `mtk::queue`,
-`mtk::mailbox`, `mtk::pool::hooks`, `mtk::pool`) now reads `same` against
-its source. The doc loop's per-declaration descriptor check also mirrors
-sentences outside the labelled blocks — mostly the `### The API — ...`
-prose sections — and every one of those the rewrite touched was traced
-and updated too: the mailbox/pool `release`-and-`is_quiet` "closed and
-quiet" passages (the owner's own flagged example), `PoolHooks.on_get`/
-`on_put`, `queue.c3`'s `pop_front`, and four sentences in `helper.c3`'s
+**`3tk-reference-012.md` was re-synced in the same stage (R-4 of `039`),  
+edited in place, not versioned to `013`.** Every one of the 7 labelled  
+module blocks (`mtk`, `mtk::helper`, `mtk::inner`, `mtk::queue`,  
+`mtk::mailbox`, `mtk::pool::hooks`, `mtk::pool`) now reads `same` against  
+its source. The doc loop's per-declaration descriptor check also mirrors  
+sentences outside the labelled blocks — mostly the `### The API — ...`  
+prose sections — and every one of those the rewrite touched was traced  
+and updated too: the mailbox/pool `release`-and-`is_quiet` "closed and  
+quiet" passages (the owner's own flagged example), `PoolHooks.on_get`/  
+`on_put`, `queue.c3`'s `pop_front`, and four sentences in `helper.c3`'s  
 create/release/stamp/linked prose.
 
-**One banned-word hit, fixed in both files.** `rules-049.md` Part 5 bans
-"on purpose" — `helper.c3`'s rewritten `release`-returns-`void` sentence
-used it (*"`release` returns `void` on purpose"*). Reworded to *"`release`
+**One banned-word hit, fixed in both files.** `rules-049.md` Part 5 bans  
+"on purpose" — `helper.c3`'s rewritten `release`-returns-`void` sentence  
+used it (*"`release` returns `void` on purpose"*). Reworded to *"`release`  
 also returns plain `void`"* in `src/helper.c3` and in the reference.
 
-**Figures.** `check-doc-loop.sh`: all 11 module blocks `same`; banned
-words 0 (was 1, fixed); per-file descriptor sentences 0 missing in all 6
-touched files. Overall descriptors 496 sentences, 486 found, 10 missing —
-the 10 are `mtk.c3`'s `VERSION`/`LOC`/`faultdef`/`@check`/`CHECKED`
-declaration doc comments, confirmed by diff to be untouched by this stage
-and never mirrored into the reference before it either; not this stage's
-gap to close. `run-builds.sh`: 115 passed, 8 failed — all 8 pre-exist
-`bc3506d` ("Clean 3tk comments"), which removed the internal-module
-banner `// For internal usage - everything below this line.` from four
-files; confirmed by diffing that commit directly. **Reported, not
-fixed** — restoring a banner the owner deliberately removed is the
+**Figures.** `check-doc-loop.sh`: all 11 module blocks `same`; banned  
+words 0 (was 1, fixed); per-file descriptor sentences 0 missing in all 6  
+touched files. Overall descriptors 496 sentences, 486 found, 10 missing —  
+the 10 are `mtk.c3`'s `VERSION`/`LOC`/`faultdef`/`@check`/`CHECKED`  
+declaration doc comments, confirmed by diff to be untouched by this stage  
+and never mirrored into the reference before it either; not this stage's  
+gap to close. `run-builds.sh`: 115 passed, 8 failed — all 8 pre-exist  
+`bc3506d` ("Clean 3tk comments"), which removed the internal-module  
+banner `// For internal usage - everything below this line.` from four  
+files; confirmed by diffing that commit directly. **Reported, not  
+fixed** — restoring a banner the owner deliberately removed is the  
 owner's call, not this stage's.
 
-**Not yet copied to `matryoshka-3tk`'s `src`, or pushed** — that is the
+**Not yet copied to `matryoshka-3tk`'s `src`, or pushed** — that is the  
 owner's step, as always.
 
 ---
 
 ## 2026-09-14 — 3TK-78: limited send
 
-**Ran on Sonnet 5 and closed. `038` is spent.** Implemented
-`matryoshka-3tk/design/3tk-limited-send-001.md`, following R-1 … R-8 of the
-plan without re-arguing them. `Mailbox.send` gains an optional `usz limit = 0`
-that bounds how many outers of the sender's own `typeid` may already be
+**Ran on Sonnet 5 and closed. `038` is spent.** Implemented  
+`matryoshka-3tk/design/3tk-limited-send-001.md`, following R-1 … R-8 of the  
+plan without re-arguing them. `Mailbox.send` gains an optional `usz limit = 0`  
+that bounds how many outers of the sender's own `typeid` may already be  
 queued; `limit == 0` is the original unbounded call, byte-for-byte.
 
-**`mtk.c3:56`'s shared `faultdef` gains one member, `LIMIT`, on the same
-line** — no new `error{}` set, per R-2. **`send_at` gained the third
-parameter and the scan, inside the lock it already held (R-4)**: when
-`limit > 0` and the ordinary queue's own length is already at or past
-`limit`, it walks the queue with the existing `InnerQueueIterator`, reading
-`Inner.outer_tid()`, and returns `LIMIT~` the moment the sender's own typeid
-count reaches `limit`, without enqueuing. **`send_oob` is untouched (R-6)**:
-no `limit` parameter, and `send_at` is always called with `limit = 0` on that
-path — restated as an explicit `!oob` guard around the scan, not just an
+**`mtk.c3:56`'s shared `faultdef` gains one member, `LIMIT`, on the same  
+line** — no new `error{}` set, per R-2. **`send_at` gained the third  
+parameter and the scan, inside the lock it already held (R-4)**: when  
+`limit > 0` and the ordinary queue's own length is already at or past  
+`limit`, it walks the queue with the existing `InnerQueueIterator`, reading  
+`Inner.outer_tid()`, and returns `LIMIT~` the moment the sender's own typeid  
+count reaches `limit`, without enqueuing. **`send_oob` is untouched (R-6)**:  
+no `limit` parameter, and `send_at` is always called with `limit = 0` on that  
+path — restated as an explicit `!oob` guard around the scan, not just an  
 unused default.
 
-**One measurement corrected the plan's own reading, mid-stage.** The scan
-first checks the target queue's whole length against `limit`: if the queue
-holds fewer than `limit` outers of any type, no per-typeid count can reach
-`limit` either, so the scan is skipped entirely. This was not in the
-plan's steps 1-3 and was added during implementation review — a fast path
+**One measurement corrected the plan's own reading, mid-stage.** The scan  
+first checks the target queue's whole length against `limit`: if the queue  
+holds fewer than `limit` outers of any type, no per-typeid count can reach  
+`limit` either, so the scan is skipped entirely. This was not in the  
+plan's steps 1-3 and was added during implementation review — a fast path  
 for the common case (a queue well under its cap), not a behavior change.
 
-**One new test, `send_limit_is_per_typeid` in `test/t_mailbox.c3`**: two
-`Msg` sends at `limit = 2` succeed, a third is refused with `LIMIT` and
-leaves the Slot full, and a `Job` sent at the same mailbox with the same
-limit is unaffected by the two `Msg` already queued — the plan's own
-per-typeid-isolation case. **One new example, `062-send_with_limit.c3`**
-under `examples/f_mailbox` (the group `027`-`032` mailbox patterns already
-live in), wired into `test/t_examples.c3` as `test_example_send_with_limit`.
+**One new test, `send_limit_is_per_typeid` in `test/t_mailbox.c3`**: two  
+`Msg` sends at `limit = 2` succeed, a third is refused with `LIMIT` and  
+leaves the Slot full, and a `Job` sent at the same mailbox with the same  
+limit is unaffected by the two `Msg` already queued — the plan's own  
+per-typeid-isolation case. **One new example, `062-send_with_limit.c3`**  
+under `examples/f_mailbox` (the group `027`-`032` mailbox patterns already  
+live in), wired into `test/t_examples.c3` as `test_example_send_with_limit`.  
 `examples/f_mailbox.c3`'s carrier doc gained one line.
 
-**Figures: `run-builds.sh` is still 123 checks, 0 failures, four builds
-green, now 148 tests each** — 146 → 148, the one new unit test and the one
-new example wrapper, no new structural check (this stage added no new
-negative, no new module, nothing Part 4.5/17.2 counts). **The doc loop is
-464 of 464 sentences** — 463 → 464, the one new prose line
-(`Untouched on `LIMIT`, and the sender still has the outer.`) — **11
-labelled blocks, 0 differing, 0 banned words, `move-module-docs.sh
+**Figures: `run-builds.sh` is still 123 checks, 0 failures, four builds  
+green, now 148 tests each** — 146 → 148, the one new unit test and the one  
+new example wrapper, no new structural check (this stage added no new  
+negative, no new module, nothing Part 4.5/17.2 counts). **The doc loop is  
+464 of 464 sentences** — 463 → 464, the one new prose line  
+(`Untouched on `LIMIT`, and the sender still has the outer.`) — **11  
+labelled blocks, 0 differing, 0 banned words, `move-module-docs.sh  
 roundtrip` byte-identical.**
 
-**`3tk-api-005.md` and `3tk-reference-011.md` are `006` and `012`** — both
-revised for a real API change, not a rename, so Rule 14 (a document is
-versioned, not asked about) put the pre-edit text in
-`matryoshka-3tk/design/backup/` under its old name and the file itself
-under the new one, with a plain `mv`. **`3tk-api-006.md`'s faultdef entry
-and its Sending section (`send`, `send_oob`) are rewritten**, and every
-`mailbox.c3:` citation from the send doc block onward was re-resolved
-against the edited source — the two new doc lines in `Mailbox.send`'s
-block shift every later citation in the file by +2, and the scan itself
-sits at `mailbox.c3:460`, inside the +18-line block the fast path and the
-scan add to `send_at`. **`3tk-reference-012.md`'s faults block and its "The
-API — send" section carry the parameter and the fault in prose.** Both
-files' cross-references to each other and every other live document that
-named the old numbers (`3tk-example-rules-006.md`, `3tk-decisions-007.md`,
-`3tk-patterns-004.md`, and this repo's own `ref/3tk-doc-loop-005.md`,
-`check-doc-loop.sh` and `move-module-docs.sh`, which hard-code the
-reference's path) were updated to the new numbers. `backup/` copies of
-older superseded documents that also named `005`/`011` were left as they
+**`3tk-api-005.md` and `3tk-reference-011.md` are `006` and `012`** — both  
+revised for a real API change, not a rename, so Rule 14 (a document is  
+versioned, not asked about) put the pre-edit text in  
+`matryoshka-3tk/design/backup/` under its old name and the file itself  
+under the new one, with a plain `mv`. **`3tk-api-006.md`'s faultdef entry  
+and its Sending section (`send`, `send_oob`) are rewritten**, and every  
+`mailbox.c3:` citation from the send doc block onward was re-resolved  
+against the edited source — the two new doc lines in `Mailbox.send`'s  
+block shift every later citation in the file by +2, and the scan itself  
+sits at `mailbox.c3:460`, inside the +18-line block the fast path and the  
+scan add to `send_at`. **`3tk-reference-012.md`'s faults block and its "The  
+API — send" section carry the parameter and the fault in prose.** Both  
+files' cross-references to each other and every other live document that  
+named the old numbers (`3tk-example-rules-006.md`, `3tk-decisions-007.md`,  
+`3tk-patterns-004.md`, and this repo's own `ref/3tk-doc-loop-005.md`,  
+`check-doc-loop.sh` and `move-module-docs.sh`, which hard-code the  
+reference's path) were updated to the new numbers. `backup/` copies of  
+older superseded documents that also named `005`/`011` were left as they  
 are — they are historical, not live.
 
-**`3tk-limited-send-001.md`'s own status line moved from `Proposal` to
+**`3tk-limited-send-001.md`'s own status line moved from `Proposal` to  
 `Adopted, implemented by 3TK-78`.**
 
-**Not yet copied to `matryoshka-3tk`'s `src`/`test`/`negative`/`examples`,
+**Not yet copied to `matryoshka-3tk`'s `src`/`test`/`negative`/`examples`,  
 or pushed** — that is the owner's step, as always.
 
 ## 2026-09-14 — 3TK-77: the rename, finished under `lang/`
 
-**Ran on Sonnet 5 and closed. `037` is spent.** The repo was renamed from
-`matryoshka-tk` to `matryoshka-ztk` on the remote and locally; the owner had
-already replaced `-tk` with `-ztk` across `matryoshka-3tk/`, and this stage
+**Ran on Sonnet 5 and closed. `037` is spent.** The repo was renamed from  
+`matryoshka-tk` to `matryoshka-ztk` on the remote and locally; the owner had  
+already replaced `-tk` with `-ztk` across `matryoshka-3tk/`, and this stage  
 finished the rest: the live `lang/` hits, and a check of the owner's edit.
 
-**Six live files rewritten**, all under R-1/R-4/R-6, edited in place, one
-sentence changed each — no `backup/` version cut:
-`3tk-status.md`, `3tk-sanitizer-notes-001.md`, `ref/3tk-doc-loop-005.md`,
-`c/ctk-proposal.md`, `odin/odin-to-zig-backport-001.md`. **`3tk-log.md` was not
-touched (R-2, append-only) and `backup/` was not touched (R-3).** The staging
-plan `037` itself was left as written — its `matryoshka-tk` hits are the
-measurement it recorded, not a live self-reference, and rewriting them would
+**Six live files rewritten**, all under R-1/R-4/R-6, edited in place, one  
+sentence changed each — no `backup/` version cut:  
+`3tk-status.md`, `3tk-sanitizer-notes-001.md`, `ref/3tk-doc-loop-005.md`,  
+`c/ctk-proposal.md`, `odin/odin-to-zig-backport-001.md`. **`3tk-log.md` was not  
+touched (R-2, append-only) and `backup/` was not touched (R-3).** The staging  
+plan `037` itself was left as written — its `matryoshka-tk` hits are the  
+measurement it recorded, not a live self-reference, and rewriting them would  
 falsify what was measured.
 
-**The re-measure matched the plan's count**: 11 files under `lang/` held the
-whole word, the same set the plan named. After the rewrite, exactly five
-remain — the log, the plan (as above), and the three `backup/` files R-3 says
+**The re-measure matched the plan's count**: 11 files under `lang/` held the  
+whole word, the same set the plan named. After the rewrite, exactly five  
+remain — the log, the plan (as above), and the three `backup/` files R-3 says  
 stay untouched.
 
-**`matryoshka-3tk` checked, nothing over-renamed.** No `ztkk`, `3ztk` or
-stray `-ztk-` anywhere in that tree. Two relative links resolve into this
-repo: `3tk-api-005.md`'s link to `3tk-log.md` resolves; `3tk-patterns-004.md`'s
-link to `3tk-staging-plan-019.md` does not — that plan is long spent and gone
-from this folder, same as every other retired plan number, and the break
-predates the rename and is not one of its symptoms. **Reported, not fixed —
+**`matryoshka-3tk` checked, nothing over-renamed.** No `ztkk`, `3ztk` or  
+stray `-ztk-` anywhere in that tree. Two relative links resolve into this  
+repo: `3tk-api-005.md`'s link to `3tk-log.md` resolves; `3tk-patterns-004.md`'s  
+link to `3tk-staging-plan-019.md` does not — that plan is long spent and gone  
+from this folder, same as every other retired plan number, and the break  
+predates the rename and is not one of its symptoms. **Reported, not fixed —  
 the plan is R-5's kind of item, the owner's.**
 
-**Rule 12's four ported scripts diff at one line each, the `ROOT` line
-alone**: `run-builds.sh`, `run-builds-light.sh`, `run-sanitizers.sh`,
-`preview-docs.sh`. `check-doc-loop.sh`, `move-module-docs.sh` and the two
-LOC scripts are not ported, as the status already records, and were not
-diffed. **The three `.yml` files need nothing** — `linux.yml` and
-`sanitizers.yml` name no repo, and `docs.yml`'s one repo reference is already
+**Rule 12's four ported scripts diff at one line each, the `ROOT` line  
+alone**: `run-builds.sh`, `run-builds-light.sh`, `run-sanitizers.sh`,  
+`preview-docs.sh`. `check-doc-loop.sh`, `move-module-docs.sh` and the two  
+LOC scripts are not ported, as the status already records, and were not  
+diffed. **The three `.yml` files need nothing** — `linux.yml` and  
+`sanitizers.yml` name no repo, and `docs.yml`'s one repo reference is already  
 `matryoshka-3tk`. Written into the log as the plan's step 3 asked.
 
-**Every figure held, proving no code moved.** `run-builds.sh` **123 checks**,
-0 failures, four builds green, **146 tests** in each — identical to `3TK-76`.
-`check-doc-loop.sh` **11 labelled blocks, 0 differing, 463 of 463 sentences,
-0 banned words**. `move-module-docs.sh roundtrip` byte-identical over eleven
-blocks. **No `.c3` source changed, so `run-sanitizers.sh` was not re-run**, per
+**Every figure held, proving no code moved.** `run-builds.sh` **123 checks**,  
+0 failures, four builds green, **146 tests** in each — identical to `3TK-76`.  
+`check-doc-loop.sh` **11 labelled blocks, 0 differing, 463 of 463 sentences,  
+0 banned words**. `move-module-docs.sh roundtrip` byte-identical over eleven  
+blocks. **No `.c3` source changed, so `run-sanitizers.sh` was not re-run**, per  
 the plan.
 
 ## 2026-09-10 — 3TK-76: the sweep, and one name off Rule 8's list

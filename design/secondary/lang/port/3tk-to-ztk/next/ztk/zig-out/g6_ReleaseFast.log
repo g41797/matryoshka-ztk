@@ -1,0 +1,45 @@
+negative
++- run exe 301_wrong_type_must w
+thread 603510 panic: mustMoveFromSlot: asked for 301_wrong_type_must.Chunk, found 301_wrong_type_must.Msg
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/helper.zig:178:28: 0x106cc42 in wrongType__anon_3658 (301_wrong_type_must)
+            std.debug.panic(
+                           ^
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/helper.zig:125:57: 0x1019326 in mustMoveFromSlot (301_wrong_type_must)
+            const out = fromInner(item) orelse wrongType("mustMoveFromSlot", item.id);
+                                                        ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x10192fe in callMain (301_wrong_type_must)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x1018fcd in _start (301_wrong_type_must)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/5e1e9ea12d476d7a3e9b7851ed7c5b8d/301_wrong_type_must
+
+negative
++- run exe 310_destroy_open_mailbox w
+thread 603562 panic: Mbox.destroy: the mailbox must be closed first
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/mbox.zig:428:13: 0x1019a00 in destroy (310_destroy_open_mailbox)
+            @panic("Mbox.destroy: the mailbox must be closed first");
+            ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x10193ae in callMain (310_destroy_open_mailbox)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x101907d in _start (310_destroy_open_mailbox)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/e557ea077075b7b6526d40c5d15ac798/310_destroy_open_mailbox
+
+negative
++- run exe 312_destroy_while_receiving w
+thread 603567 panic: Mbox.destroy: a call is still running on the mailbox
+/home/g41797/dev/root/github.com/g41797/matryoshka-ztk/design/secondary/lang/port/3tk-to-ztk/next/ztk/src/mbox.zig:431:13: 0x1019c97 in destroy (312_destroy_while_receiving)
+            @panic("Mbox.destroy: a call is still running on the mailbox");
+            ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:698:59: 0x10190ae in callMain (312_destroy_while_receiving)
+    if (fn_info.params.len == 0) return wrapMain(root.main());
+                                                          ^
+/home/g41797/dev/langs/zig-x86_64-linux-0.16.0/lib/std/start.zig:190:5: 0x1018d7d in _start (312_destroy_while_receiving)
+    asm volatile (switch (native_arch) {
+    ^
+failed command: ./.zig-cache/o/ee42b88be0a156a740b24fa9e1b2bca5/312_destroy_while_receiving
+

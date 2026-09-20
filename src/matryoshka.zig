@@ -21,6 +21,9 @@ pub const polynode = @import("polynode.zig");
 pub const mailbox = @import("mailbox.zig");
 pub const pool = @import("pool.zig");
 
+/// Toolkit version. Matches `build.zig.zon`.
+pub const VERSION: []const u8 = "0.0.1";
+
 /// A mailbox. Application code keeps `*Mbox`.
 pub const Mbox = mailbox.Mbox;
 

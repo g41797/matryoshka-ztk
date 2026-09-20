@@ -125,10 +125,10 @@ pub const Mbox = struct {
     /// On `error.Closed` the slot is unchanged.\
     /// The sender still has the item.
     ///
-    /// Asserts the slot is not empty, and that the item has no neighbours.
+    /// Checks the slot is not empty, and that the item has no neighbours.
     pub fn send(self: *Mbox, slot: *polynode.Slot) error{Closed}!void {
-        std.debug.assert(slot.* != null);
-        std.debug.assert(!polynode.is_linked(slot.*.?));
+        check(slot.* != null, "Mbox.send from an empty Slot");
+        check(!polynode.is_linked(slot.*.?), "an item crosses the border unlinked");
 
         if (self.*.closed.load(.acquire)) return error.Closed;
         const io: Io = self.*.io;
@@ -158,7 +158,7 @@ pub const Mbox = struct {
     /// On `error.Closed` the slot is unchanged.\
     /// The sender still has the item.
     ///
-    /// Asserts the slot is not empty, and that the item has no neighbours.
+    /// Checks the slot is not empty, and that the item has no neighbours.
     ///
     /// FIFO among OOB handles. Every OOB handle sits ahead of every regular
     /// one.
@@ -172,8 +172,8 @@ pub const Mbox = struct {
     /// receive -> O2:        [R1, R2, R3]             oob=0
     /// ```
     pub fn send_oob(self: *Mbox, slot: *polynode.Slot) error{Closed}!void {
-        std.debug.assert(slot.* != null);
-        std.debug.assert(!polynode.is_linked(slot.*.?));
+        check(slot.* != null, "Mbox.send_oob from an empty Slot");
+        check(!polynode.is_linked(slot.*.?), "an item crosses the border unlinked");
 
         if (self.*.closed.load(.acquire)) return error.Closed;
         const io: Io = self.*.io;
@@ -228,9 +228,9 @@ pub const Mbox = struct {
     ///
     /// Order among them is up to the Io runtime. It is not FIFO.
     ///
-    /// Asserts the slot is empty.
+    /// Checks the slot is empty.
     pub fn receive(self: *Mbox, slot: *polynode.Slot, timeout_ns: ?u64) (error{ Closed, Timeout, Wakeup } || Io.Cancelable)!void {
-        std.debug.assert(slot.* == null);
+        check(slot.* == null, "an acquisition needs an empty Slot on entry");
 
         if (self.*.closed.load(.acquire)) return error.Closed;
         const io: Io = self.*.io;
@@ -290,9 +290,9 @@ pub const Mbox = struct {
     /// - true if a handle was received
     /// - false if the mailbox was empty
     ///
-    /// Asserts the slot is empty.
+    /// Checks the slot is empty.
     pub fn try_receive(self: *Mbox, slot: *polynode.Slot) error{Closed}!bool {
-        std.debug.assert(slot.* == null);
+        check(slot.* == null, "an acquisition needs an empty Slot on entry");
 
         if (self.*.closed.load(.acquire)) return error.Closed;
         const io: Io = self.*.io;
@@ -437,13 +437,13 @@ pub const Mbox = struct {
 
 /// Creates a mailbox and stores it in the Slot.
 ///
-/// Asserts the Slot is empty.
+/// Checks the Slot is empty.
 ///
 /// On failure the Slot is unchanged.
 ///
 /// Take the pointer out with `Mbox.moveFromSlot`.
 pub fn new(io: Io, alloc: std.mem.Allocator, slot: *polynode.Slot) !void {
-    std.debug.assert(slot.* == null);
+    check(slot.* == null, "an acquisition needs an empty Slot on entry");
 
     const mbx: *Mbox = try alloc.create(Mbox);
     errdefer alloc.destroy(mbx);
@@ -526,5 +526,6 @@ const helper = polynode.PolyHelper(Mbox);
 
 const polynode = @import("polynode.zig");
 const cond_timeout = @import("internal/cond_timeout.zig");
+const check = @import("internal/check.zig").check;
 const std = @import("std");
 const Io = std.Io;

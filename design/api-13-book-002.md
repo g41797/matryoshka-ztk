@@ -98,7 +98,7 @@ Doc comment conventions. Owner's answer to `-001`.
 - The rules come from two places.
   - `matryoshka-zig-0.16-notes-003.md`.
   - The `///` and `//!` style already in `src/*.zig`.
-- Part 4 of `rules-049.md` governs. Nothing new is invented for 13-2.
+- Part 4 of `rules-050.md` governs. Nothing new is invented for 13-2.
 
 The safety rule.
 
@@ -627,9 +627,9 @@ Owner's answer to `-001`: discuss after Parts 1-5 are ready.
 
 ## 12. Related documents
 
-- [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md) — the book
+- [matryoshka-api-reference-043.md](matryoshka-api-reference-043.md) — the book
   this note describes.
-- [rules-049.md](rules-049.md) — staccato, Part 6. Banned words, Part 5.
+- [rules-050.md](rules-050.md) — staccato, Part 6. Banned words, Part 5.
   Doc comments, Part 4.
 - [matryoshka-concepts-003.md](matryoshka-concepts-003.md) — overlaps the book.
 - [patterns-029.md](patterns-029.md) — overlaps the book.
@@ -643,7 +643,7 @@ Owner's answer to `-001`: discuss after Parts 1-5 are ready.
 
 The banned word is no longer open. Owner ruled on 2026-08-13.
 
-- It is in Part 5 of `rules-049.md`, and the glossary gate enforces it.
+- It is in Part 5 of `rules-050.md`, and the glossary gate enforces it.
 - The previous rules version is gone. Sixteen files repointed.
 - One claim in this note's first version was wrong, and is corrected here.
   - It said the gate would start rejecting the word repo-wide.

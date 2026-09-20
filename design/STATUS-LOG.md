@@ -2,6 +2,307 @@
 
 Full session history, newest entries at top. Append-only. Read only when explicitly asked (history audit, "what did we do about X") — not routine context-loading. See design/STATUS.md for the rule and current state.
 
+## 2026-09-20 — SETUP: the rewrite gets its own tree; BKP 5 to 11 dropped.
+
+Plan -080; -079 kept and listed. Subject document 3tk-to-ztk-005.md; -004 moved
+to its `backup/`.
+
+**The ruling.** BKP 5 was started and measured before any code. The owner then
+dropped the whole apply-group arrangement and chose to write the model once, in a
+tree of its own, layer by layer. The full reasoning is in
+3tk-to-ztk-005.md under **The direction change**. The three numbers behind it:
+the identity change alone reaches ~70 call sites outside `src/`; BKP 5, 6 and 7
+all rewrite `src/polynode.zig` and together re-read ~300 call sites; and
+`build.zig:53` has the tests module import the examples module, so the
+implementation half of a stage could never be green on its own. No ruling from
+BKP 2 changed — only the order and the place.
+
+**What was built.** `design/secondary/lang/port/3tk-to-ztk/next/`, on the
+arrangement the C3 work already uses: the trio of status, staging plan and log,
+a `backup/`, and `ztk/` as a whole Zig project root with its own `build.zig`,
+`build.zig.zon`, empty module root, one test, three kitchen scripts and a new
+documents gate. Verified green: four optimization modes 1/1, three cross
+targets, `zig fmt --check`, and the new gate at exit 0. No toolkit code.
+
+**Why a new gate.** `kitchen/tools/check_design.sh` line 103 prunes
+`design/secondary/lang` and line 115 excludes `secondary/` from the word checks,
+so every file of the new tree was invisible to it. Checked, not assumed.
+`next/ztk/kitchen/tools/check_next_docs.sh` replaces it and adds the inverse
+glossary check: the old gate defends the old words, the new one refuses them.
+
+**This tree.** Frozen. BKP 3 and BKP 4 stay; nothing further is applied to
+`src/`, `tests/`, `examples/` or `stories/`. STATUS.md leads with that, and the
+plan's BKP section points at the new tree's menu.
+
+**Post-stage cleanup.** Two defects in the new gate, both found by re-reading it
+and fixed before the stage closed: the dead-reference check reported through a
+pipe, so its hits were counted in a subshell and the script would have exited 0
+with dead links on the page; and the retired-vocabulary check gave a document no
+way to say what a word became, which the `retired-ok` marker now does. Three
+banned-word hits the gate then caught in the new documents were fixed —
+including `lifecycle`, copied in from the old tree's own tagline.
+
+**One edit to three superseded plan versions.** -077, -078 and -079 each linked
+to 3tk-to-ztk-004.md, which moved to `backup/`, so check_design.sh reported three
+dead links. The link became prose naming the version and saying where it went.
+This is the owner's own -073 remedy applied again: a historical document keeps the
+fact it recorded, and stops carrying a link that cannot resolve. No other text in
+them changed.
+
+**Banned-word scan.** The new tree: run by its gate over every `.md` and `.zig`,
+clean. This tree: no `.zig` changed; the `.md` edits were checked by
+check_design.sh, exit 0.
+
+**Model.** Opus 5, a deciding stage. Next: SPEC or CORE in the new tree, Opus 5,
+after a clear.
+
+## 2026-09-20 — BKP 4: check().
+
+Plan -079; -078 kept and listed. No new document version otherwise.
+
+TK2. `std.debug.assert` becomes `unreachable` in ReleaseFast and ReleaseSmall,  
+so a broken contract is a premise the optimizer may reason from, not a check  
+that is merely absent. 3tk's `@check` is compiled out and is never an  
+assumption, and the reason holds in Zig.
+
+- New file `src/internal/check.zig`. One declaration:
+  `pub inline fn check(ok: bool, msg: []const u8) void` —  
+  `if (std.debug.runtime_safety and !ok) @panic(msg);`. `runtime_safety` is  
+  comptime, so the body is dead code in the two fast modes: no call, no branch,  
+  no message in the binary.
+- 38 sites converted: `polynode.zig` 16, `pool.zig` 15, `mailbox.zig` 7. Every
+  one carries a message, in 3tk's register.
+- The four `orelse unreachable` in `mustFromPoly` and `mustFromSlot` became
+  `@panic`, live in every build.
+- `src/internal/cond_timeout.zig` untouched. Copied code, Open Item 5. It is the
+  only `std.debug.assert` left in `src/`.
+- Common-layer update: none. No model change — the contracts are the same
+  contracts.
+
+**Owner rulings, 2026-09-20, one question at a time.**
+
+1. The `must` sites panic in every build. Zig's `unreachable` hands the
+   optimizer a licence C3's `@require` does not, so copying 3tk's text would  
+   have given worse behaviour than the original.
+2. `check` is internal, not public. ztk already has a user-facing checker with
+   deliberately opposite semantics — `helpers.expect`, live in every build,  
+   rules-050.md:317-321 — and exporting a second one that vanishes would put  
+   two in reach whose difference only shows in the mode that matters. The 3tk  
+   example-060 pattern needs nothing exported: `CHECKED` is  
+   `std.debug.runtime_safety`.
+3. All doc comments naming "assert" were reworded, not only the one that became
+   false. 25 lines.
+4. No `.b`. `check` is internal, so there is no surface to show; what a user
+   needs to know is a sentence for the api reference, and it goes to BKP 10.
+5. The stale doc pages are held for BKP 10. Four of them — see the plan.
+
+**Exemplar before sweep**, rule 11. `src/mailbox.zig` alone, 7 sites, green in  
+four modes and shown to the owner before `polynode.zig` and `pool.zig` were  
+touched.
+
+**Negative-tested both ways**, rule 11. A throwaway program outside the repo,  
+built against the library in all four modes. Nothing committed.
+
+- Empty-Slot `send`: panics with `Mbox.send from an empty Slot` in Debug and
+  ReleaseSafe. Absent in the two fast modes — ReleaseFast appended a garbage  
+  handle and returned, ReleaseSmall stopped with a segmentation fault.
+- Wrong-type `mustFromPoly`: panics with the message in **all four** modes.
+  Before the change the two fast modes returned a pointer of the wrong type.
+
+**The finding this produced**, reported and not actioned by the owner's ruling:  
+a contract's argument is evaluated in every build, because `check` is a  
+function. Not a regression, and not fixable by rearranging the checks — the  
+function body unwraps the same optional a few lines later. Detail in the plan.
+
+| Step | Result |
+|---|---|
+| Post-stage cleanup | The two `PolyHelper` variants duplicate six functions and three check sites. Pre-existing; BKP 7 rewrites the helper. Nothing else found. |
+| Pattern scan | One candidate, reported: a cheap contract as `check(cond, msg)`, an expensive one inside `if (std.debug.runtime_safety)` so the condition is not evaluated in a fast build. Four sites use the guarded form. Not added to patterns-029.md — owner decides. |
+| Banned-word scan | Four hits, all fixed with approval. Three were this stage's own: `holds` in the custody sense, in three `@panic` and `check` messages in `polynode.zig`, now `contains`. One was BKP 3's: `on purpose` in the LIFO comment, `src/pool.zig`, now deleted — the next sentence already gives the reason. Not hits: `mutex.unlock` ×20, a stdlib name; "stays a valid object" ×2, where the scoped ban covers "object" meaning an Item. |
+| Rules audit | No violations in the four changed files. `check.zig` carries SPDX, a `//!` header, imports last, the `_doc_stub` the autodoc splice rule requires, and a first line on its one declaration. It has no examples link, unlike the four public files — it is internal and has no examples, and `cond_timeout.zig` is the precedent. |
+| Rendered docs, step 3a | `docs_zig.sh` exit 0. The autodoc target is unchanged in shape: six `matryoshka/` files plus std, `check.zig` adding about a kilobyte. No size regression, so the Part 4 hazard does not apply. The browser view is the owner's and was not done here. |
+
+The three finish-checklist steps BKP 3 left outstanding are discharged for  
+`src/` by this stage's scans — that is how BKP 3's `on purpose` was found. The  
+`design/` side of BKP 3's scans is still outstanding.
+
+Gates: four modes 195/195, `build_cross_debug.sh`, `build_core_debug.sh`,  
+`zig fmt --check src/ tests/ examples/`, `check_design.sh` — all exit 0.
+
+## 2026-09-20 — BKP 3: the loose ends.
+
+Plan -078. Api reference -043; -042 kept and listed.
+
+- Z6: removed the doubled blank line in `Pool.put`, `src/pool.zig`. `zig fmt --check src/` clean.
+- LS4: LIFO comment on `_add_returned_item`, with the reason.
+- TK3: `pub const VERSION` in `src/matryoshka.zig`, "0.0.1", as `build.zig.zon`.
+- Z4: `on_get` bullets in the api reference now match the code today. PL2 in BKP 9 changes them again.
+- -073 line in `context.md` reworded. -077 and -042 added to Superseded versions.
+- Cross-references to -042 repointed in the live docs. Superseded and frozen docs left as they were.
+- Common-layer update: none needed, no model change.
+
+| Step | Result |
+|---|---|
+| Post-stage cleanup | Nothing further found. |
+
+Four finish-checklist steps were not run: the banned-word scan, the pattern  
+scan, the rules audit, and `zig build stories`. The first three are outstanding.  
+The fourth no longer applies — see the ruling below.
+
+**Stories are obsolete for now.** Owner's ruling, 2026-09-20, given at the end  
+of BKP 3. `zig build stories` stops being a gate, `stories/` is not swept by the  
+later BKP renames, and the Stories section of the rules is frozen. The step  
+stays in `build.zig` and the files stay on disk. Recorded in rules-050.md  
+Part 0 and its Stories section, in STATUS.md's constraints, and here. -049 is  
+kept and listed.
+
+## 2026-09-20 — BKP 2: the owner ruled on every survey row.
+
+No code changed. Written as 3tk-to-ztk-004.md; 003 moved to `backup/`. Plan  
+-077. STATUS.md and context.md updated in place; plans -075 and -076 repointed  
+at 004. `check_design.sh` exit 0.
+
+Seven groups, ruled one at a time. The subject document carries each question,  
+its facts and the answer, written to be re-read — the owner asked for that  
+form explicitly.
+
+- **PL2** — adopt 3tk: `on_get` only on an empty Slot. BKP 2 found two hooks
+  that depend on the current behaviour, which the survey had missed:  
+  `CappedPoolHooks` tracks its count there, and a test hook resets a recycled  
+  item there. Both move to `on_put`.
+- **PL3 = a** — the owner recalled that 3tk's `on_close` may run more than once
+  and asked for it to be checked. It does: `3tk/src/pool.c3:282-332` calls it a  
+  second time for a straggling `put`, outside the lock, so the two can run  
+  concurrently. The spec says the same at line 1809. ztk follows, and the  
+  documents change with the sources.
+- **The model** — IT1 yes, and the node becomes `std.SinglyLinkedList.Node`,
+  the owner's own change to R2. LS1 (b): the mailbox keeps two queues rather  
+  than keeping `insertAfter`. LS2, IT3, IT4, HP1, HP3 all yes.
+- **IT5, new.** Out of the owner's question about `Inner` against `any`.
+  Identity stops being a bare address and becomes a pointer to a per-type  
+  descriptor: name, size, `inner_offset`, `finish`. The offset makes inner to  
+  outer a runtime operation, so `ItemHandle` becomes ztk's `any` and no `Any`  
+  type is added. otk already documents the pattern as advice; here the helper  
+  always builds it. Mandatory, helper-only. `UNSTAMPED` is a built-in  
+  descriptor, not a sentinel value, so `id` is never undefined. `finish` and  
+  `magic` are reserved, marked re-think.
+- **HP6, new.** A checked border pair, `takeFromSlot` / `fillSlot` — what 3tk's
+  `to_any`/`to_slot` really contribute once the type half is subtracted.
+- **Creation and release** — PL1, MB2 (`destroy` a method, `destroy_slot` kept
+  with a re-think note), MB3 and PL8's `_active` guard, all four queries.
+- **New and removed API** — `sendLimited`, PL7, PL4, `put_all` removed,
+  MB12 (a).
+- **Style** — TK2's `check()`, camelCase (Zig's convention; 3tk's snake_case is
+  C3's, so the standing rule does not reach it), LS4, `VERSION`, HP4 left alone.
+- **Vocabulary** — Item becomes Outer, PolyNode becomes Inner. The owner gave
+  the reason "parent" is banned: in C3 the inner is the parent, in Zig the outer  
+  is. Documents first, `src/` names later.
+- **Z1 to Z6** — Z2 narrowed, Z4 its own pass, Z6 released to BKP 3. The rest
+  are carried by other rulings.
+- **Standing rule, owner's** — 3tk is the more advanced API and wins by default
+  unless the difference is a language or std one. R1 and R2 are the two written  
+  exceptions.
+
+**The apply groups**, derived and approved: BKP 3 loose ends, 4 `check()`,  
+5 identity, 6 the list, 7 the helper, 8 the mailbox, 9 the pool, 10 the words  
+(including `check_design.sh`'s glossary check), 11 the names in code, then  
+BKP AUDIT. BKP 3 first because Z6 blocks every group that touches `pool.zig`;  
+BKP 5 before BKP 6 because both rewrite `polynode.zig`; BKP 11 last so no group  
+renames twice.
+
+Post-stage cleanup: not applicable. No `.zig` file was touched. The document  
+gate is the only one this stage could fail, and it exits 0.
+
+Late in the stage the owner deleted plan versions -074, -075 and -076 from  
+disk. `check_design.sh` then reported their three lines in the **Superseded  
+versions** section of context.md as dead links. The owner confirmed the  
+deletion, and the three lines were removed. The gate is back at exit 0.  
+-074's deletion is staged in git and is the owner's to finish.
+
+Next: BKP 3 on Sonnet 5, after `/clear`.
+
+## 2026-09-19 — After BKP 1: owner rulings on the four open questions.
+
+Before `/clear`. Written as 3tk-to-ztk-003.md; 002 moved to `backup/`.  
+STATUS.md, context.md, plans -075 and -076 repointed. `check_design.sh` exit 0.
+
+- R1. INTR 8 is not reopened. Creation keeps filling a Slot.
+- R2. The link test becomes exact, on `std.DoublyLinkedList.Node`. BKP 2 designs how.
+- R3. BKP runs before the PARKED WORK.
+- R4. `lang/` old versions go to `backup/`. Confirmed.
+
+## 2026-09-19 — BKP 1: the 3tk backport survey. Plan -076.
+
+Ran on Opus 5, after `/clear`, from the BKP 1 prompt. Read-only. Git  
+disabled. No code changed.
+
+**Read.** ztk `src/*.zig` and 3tk `src/*.c3`, in full. The doc header of every  
+example in both trees. Caller counts for every ztk `pub` name across  
+`examples/`, `stories/`, `tests/`. `3tk-port-findings-005.md` for reasons  
+only; every ztk citation used from it was checked against `src/` again, and all  
+still hold.
+
+**Written.**
+
+- `secondary/lang/port/3tk-to-ztk/3tk-to-ztk-002.md` — the survey. Rows IT1-4,  
+  SL1, HP1-5, LS1-4, MB1-12, PL1-10, TK1-3, each with kind, language test and  
+  whether it goes to the owner. The example pairing, the first map between the  
+  two trees. Findings Z1-Z6 in ztk itself.
+- 001 moved to `backup/` with a plain `mv`.
+- Plan -076. context.md lists -075 as superseded. STATUS.md and context.md  
+  repointed. This log was not repointed.
+
+**Main results.**
+
+- High for BKP 2: PL2 (`on_get` runs with a full Slot in ztk) and PL3 (ztk  
+  `put` loses the hook's extra items when the pool closes during `on_put`).
+- 11 `ItemList` operations have no caller in any example, only in  
+  `tests/layer1_itemlist.zig`. The same set 3tk deleted.
+- 95 of 96 `moveFromSlot` calls in examples and stories force the unwrap.
+- MB1 sets 3tk's pointer-returning `create` against ztk's INTR 8 Slot ruling.  
+  Listed as an open question, not decided.
+- The example-numbers open question is answered: no map existed anywhere.
+
+**Checks.** Stage changed only `design/` markdown. `check_design.sh` exit 0,  
+after one fix: superseded plan -075 linked to 001, now in `backup/`; the link  
+was repointed to 002. No kitchen build scripts run: no code changed.
+
+**Post-stage cleanup.** Not applicable, no code changed.
+
+## 2026-09-19 — BKP 0: the 3tk backport set up. Plan -075.
+
+Owner named BKP: ztk takes what 3tk learned. Ran on Opus 5. Git disabled.  
+No code changed.
+
+**How it was agreed.** Over one session, the owner gave the context in steps:  
+the two repos, the three status files each, the doll family, and that 3tk is  
+now the most advanced. An outside meta-plan was offered as input, to borrow  
+from, not to follow.
+
+**Owner rulings.**
+
+- Iterative. Only the next stage is planned.
+- Sources are the truth. Logs and documents explain why.
+- Not split by module: too many dependencies.
+- The axis is the shape of the public API. Examples are the usage evidence.
+- Four kinds of difference: newer API, removed API, std difference, language  
+  difference.
+- `lang/common/` is the language-neutral denominator. Every stage updates it.
+- Every stage ends with a continue prompt and a model.
+- Later backports are likely, to otk or a new ctk. The method is reusable.
+
+**Written.**
+
+- `secondary/lang/port/3tk-to-ztk/3tk-to-ztk-001.md` — the subject document.
+- `secondary/lang/common/meta-plan-external-001.md` — the outside meta-plan,  
+  frozen input.
+- Plan -075 — BKP section, BKP 0 in Completed stages. -074 added to  
+  Superseded versions in `context.md`.
+- `STATUS.md` — current state, Next, the PARKED WORK note, plan pointers.
+
+**Post-stage cleanup.** Documents only. Banned-word scan over the new text.  
+`check_design.sh` run.
+
 ## 2026-09-14 — RENAME: matryoshka-tk becomes matryoshka-ztk. Plan -074.
 
 Run in the fresh clone. Owner's rule: every `-tk` that means the tool kit  

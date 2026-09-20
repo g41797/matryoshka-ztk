@@ -1,0 +1,27 @@
+Sun Sep 20 01:11:47 PM IDT 2026
+Build Summary: 3/3 steps succeeded
+install cached
++- install matryoshka cached
+   +- compile lib matryoshka Debug native cached 8ms MaxRSS:41M
+
+Build Summary: 3/3 steps succeeded; 80/81 tests passed (1 skipped)
+test success
++- run test 80 pass, 1 skip (81 total) 15ms MaxRSS:5M
+   +- compile test Debug native cached 9ms MaxRSS:41M
+
+Build Summary: 3/3 steps succeeded; 80/81 tests passed (1 skipped)
+test success
++- run test 80 pass, 1 skip (81 total) 12ms MaxRSS:4M
+   +- compile test ReleaseSafe native success 16s MaxRSS:484M
+
+Build Summary: 3/3 steps succeeded; 80/81 tests passed (1 skipped)
+test success
++- run test 80 pass, 1 skip (81 total) 11ms MaxRSS:4M
+   +- compile test ReleaseFast native success 16s MaxRSS:443M
+
+Build Summary: 3/3 steps succeeded; 80/81 tests passed (1 skipped)
+test success
++- run test 80 pass, 1 skip (81 total) 9ms MaxRSS:4M
+   +- compile test ReleaseSmall native success 3s MaxRSS:174M
+
+Sun Sep 20 01:12:24 PM IDT 2026

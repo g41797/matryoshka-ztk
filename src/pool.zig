@@ -100,7 +100,7 @@ pub const Pool = struct {
         /// `slot`: receives the selected item, or stays empty if no item is available.
         ///
         /// Returning an item whose tag is not the requested one is a programming
-        /// error. Asserted in Debug and ReleaseSafe.
+        /// error. Checked in Debug and ReleaseSafe.
         on_get: *const fn (ctx: *anyopaque, tag: *const anyopaque, in_pool_count: usize, slot: *polynode.Slot) void,
 
         /// `slot`: keep, accept, or clear the one carried item.
@@ -202,10 +202,10 @@ pub const Pool = struct {
     ///
     /// No lock: nothing else can reach the pool yet.
     ///
-    /// Asserts the tag list is not empty.
+    /// Checks the tag list is not empty.
     fn init(self: *Pool) !void {
         const hooks: Hooks = self.*.hooks;
-        std.debug.assert(hooks.tags.len > 0);
+        check(hooks.tags.len > 0, "the set of identities is not empty");
 
         // Grow capacity before any modification — OOM fails cleanly here.
         const n: u32 = @intCast(hooks.tags.len);
@@ -222,9 +222,9 @@ pub const Pool = struct {
     ///
     /// On success, stores the handle in `slot.*`.
     ///
-    /// Asserts the slot is empty and the tag is one of the registered ones.
+    /// Checks the slot is empty and the tag is one of the registered ones.
     pub fn get(self: *Pool, tag: *const anyopaque, mode: GetMode, slot: *polynode.Slot) GetError!void {
-        std.debug.assert(slot.* == null);
+        check(slot.* == null, "an acquisition needs an empty Slot on entry");
 
         if (self.*.closed.load(.acquire)) return error.Closed;
 
@@ -248,9 +248,9 @@ pub const Pool = struct {
     ///
     /// `get_wait` always uses the timeout error set regardless of the timeout value.
     ///
-    /// Asserts the slot is empty and the tag is one of the registered ones.
+    /// Checks the slot is empty and the tag is one of the registered ones.
     pub fn get_wait(self: *Pool, tag: *const anyopaque, slot: *polynode.Slot, timeout_ns: ?u64) (GetError || Io.Cancelable || error{Timeout})!void {
-        std.debug.assert(slot.* == null);
+        check(slot.* == null, "an acquisition needs an empty Slot on entry");
 
         if (self.*.closed.load(.acquire)) return error.Closed;
         const io: Io = self.*.io;
@@ -267,7 +267,7 @@ pub const Pool = struct {
         self.*.mutex.lock(io) catch |err| return err;
         defer self.*.mutex.unlock(io);
 
-        std.debug.assert(self.*.lists.contains(tag));
+        check(self.*.lists.contains(tag), "the identity is not registered in this pool");
 
         while (true) {
             if (self.*.closed.load(.monotonic)) return error.Closed;
@@ -295,7 +295,7 @@ pub const Pool = struct {
 
     /// Returns a handle to the pool.
     ///
-    /// `slot.* == null`: returns immediately. No hook call, no assert on the
+    /// `slot.* == null`: returns immediately. No hook call, no check on the
     /// tag.
     ///
     /// Open pool:
@@ -319,7 +319,7 @@ pub const Pool = struct {
     /// - `slot.*` is unchanged, so the caller still has the item and must
     ///   release it.
     ///
-    /// Asserts the item has no neighbours, when the slot is not empty.
+    /// Checks the item has no neighbours, when the slot is not empty.
     ///
     /// No sequence guarantee.
     ///
@@ -329,7 +329,7 @@ pub const Pool = struct {
     pub fn put(self: *Pool, slot: *polynode.Slot) void {
         if (slot.* == null) return;
 
-        std.debug.assert(!polynode.is_linked(slot.*.?));
+        check(!polynode.is_linked(slot.*.?), "an item crosses the border unlinked");
 
         const io: Io = self.*.io;
         self.*.mutex.lockUncancelable(io);
@@ -339,10 +339,9 @@ pub const Pool = struct {
             return; // handle stays with the caller
         }
 
-
         const handle: polynode.ItemHandle = slot.*.?;
         const tag: *const anyopaque = handle.*.tag;
-        std.debug.assert(self.*.lists.contains(tag));
+        check(self.*.lists.contains(tag), "the identity is not registered in this pool");
 
         const hooks: Hooks = self.*.hooks;
         const count: usize = self.*.counts.get(tag) orelse 0;
@@ -389,7 +388,7 @@ pub const Pool = struct {
     /// The restored order after a mid-batch close may differ from the original
     /// order.
     ///
-    /// Asserts every item's tag is one of the registered ones, under one lock,
+    /// Checks every item's tag is one of the registered ones, under one lock,
     /// before anything is transferred.
     pub fn put_all(self: *Pool, list: *polynode.ItemList) void {
         if (list.isEmpty()) return;
@@ -400,7 +399,7 @@ pub const Pool = struct {
         self.*.mutex.lockUncancelable(io);
         var it = list.iterator();
         while (it.next()) |ih| {
-            std.debug.assert(self.*.lists.contains(ih.*.tag));
+            check(self.*.lists.contains(ih.*.tag), "the identity is not registered in this pool");
         }
         self.*.mutex.unlock(io);
 
@@ -463,13 +462,13 @@ pub const Pool = struct {
 
 /// Creates a pool, registers the hooks, and stores it in the Slot.
 ///
-/// Asserts the Slot is empty, and that the hook tag list is not empty.
+/// Checks the Slot is empty, and that the hook tag list is not empty.
 ///
 /// On failure the Slot is unchanged and nothing is left allocated.
 ///
 /// Take the pointer out with `Pool.moveFromSlot`.
 pub fn new(io: Io, alloc: std.mem.Allocator, hooks: Pool.Hooks, slot: *polynode.Slot) !void {
-    std.debug.assert(slot.* == null);
+    check(slot.* == null, "an acquisition needs an empty Slot on entry");
 
     const p: *Pool = try alloc.create(Pool);
     errdefer alloc.destroy(p);
@@ -553,10 +552,12 @@ pub fn getWaitResult(p: *Pool, tag: *const anyopaque, timeout_ns: ?u64) Pool.Res
 }
 
 // Add a single returned item to its per-tag free-list.
+// LIFO: `prepend` here, `popFirst` in `get`. A stale writer meets
+// the next owner at once, so a misuse shows early.
 inline fn _add_returned_item(p: *Pool, item: polynode.ItemHandle) void {
-    std.debug.assert(!polynode.is_linked(item));
+    check(!polynode.is_linked(item), "an item crosses the border unlinked");
     const tag: *const anyopaque = item.*.tag;
-    std.debug.assert(p.*.lists.contains(tag));
+    check(p.*.lists.contains(tag), "the identity is not registered in this pool");
     const list = p.*.lists.getPtr(tag).?;
     list.prepend(item);
     p.*.counts.getPtr(tag).?.* += 1;
@@ -570,7 +571,7 @@ inline fn _get_available_or_new(p: *Pool, tag: *const anyopaque, slot: *polynode
         p.*.mutex.unlock(io);
         return error.Closed;
     }
-    std.debug.assert(p.*.lists.contains(tag));
+    check(p.*.lists.contains(tag), "the identity is not registered in this pool");
 
     if (p.*.lists.getPtr(tag)) |list| {
         if (list.popFirst()) |ih| {
@@ -584,7 +585,7 @@ inline fn _get_available_or_new(p: *Pool, tag: *const anyopaque, slot: *polynode
     p.*.mutex.unlock(io);
 
     hooks.on_get(hooks.ctx, tag, count, slot);
-    if (slot.*) |h| std.debug.assert(h.*.tag == tag);
+    if (slot.*) |h| check(h.*.tag == tag, "on_get filled the Slot with another type");
 
     return if (slot.* != null) {} else error.NotCreated;
 }
@@ -597,14 +598,14 @@ inline fn _get_new_only(p: *Pool, tag: *const anyopaque, slot: *polynode.Slot) P
         p.*.mutex.unlock(io);
         return error.Closed;
     }
-    std.debug.assert(p.*.lists.contains(tag));
+    check(p.*.lists.contains(tag), "the identity is not registered in this pool");
 
     const hooks: Pool.Hooks = p.*.hooks;
     const count: usize = p.*.counts.get(tag) orelse 0;
     p.*.mutex.unlock(io);
 
     hooks.on_get(hooks.ctx, tag, count, slot);
-    if (slot.*) |h| std.debug.assert(h.*.tag == tag);
+    if (slot.*) |h| check(h.*.tag == tag, "on_get filled the Slot with another type");
 
     return if (slot.* != null) {} else error.NotCreated;
 }
@@ -615,7 +616,7 @@ inline fn _get_available_only(p: *Pool, tag: *const anyopaque, slot: *polynode.S
     defer p.*.mutex.unlock(io);
 
     if (p.*.closed.load(.monotonic)) return error.Closed;
-    std.debug.assert(p.*.lists.contains(tag));
+    check(p.*.lists.contains(tag), "the identity is not registered in this pool");
 
     if (p.*.lists.getPtr(tag)) |list| {
         if (list.popFirst()) |ih| {
@@ -631,6 +632,7 @@ inline fn _get_available_only(p: *Pool, tag: *const anyopaque, slot: *polynode.S
 const helper = polynode.PolyHelper(Pool);
 
 const polynode = @import("polynode.zig");
+const check = @import("internal/check.zig").check;
 const cond_timeout = @import("internal/cond_timeout.zig");
 const std = @import("std");
 const Io = std.Io;

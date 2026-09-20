@@ -969,7 +969,7 @@ list is not reachable from `self`. Nothing outside safety builds.
 ## 9. Required follow-up — done
 
 - **The happens-before invariant of 3.2** — done 2026-07-30, now in
-  `rules-049.md` ("Exclusive access, second half") and `matryoshka-concepts-003.md` ("The transfer  
+  `rules-050.md` ("Exclusive access, second half") and `matryoshka-concepts-003.md` ("The transfer  
   orders memory"). Step 0 of the ship order.
 - **`src/polynode.zig:67`** — the `is_linked` doc comment now claims only what
   the function computes: whether the node has neighbours.
@@ -1041,7 +1041,7 @@ destination list from inside `send` or `put` before the lock is taken.
 
 Name and signature unchanged. All seven `!is_linked` asserts kept. The doc  
 comment at `src/polynode.zig:67` now says "True if the node has neighbours" and  
-states the sole-member case outright. The rules entry is in `rules-049.md`  
+states the sole-member case outright. The rules entry is in `rules-050.md`  
 ("The neighbour check"), and the three test comments of Q33 are corrected.
 
 ### 11.4 Tests (Q29)

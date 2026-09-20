@@ -19,7 +19,7 @@ replaces all of them. Their names are in the DOC 22 entry in `STATUS-LOG.md`.
 Companions:
 - [matryoshka-architecture-foundation-4-006.md](matryoshka-architecture-foundation-4-006.md) — the four-layer contract in full.
 - [language-of-matryoshka.md](language-of-matryoshka.md) — vocabulary. Where a term here differs, the glossary wins.
-- [rules-049.md](rules-049.md) — coding, doc, and process rules.
+- [rules-050.md](rules-050.md) — coding, doc, and process rules.
 - [patterns-029.md](patterns-029.md) — the pattern and idiom catalog.
 
 ---
@@ -386,7 +386,7 @@ Check identity with `node.tag == EVENT_TAG`. Recover the concrete type with
   - Instance identity is resolved by pointer comparison against known handles.
   - Role is established by protocol: the channel the handle arrived on, message
     ordering, or prior agreement.
-- See [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md),
+- See [matryoshka-api-reference-043.md](matryoshka-api-reference-043.md),
   "Tag identity — class, not instance".
 
 `switch` over tags does not compile. The reason and the repro live in
@@ -578,7 +578,7 @@ to know who holds an item, the design is wrong.
 - This is why the library can assert on an item's internal state at all.
 - It does not extend to an item two holders both believe they hold. That
   mistake breaks the premise the guarantee is built on.
-- See [rules-049.md](rules-049.md) for how to phrase this in `src/` comments.
+- See [rules-050.md](rules-050.md) for how to phrase this in `src/` comments.
 
 ### Pool availability = backpressure signal
 
@@ -698,7 +698,7 @@ To qualify as a story it must show at least two layers composing, and it must
 have a real domain problem.
 
 The file layout and signatures for a story are a process rule. They live in
-[rules-049.md](rules-049.md), "Story structure".
+[rules-050.md](rules-050.md), "Story structure".
 
 ---
 

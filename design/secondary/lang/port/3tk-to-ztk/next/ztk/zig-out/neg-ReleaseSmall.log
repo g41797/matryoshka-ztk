@@ -1,0 +1,30 @@
+negative
++- run exe 301_wrong_type_must w
+thread 644505 panic: mustMoveFromSlot: asked for 301_wrong_type_must.Chunk, found 301_wrong_type_must.Msg
+Cannot print stack trace: stack tracing is disabled
+failed command: ./.zig-cache/o/65292977e9436347085e6dd60c7f3bbe/301_wrong_type_must
+
+negative
++- run exe 311_destroy_open_pool w
+thread 644546 panic: Pool.destroy: the pool must be closed first
+Cannot print stack trace: stack tracing is disabled
+failed command: ./.zig-cache/o/51a6aa8e04d9dce36605bbda0b99250d/311_destroy_open_pool
+
+negative
++- run exe 310_destroy_open_mailbox w
+thread 644600 panic: Mbox.destroy: the mailbox must be closed first
+Cannot print stack trace: stack tracing is disabled
+failed command: ./.zig-cache/o/21c3a021d3f0db24da08762aab60c85b/310_destroy_open_mailbox
+
+negative
++- run exe 313_destroy_during_hook w
+thread 644548 panic: Pool.destroy: a call is still running on the pool
+Cannot print stack trace: stack tracing is disabled
+failed command: ./.zig-cache/o/68c5f13093a2d79d1a9b6c5a01e119ae/313_destroy_during_hook
+
+negative
++- run exe 312_destroy_while_receiving w
+thread 644596 panic: Mbox.destroy: a call is still running on the mailbox
+Cannot print stack trace: stack tracing is disabled
+failed command: ./.zig-cache/o/64df98934bafabbf55763f0f973aaf6d/312_destroy_while_receiving
+

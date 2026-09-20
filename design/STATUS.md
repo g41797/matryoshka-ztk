@@ -1,5 +1,28 @@
 # matryoshka-ztk STATUS
 
+## THE WORK MOVED — read this first
+
+**This file describes the old tree at the repo root: `src/`, `tests/`,
+`examples/`, `stories/`, `design/`. That tree is frozen.**
+
+The backport's rulings are being applied in a tree of its own, and it has its own
+status, stage menu and log:
+
+- State: `secondary/lang/port/3tk-to-ztk/next/next-status.md`
+- Stage menu: `secondary/lang/port/3tk-to-ztk/next/next-staging-plan-002.md`
+- Narrative: `secondary/lang/port/3tk-to-ztk/next/next-log.md`
+- Code: `secondary/lang/port/3tk-to-ztk/next/ztk/`
+
+A session working on the rewrite reads those and Part 0 of [rules-050.md](rules-050.md).
+It does not edit anything at the repo root. Owner's ruling, 2026-09-20; the
+reasons are in
+[3tk-to-ztk-005.md](secondary/lang/port/3tk-to-ztk/3tk-to-ztk-005.md) under
+**The direction change**.
+
+Nothing below is authorized while that tree is being written. The old tree is
+read, and files are copied out of it. It is deleted in one step when the new tree
+overtakes it — the owner's step, not a session's.
+
 ## PARKED WORK — read before naming a stage
 
 INTR 8 was an unplanned insertion, an API revision ahead of everything on the  
@@ -10,22 +33,23 @@ still parked:
   10. Steps 2 and 3 have since passed green twice. Detail: Next.
 - 13-4b-3, 13-5 and the `polynode` audit. Candidates, unranked. Detail: Next.
 - Three code-level findings, reported and not actioned. Detail:
-  [the plan](matryoshka-ztk-implementation-plan-074.md), "Reported, not actioned".
+  [the plan](matryoshka-ztk-implementation-plan-080.md), "Reported, not actioned".
 - The rendered autodoc page is unviewed. It is the verification for 13-4.
 - `handle` vs `item` in `mailbox.zig` body text is undecided.
 
-An audit follows INTR 8, which is now done. It ranks these, and the ruling goes  
-into Next.
+Two of these are answered by the rewrite existing: the `polynode` audit, because
+that file is written again, and the `pool.zig` formatting line, which BKP 3 fixed.
 
-This block goes when that audit has ruled and Next carries the result. Not on a  
-date. Nothing listed here is authorized, and this block authorizes nothing.
+BKP was named ahead of this work by the owner, 2026-09-19, and the rewrite
+inherits that order. Nothing listed here is authorized, and this block authorizes
+nothing.
 
 ## Start here — every session, before anything else
 
 1. Read this file in full. It is current state: what is done, what is in
    flight, what is authorized.
-2. Read Part 0 of [rules-049.md](rules-049.md).
-3. Read the plan, [matryoshka-ztk-implementation-plan-074.md](matryoshka-ztk-implementation-plan-074.md),
+2. Read Part 0 of [rules-050.md](rules-050.md).
+3. Read the plan, [matryoshka-ztk-implementation-plan-080.md](matryoshka-ztk-implementation-plan-080.md),
    for the stage the owner names. Not before they name it.
 
 These two files are the entry point. This repo has no auto-loading agent  
@@ -46,17 +70,18 @@ instruction, read this file and ask what to work on.
 - Plan approval is NOT code change approval.
 - Architectural changes need explicit owner approval.
 - Never overwrite any doc. New version with incremented suffix (-001, -002, etc.). Update cross-references. Applies to all docs, no exceptions.
-- Where a doc lives. `design/` is the current picture of Matryoshka, present tense. Snapshots, superseded drafts, session logs and unstarted intentions go to `design/secondary/` and are frozen. `kitchen/defer/` is frozen too — deferred material, absent from mkdocs nav, its snippets predate API 12. Every file is listed in `context.md` or `secondary/context.md`. Full entry in rules-049.md.
+- Where a doc lives. `design/` is the current picture of Matryoshka, present tense. Snapshots, superseded drafts, session logs and unstarted intentions go to `design/secondary/` and are frozen. `kitchen/defer/` is frozen too — deferred material, absent from mkdocs nav, its snippets predate API 12. Every file is listed in `context.md` or `secondary/context.md`. Full entry in rules-050.md.
 - Post-stage cleanup: after all kitchen scripts pass, revise all code for obsolete parts, wrong comments, repeated code extractable to reusable sources. Fix, re-run all three scripts. Session log must have a "Post-stage cleanup" row — its absence means the rule was skipped.
-- Plan versioning: after each completed stage, create new plan version. Collapse done stages to one-line summaries. Update context.md and STATUS.md to point to new version. Old plan versions stay as historical record — rules-049.md Part 0 says do not delete them, and they are listed in the Superseded versions section of context.md so the orphan gate passes. See Open Item 14.
+- Plan versioning: after each completed stage, create new plan version. Collapse done stages to one-line summaries. Update context.md and STATUS.md to point to new version. Old plan versions stay as historical record — rules-050.md Part 0 says do not delete them, and they are listed in the Superseded versions section of context.md so the orphan gate passes. See Open Item 14.
 - Tests before examples: examples cannot start until all tests pass all kitchen scripts. Stage N.a = impl + tests, Stage N.b = examples. No mixing.
-- Status file ownership. A fact lives in exactly one file; the others get a pointer, not a copy. STATUS.md = current state only, no stage narrative. Plan = forward-looking work + one line per completed stage. STATUS-LOG.md = the narrative. context.md = one short line per doc, saying what it is. Full entry in rules-049.md.
+- Status file ownership. A fact lives in exactly one file; the others get a pointer, not a copy. STATUS.md = current state only, no stage narrative. Plan = forward-looking work + one line per completed stage. STATUS-LOG.md = the narrative. context.md = one short line per doc, saying what it is. Full entry in rules-050.md.
 
 ## Constraints for Next Agent (MUST)
 - Git disabled, in every repo, always. Do NOT run any git commands except plain `git status`, which is allowed on its own.
 - Coding style: LE imports, explicit types, explicit dereference, stdlib first, errdefer/defer for resource cleanup.
 - Doc style: short sentences, bullets, no AI-sh words. See plan Section 1.
 - Run verification via kitchen scripts, not manual zig commands.
+- Stories are obsolete for now, owner's ruling, 2026-09-20. `zig build stories` is not a gate, `stories/` is not swept, and the Stories section of rules-050.md is frozen. Full entry in rules-050.md Part 0.
 - A stage that changes design/ must end with kitchen/tools/check_design.sh at exit 0.
 - Redirect kitchen script output to zig-out/ log files: `bash kitchen/script.sh > zig-out/script.log 2>&1`. Read the log file. Do NOT analyze shell stdout.
 - AI-sh scan after every stage that changes *.md or *.zig.
@@ -73,7 +98,7 @@ instruction, read this file and ask what to work on.
 ## Sources of Truth
 - Doc index: context.md — one line per doc. Start here.
 - Concepts and thinking model: matryoshka-concepts-003.md
-- API: matryoshka-api-reference-042.md
+- API: matryoshka-api-reference-043.md
 - Zig details: matryoshka-zig-0.16-notes-003.md
 - Architecture: matryoshka-architecture-foundation-4-006.md
 - Vocabulary: language-of-matryoshka.md
@@ -82,8 +107,8 @@ instruction, read this file and ask what to work on.
 - Legacy mailbox: /home/g41797/dev/root/github.com/g41797/mailbox/
 - Odin proto: /home/g41797/dev/root/github.com/g41797/matryoshka/
 - tofu (build infra): /home/g41797/dev/root/github.com/g41797/tofu/
-- Plan: matryoshka-ztk-implementation-plan-074.md (slim, state-only)
-- Rules: rules-049.md
+- Plan: matryoshka-ztk-implementation-plan-080.md (slim, state-only)
+- Rules: rules-050.md
 - API 13 (the book) design note: api-13-book-002.md
 - API 13 carry-over note: api-13-carryover-004.md — what left the book, input for 13-2
 - Receive router design note: receive-router-002.md
@@ -94,7 +119,7 @@ instruction, read this file and ask what to work on.
 - Diagram style: matryoshka-Ztk-diagram-style-guide-003.md
 - Session narrative: STATUS-LOG.md
 - Frozen material: secondary/context.md — snapshots, drafts, session logs, unstarted intentions. Includes the Odin idiom mapping and the pointer-switch compiler bug.
-- Markdown hard-break tooling: kitchen/tools/fix_md_hardbreaks.sh, rule documented in rules-049.md
+- Markdown hard-break tooling: kitchen/tools/fix_md_hardbreaks.sh, rule documented in rules-050.md
 - design/ gate: kitchen/tools/check_design.sh — dead links in both syntaxes, orphans, forward-tense prose, glossary conformance. Run it after any stage that touches design/.
 - Give-back audit: audit-recipe-002.md + kitchen/tools/audit_edges.sh. Reports, not a gate. Run it before auditing a layer.
 
@@ -130,7 +155,7 @@ matryoshka-ztk/
     ├── STATUS.md
     ├── context.md          doc index — start here
     ├── *.md                the current picture of Matryoshka
-    ├── stories/            finished stories
+    ├── stories/            finished stories, obsolete for now
     └── secondary/          frozen: snapshots, drafts, logs, intentions
 ```
 
@@ -159,6 +184,38 @@ matryoshka-ztk/
 
 ## Current state
 
+**BKP 4 is done, 2026-09-20.** `src/` states its contracts with one internal  
+`check(ok, msg)`. It panics with the message where runtime safety is on and is  
+compiled out where it is off, so a broken contract is never an assumption the  
+optimizer may act on. 38 sites, in `polynode.zig`, `mailbox.zig` and  
+`pool.zig`. `std.debug.assert` appears in `src/` only in  
+`internal/cond_timeout.zig`, which is copied code.
+
+The four `orelse unreachable` in `mustFromPoly` and `mustFromSlot` became  
+`@panic`. A wrong-type `must` used to be undefined behaviour in ReleaseFast and  
+ReleaseSmall, where the optimizer could drop the tag compare and hand back a  
+pointer of the wrong type. It now stops, with both the call and the type named,  
+in all four modes. Measured both ways, 2026-09-20.
+
+`check` is internal — `src/internal/check.zig`, not reachable from  
+`@import("matryoshka")`. A user writes `if (std.debug.runtime_safety)`, which  
+is what 3tk's `CHECKED` is in Zig. The public surface did not change.
+
+**BKP 3 is done, 2026-09-20.** The loose ends: Z6, Z4, TK3, LS4 and the -073  
+line. The api reference is now -043.
+
+BKP backports 3tk to ztk. Named by the owner.  
+BKP 1 was the survey; BKP 2 took the owner's ruling on every row and derived  
+the apply groups, BKP 3 to BKP 11. Everything about BKP lives in
+[3tk-to-ztk-005.md](secondary/lang/port/3tk-to-ztk/3tk-to-ztk-005.md): the  
+method, the survey rows, the rulings with their reasoning, the apply groups,  
+the example pairing, the open questions, the continue prompts. No code changed.
+
+The rulings change the model. Identity becomes a pointer to a per-type  
+descriptor, the intrusive node becomes singly linked with an exact link test,  
+and the vocabulary becomes Outer and Inner. The detail is in the subject  
+document, not here.
+
 **RENAME is done, 2026-09-14.** The repo and root folder are `matryoshka-ztk`.  
 Code names stay `matryoshka`. `check_design.sh` exits 0 and skips  
 `design/secondary/lang/`. The owner checks GitHub Pages on the renamed repo.
@@ -168,11 +225,11 @@ creation. `check_design.sh` exits 0.
 
 **The tree is green in every gate.** All four optimization modes 195/195,  
 `build_cross_debug.sh` green for x86_64-macos, aarch64-macos and  
-x86_64-windows, `zig build stories` green, `kitchen/build_core_debug.sh` green.  
-`zig fmt --check` is clean across `tests/`, `examples/` and `stories/`.
+x86_64-windows, and `kitchen/build_core_debug.sh` green. `zig fmt --check` is  
+clean across `tests/` and `examples/`.
 
-Six new versions carry the change: matryoshka-api-reference-042.md,  
-patterns-029.md, task1-tests-008.md, task2-tests-004.md, rules-049.md and  
+Six new versions carry the change: matryoshka-api-reference-043.md,  
+patterns-029.md, task1-tests-008.md, task2-tests-004.md, rules-050.md and  
 intr-8-slot-based-creation-003.md. matryoshka-concepts-003.md carries the new  
 vocabulary; `language-of-matryoshka.md` was edited in place, owner's ruling,  
 2026-08-14.
@@ -190,7 +247,7 @@ doc, the glossary, and the design note that found them. Application items flow
 constantly and get the full `PolyHelper` surface. Infrastructure items are  
 `Mbox` and `Pool`, they travel rarely, and they declare `no_create_destroy`.
 
-Part 1 of rules-049.md now says how a Master acquires a mailbox or a pool: one  
+Part 1 of rules-050.md now says how a Master acquires a mailbox or a pool: one  
 Slot per resource, local to `init`, the detach on the next line, the  
 `errdefer` after it, the field non-optional.
 
@@ -202,7 +259,7 @@ stays `*Mbox` / `*Pool`; the unwrap is once, at creation. Owner's ruling,
 2026-08-14, against the design note's `?*Mbox`, which would have edited 202  
 field reads to encode a state that never occurs. `examples/layer4/018-master_with_pool.zig`  
 is the exemplar and was approved before the other Masters were touched, because  
-Part 1 of [rules-049.md](rules-049.md) names it as the canonical Master.
+Part 1 of [rules-050.md](rules-050.md) names it as the canonical Master.
 
 `destroy_slot` has callers: scenarios 93 and 94 in `tests/layer4_infra.zig`  
 close the received item, then release it through the Slot. Before, `destroy`  
@@ -228,7 +285,7 @@ The give-back audit is repeatable: `kitchen/tools/audit_edges.sh` for the
 inventory, audit-recipe-002.md for the method.
 
 The banned-word list is enforced across every live file, not only changed  
-ones. Part 5 of rules-049.md carries the scan scope: `STATUS-LOG.md`,  
+ones. Part 5 of rules-050.md carries the scan scope: `STATUS-LOG.md`,  
 `design/secondary/` and `kitchen/defer/` are out, and a new changelog row may  
 not name the word it removed — `check_design.sh` rejects it.
 
@@ -237,7 +294,7 @@ reference is the canonical text. Close before destroy, always; `destroy` is not
 optional. It is stale in one respect: a pool no longer has an `init(hooks)`  
 caller step. 8-3 fixes the text.
 
-The api reference is a book. matryoshka-api-reference-042.md, seven parts,  
+The api reference is a book. matryoshka-api-reference-043.md, seven parts,  
 2024 lines against the old 2066. 22 flat `##` headings became 8. Parts 3, 4  
 and 5 carry the same five pieces in the same order: what this is,  
 participants, usual flow, the API in named groups, where to go deeper.
@@ -273,29 +330,40 @@ what it does.
 documents that contradicted it. The Hold vocabulary in the architecture doc is  
 out of scope by the owner's ruling.
 
-Last completed stage: RENAME, 2026-09-14.  
-Current plan: matryoshka-ztk-implementation-plan-074.md.
+Last completed stage in this tree: BKP 4, 2026-09-20. Nothing further lands  
+here. Current plan: matryoshka-ztk-implementation-plan-080.md.
 
 ## Next
 
 **INTR 8 is closed. 8-1, 8-2 and 8-3 are all done, 2026-08-14.** `src/`, then  
 every caller, then the documents.
 
-**RENAME is done, 2026-09-14.** Nothing is authorized; the owner names the stage.
+**RENAME is done, 2026-09-14.**
+
+**BKP 5 to BKP 11 are dropped, 2026-09-20.** The rulings they carried are  
+unchanged and are applied in the new tree instead. Its stage menu is  
+`secondary/lang/port/3tk-to-ztk/next/next-staging-plan-002.md`, and the next stage  
+there is SPEC or CORE, the owner's choice, on Opus 5. The prompt is in  
+[the plan](matryoshka-ztk-implementation-plan-080.md), BKP section.
+
+**SETUP of the new tree is done, 2026-09-20.** It builds empty: four  
+optimization modes 1/1, three cross targets, `zig fmt --check` clean, and its own  
+documents gate at exit 0. No toolkit code yet.
 
 **The audit that ranks the parked work is the recommended next step.** Its input  
 is the PARKED WORK block at the top of this file. Its output is a ruling, which  
 goes into this section and lets that block be deleted. It changes no code.
 
 The candidates, what each costs, and the recommendation on record are in  
-[the plan](matryoshka-ztk-implementation-plan-074.md) under "Next". They are a  
+[the plan](matryoshka-ztk-implementation-plan-080.md) under "Next". They are a  
 menu, not a queue. Finishing one does not roll into the next — stop and ask. A  
 heading that reads like an ordering is not an instruction to start.
 
 **OWNER EDITS IN `src/*.zig` DOC COMMENTS — leave them alone.** The comment  
 edits in `src/polynode.zig`, `src/mailbox.zig` and `src/pool.zig`, and the edits  
-in [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md), are the  
-owner's own and stay as they are. Ask before rewording anything in either.
+in [matryoshka-api-reference-043.md](matryoshka-api-reference-043.md), are the  
+owner's own and stay as they are. Ask before rewording anything in either.  
+One release, used in BKP 3: the `zig fmt` line in `src/pool.zig`.
 
 **FLOW is postponed.** FLOW 1-2 and FLOW 1-3 are not the next work. Owner's  
 call, 2026-08-13. Their scope is unchanged and in the plan.

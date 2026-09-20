@@ -8,7 +8,7 @@ Change from -002: the Master's field stays non-optional. Owner's ruling,
 would have edited 202 field reads to encode a state that never occurs, more  
 sites than the 186 the change itself served. The unwrap is once, at creation.  
 The name this note gave the shape goes with the clause; Part 1 of  
-[rules-049.md](rules-049.md) carries the rule, and  
+[rules-050.md](rules-050.md) carries the rule, and  
 `examples/layer4/018-master_with_pool.zig` is the canonical Master.
 
 Change from -001: `Pool.init` folds into `pool.new`. Owner's decision,  
@@ -275,7 +275,7 @@ Detail for each: [matryoshka-tk-implementation-plan-073.md](matryoshka-tk-implem
 
 ## Rules this stage changes
 
-Four findings, all four discharged into [rules-049.md](rules-049.md) by 8-3.
+Four findings, all four discharged into [rules-050.md](rules-050.md) by 8-3.
 
 - Part 3, the Slot Rule. The null-safe cleanup list names `pool.put`,
   `PolyHelper.destroy` and `helpers.freeSlot`. `mailbox.destroy_slot` and  

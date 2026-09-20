@@ -76,7 +76,7 @@ pub inline fn reset(node: *PolyNode) void {
 /// Not a membership test. The only member of a list has no neighbours,
 /// so this returns false for it.
 ///
-/// Every `!is_linked` assert in the toolkit inherits that blind spot.
+/// Every `!is_linked` check in the toolkit inherits that blind spot.
 ///
 /// - It catches the multi-element case.
 /// - That is where most double-sends land.
@@ -140,7 +140,7 @@ pub fn PolyHelper(comptime T: type) type {
             ///
             /// Panics on type mismatch.
             pub inline fn mustFromPoly(node: *PolyNode) *T {
-                return fromPoly(node) orelse unreachable;
+                return fromPoly(node) orelse @panic("mustFromPoly: the item is of another type");
             }
 
             /// Reach the PolyNode embedded in T.
@@ -165,7 +165,7 @@ pub fn PolyHelper(comptime T: type) type {
             ///
             /// Panics on failure.
             pub inline fn mustFromSlot(slot: *const Slot) *T {
-                return fromSlot(slot) orelse unreachable;
+                return fromSlot(slot) orelse @panic("mustFromSlot: the Slot is empty or contains another type");
             }
 
             /// Takes T out of the Slot.
@@ -174,13 +174,13 @@ pub fn PolyHelper(comptime T: type) type {
             /// On success the Slot is left empty.\
             /// On failure the Slot is unchanged.
             ///
-            /// Asserts the item has no neighbours. Take it out of its list
+            /// Checks the item has no neighbours. Take it out of its list
             /// first.
             pub inline fn moveFromSlot(slot: *Slot) ?*T {
                 const node = slot.* orelse return null;
                 const item = fromPoly(node) orelse return null;
 
-                std.debug.assert(!is_linked(node));
+                check(!is_linked(node), "an item crosses the border unlinked");
 
                 slot.* = null;
 
@@ -202,7 +202,7 @@ pub fn PolyHelper(comptime T: type) type {
                 allocator: std.mem.Allocator,
                 slot: *Slot,
             ) !void {
-                std.debug.assert(slot.* == null);
+                check(slot.* == null, "an acquisition needs an empty Slot on entry");
 
                 const item = try allocator.create(T);
                 item.* = .{};
@@ -216,7 +216,7 @@ pub fn PolyHelper(comptime T: type) type {
             /// Does nothing if the Slot is empty. Safe as a defer target
             /// placed before the item exists.
             ///
-            /// Asserts the item has no neighbours.
+            /// Checks the item has no neighbours.
             ///
             /// The Slot is emptied before the item is released. A second
             /// destroy on the same Slot then does nothing.
@@ -226,10 +226,10 @@ pub fn PolyHelper(comptime T: type) type {
             ) void {
                 const poly = slot.* orelse return;
 
-                std.debug.assert(!is_linked(poly));
+                check(!is_linked(poly), "an item crosses the border unlinked");
 
                 const item = Self.fromPoly(poly);
-                std.debug.assert(item != null);
+                check(item != null, "destroy: the Slot contains another type");
 
                 // Clear the Slot before releasing the item.
                 slot.* = null;
@@ -266,7 +266,7 @@ pub fn PolyHelper(comptime T: type) type {
             ///
             /// Panics on type mismatch.
             pub inline fn mustFromPoly(node: *PolyNode) *T {
-                return fromPoly(node) orelse unreachable;
+                return fromPoly(node) orelse @panic("mustFromPoly: the item is of another type");
             }
 
             /// Reach the PolyNode embedded in T.
@@ -291,7 +291,7 @@ pub fn PolyHelper(comptime T: type) type {
             ///
             /// Panics on failure.
             pub inline fn mustFromSlot(slot: *const Slot) *T {
-                return fromSlot(slot) orelse unreachable;
+                return fromSlot(slot) orelse @panic("mustFromSlot: the Slot is empty or contains another type");
             }
 
             /// Takes T out of the Slot.
@@ -300,13 +300,13 @@ pub fn PolyHelper(comptime T: type) type {
             /// On success the Slot is left empty.\
             /// On failure the Slot is unchanged.
             ///
-            /// Asserts the item has no neighbours. Take it out of its list
+            /// Checks the item has no neighbours. Take it out of its list
             /// first.
             pub inline fn moveFromSlot(slot: *Slot) ?*T {
                 const node = slot.* orelse return null;
                 const item = fromPoly(node) orelse return null;
 
-                std.debug.assert(!is_linked(node));
+                check(!is_linked(node), "an item crosses the border unlinked");
 
                 slot.* = null;
 
@@ -334,7 +334,7 @@ fn validatePolyType(comptime T: type) void {
 
 /// Relatively safe double linked list of ItemHandle
 ///
-/// Under runtime safety every insert asserts twice on the new item.
+/// Under runtime safety every insert checks twice on the new item.
 ///
 /// - This list does not already contain it. A walk, comparing addresses.
 /// - The item has no neighbours. A read of the item.
@@ -371,10 +371,10 @@ pub const ItemList = struct {
 
     /// Takes one item out, wherever it sits.
     ///
-    /// Asserts the item is in this list.\
+    /// Checks the item is in this list.\
     /// The removed item is never linked — reset() is called for you.
     pub inline fn remove(self: *ItemList, ih: ItemHandle) void {
-        if (std.debug.runtime_safety) std.debug.assert(self._holds(ih));
+        if (std.debug.runtime_safety) check(self._holds(ih), "remove: the item is not in this list");
         self._list.remove(&ih.node);
         reset(ih);
     }
@@ -406,7 +406,7 @@ pub const ItemList = struct {
         return false;
     }
 
-    /// Asserts the item can be inserted into this list.
+    /// Checks the item can be inserted into this list.
     ///
     /// _holds sees this list. is_linked sees any list, except the one
     /// containing it alone. Neither is complete. Together they cover more.
@@ -414,8 +414,8 @@ pub const ItemList = struct {
     /// std.DoublyLinkedList checks nothing. This is where it is checked.
     inline fn _checkInsert(self: *const ItemList, ih: ItemHandle) void {
         if (std.debug.runtime_safety) {
-            std.debug.assert(!self._holds(ih));
-            std.debug.assert(!is_linked(ih));
+            check(!self._holds(ih), "the item is already in this list");
+            check(!is_linked(ih), "the item is already on a list");
         }
     }
 
@@ -433,32 +433,32 @@ pub const ItemList = struct {
 
     /// Adds the item at the end and empties the Slot.
     ///
-    /// Asserts the Slot is not empty. An append is not a defer target, so it
+    /// Checks the Slot is not empty. An append is not a defer target, so it
     /// follows a send rather than a put.
     pub fn appendFromSlot(self: *ItemList, slot: *Slot) void {
-        std.debug.assert(slot.* != null);
+        check(slot.* != null, "appendFromSlot from an empty Slot");
         self.append(slot.*.?);
         slot.* = null;
     }
 
     /// Adds the item at the front and empties the Slot.
     ///
-    /// Asserts the Slot is not empty. A prepend is not a defer target, so it
+    /// Checks the Slot is not empty. A prepend is not a defer target, so it
     /// follows a send rather than a put.
     pub fn prependFromSlot(self: *ItemList, slot: *Slot) void {
-        std.debug.assert(slot.* != null);
+        check(slot.* != null, "prependFromSlot from an empty Slot");
         self.prepend(slot.*.?);
         slot.* = null;
     }
 
     /// Adds the item right after one already in the list.
     ///
-    /// Also asserts `existing` is in this list, and is not the item being
+    /// Also checks `existing` is in this list, and is not the item being
     /// inserted.
     pub inline fn insertAfter(self: *ItemList, existing: ItemHandle, ih: ItemHandle) void {
         if (std.debug.runtime_safety) {
-            std.debug.assert(existing != ih);
-            std.debug.assert(self._holds(existing));
+            check(existing != ih, "insert relative to the item itself");
+            check(self._holds(existing), "the reference item is not in this list");
         }
         self._checkInsert(ih);
         self._list.insertAfter(&existing.node, &ih.node);
@@ -466,12 +466,12 @@ pub const ItemList = struct {
 
     /// Adds the item right before one already in the list.
     ///
-    /// Also asserts `existing` is in this list, and is not the item being
+    /// Also checks `existing` is in this list, and is not the item being
     /// inserted.
     pub inline fn insertBefore(self: *ItemList, existing: ItemHandle, ih: ItemHandle) void {
         if (std.debug.runtime_safety) {
-            std.debug.assert(existing != ih);
-            std.debug.assert(self._holds(existing));
+            check(existing != ih, "insert relative to the item itself");
+            check(self._holds(existing), "the reference item is not in this list");
         }
         self._checkInsert(ih);
         self._list.insertBefore(&existing.node, &ih.node);
@@ -503,12 +503,12 @@ pub const ItemList = struct {
     ///
     /// `other` is left empty.
     ///
-    /// Asserts `other` is not this list, then returns early on the same list
-    /// twice. Outside safety builds the assert is unreachable, and
-    /// concatByMoving would ring the items and clear the header, losing every
-    /// one of them.
+    /// Checks `other` is not this list, then returns early on the same list
+    /// twice. The check is compiled out of fast builds; the early return is
+    /// what saves them, because concatByMoving would ring the items and clear
+    /// the header, losing every one of them.
     pub inline fn concat(self: *ItemList, other: *ItemList) void {
-        std.debug.assert(self != other);
+        check(self != other, "a list cannot be moved onto itself");
         if (self == other) return;
         self._list.concatByMoving(&other._list);
     }
@@ -517,13 +517,13 @@ pub const ItemList = struct {
     ///
     /// The source is left empty. O(1).
     ///
-    /// Asserts the std header passed to it is consistent — first and last both
+    /// Checks the std header passed to it is consistent — first and last both
     /// null, or both set.
     ///
     /// There is no copy form. A header copy aliases the same items.
     pub fn moveFromList(list: *std.DoublyLinkedList) ItemList {
         if (std.debug.runtime_safety)
-            std.debug.assert((list.first == null) == (list.last == null));
+            check((list.first == null) == (list.last == null), "the std list header is inconsistent");
 
         const moved: ItemList = .{ ._list = list.* };
         list.* = .{};
@@ -566,10 +566,11 @@ pub const ItemList = struct {
     /// std.DoublyLinkedList.popFirst does not clear the links.
     /// ItemList.popFirst does.
     ///
-    /// Skipping reset gives false positives from is_linked, and assert
+    /// Skipping reset gives false positives from is_linked, and check
     /// failures in the mailbox and pool guards.
     ///
     _list: std.DoublyLinkedList = .{},
 };
 
+const check = @import("internal/check.zig").check;
 const std = @import("std");

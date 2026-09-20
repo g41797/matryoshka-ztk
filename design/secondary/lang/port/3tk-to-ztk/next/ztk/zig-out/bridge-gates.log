@@ -1,0 +1,1458 @@
+Sun Sep 20 04:18:26 PM IDT 2026
+Build Summary: 3/3 steps succeeded
+install success
++- install matryoshka success
+   +- compile lib matryoshka Debug native cached 8ms MaxRSS:41M
+
+test
++- run test w
+[default] (info): received Event code=53
+[default] (info): received Sensor value=5.3
+[default] (debug): worker: Event code=1
+[default] (info): worker loop: processed=1 remaining=4 event_sum=1 sensor_sum=0.0
+[default] (info): OOB signal value=-1.0
+[default] (info): event code=1
+[default] (info): event code=2
+[default] (info): event code=3
+[default] (info): pipeline: result=0
+[default] (info): pipeline: result=1
+[default] (info): pipeline: result=4
+[default] (info): pipeline: result=9
+[default] (info): pipeline: result=16
+[default] (info): pipeline: count=5 sum=30
+[default] (debug): worker: request code=42
+[default] (info): request_response: response code=1042
+[default] (info): fan-in: sent=14 events=7 sensors=7
+[default] (info): shutdown cleanup: freed 8 items
+[default] (info): batch: first=2 batch=8 total=10
+[default] (info): fan-out: a=5 b=1 c=1 remaining=2
+[default] (debug): worker: Event code=10
+[default] (debug): worker: Event code=20
+[default] (debug): worker: Event code=30
+[default] (info): worker: ShutdownCommand received, exiting cleanly
+[default] (info): shutdown_exit: worker processed 3 items before ShutdownCommand
+[default] (info): wake up all: worker woke on error.Wakeup, saw shutdown flag, exited
+[default] (info): send refused, the Slot still holds the outer
+[default] (info): third Event refused: limit 2 reached
+[default] (info): got fresh Event, set code=89
+[default] (info): returned Event to pool
+[default] (info): recycled Event code=0
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (info): capped pool (cap=2): 0 outers remain after 4 tasks x 8 iterations
+[default] (info): seeded 5 Sensors into pool
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): pool holds 4 Events before teardown
+[default] (info): pool closed: on_close released all 4 outers
+[default] (info): one put stored the composite and both parts
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: worker done
+[default] (info): master: sending Event code=1
+[default] (info): master: sending Event code=2
+[default] (info): master: sending Event code=3
+[default] (info): master: worker stopped
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: all workers done
+[default] (info): producer: sent Event code=1
+[default] (info): producer: sent Event code=2
+[default] (info): producer: sent Event code=3
+[default] (info): producer: sent ShutdownCommand sentinel
+[default] (info): transformer: Event→Sensor value=1
+[default] (info): consumer: Sensor value=1 (total=1)
+[default] (info): transformer: Event→Sensor value=2
+[default] (info): consumer: Sensor value=2 (total=2)
+[default] (info): transformer: Event→Sensor value=3
+[default] (info): transformer: forwarded ShutdownCommand, done
+[default] (info): consumer: Sensor value=3 (total=3)
+[default] (info): consumer: ShutdownCommand received, done
+[default] (info): pipeline done: consumer received 3 items
+[default] (info): master A: sent Event code=42 request to B
+[default] (info): master B: received Event code=42, computing response
+[default] (info): master B: sent Sensor response value=42
+[default] (info): master A: received Sensor response value=42
+[default] (info): request-response done: both masters completed
+[default] (info): worker: Event code=1 (event 1)
+[default] (info): worker: Event code=2 (event 2)
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 2 events, 2 timer ticks — id dispatch via single mailbox
+[default] (info): sent 3 Events (regular) + 1 ShutdownCommand (OOB)
+[default] (info): received OOB ShutdownCommand (first, as expected)
+[default] (info): received Event code=1 (event 1/3)
+[default] (info): received Event code=2 (event 2/3)
+[default] (info): received Event code=3 (event 3/3)
+[default] (info): OOB ordering verified: shutdown came first, then 3 events
+[default] (info): worker: Event code=1
+[default] (info): worker: Event code=2
+[default] (info): worker: Event code=3
+[default] (info): worker: ShutdownCommand signal
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 3 events, 2 timer ticks, 1 signals — fan-in to one mailbox
+[default] (info): timer: triggered — seeding both mailboxes and re-spawning longer timer
+[default] (info): inbox1: Event code=1
+[default] (info): inbox2: Event code=2
+[default] (info): done: timer triggered first; then received from both mailboxes
+[default] (info): timer: canceling both inbox sources
+[default] (info): inbox1: .canceled
+[default] (info): inbox2: .canceled
+[default] (info): done: timer triggered, sel.cancel() stopped both inbox sources
+[default] (info): timer: making per-source decisions
+[default] (info): inbox2: canceled — master will continue using mbx2
+[default] (info): inbox1: stopped — master closes mbx1
+[default] (info): inbox2 phase2: item code=10
+[default] (info): inbox2 phase2: item code=11
+[default] (info): done: mbx1 closed; mbx2 continued with 2 items in phase 2
+[default] (info): receive: .Timeout (retry 1)
+[default] (info): receive: .Timeout (retry 2)
+[default] (info): receive after send: code=9
+[default] (info): done: 2 timeouts then 1 successful receive
+[default] (info): Pool.get: code=42 ptr=items.Event@7facb8720020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): pool_ev: Sensor value=0 (1/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): pool_ev: Sensor value=0 (2/2)
+[default] (info): done: inbox=2, pool=2, ticks=0
+[default] (info): inbox: Event code=1
+[default] (info): pool_ev: item received
+[default] (info): inbox: Event code=2
+[default] (info): pool_ev: item received
+[default] (info): inbox: ShutdownCommand — initiating graceful shutdown
+[default] (info): graceful cancel: recycled pool item
+[default] (info): done: events=2, freed_inbox=0, recycled_pool=1
+[default] (info): Pool.get: code=42 ptr=items.Event@7facb85c0020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): on_get: created Event code=1
+[default] (info): on_put: count<cap → keeping Event code=1
+[default] (info): on_get: created fresh Event code=2
+[default] (info): on_put: count>=cap → releasing Event code=2
+[default] (info): recycled outer: code=0 (reset by on_put) — hooks decided keep/release correctly
+[default] (info): before close: 2 in pool, 1 in mailbox
+[default] (info): Pool.close: on_close released 2 pool outers
+[default] (info): Mbox.close: walked queue, released 1 mailbox outers
+[default] (info): done: close pool-then-mailbox — 2+1 outers cleaned up, no leaks
+[default] (info): before close: 1 outer in pool, 1 outer in mailbox
+[default] (info): mailbox close queue: returning outer to pool (code=2)
+[default] (info): pool now has 2 outers — Pool.close will release all via on_close
+[default] (info): Pool.get: code=7
+[default] (info): Mbox.receive: code=7 — pool→mailbox→pool flow complete
+[default] (info): before collect: 2 in mailbox_a, 3 in mailbox_b
+[default] (info): concat: combined queue has 5 outers
+[default] (info): done: 5 items from 2 mailboxes — Queue.concat + popFirst walk
+[default] (info): inbox: Event code=1 (1/3)
+[default] (info): inbox: Event code=2 (2/3)
+[default] (info): inbox: Event code=3 (3/3)
+[default] (info): done: 3 items, 0 timer ticks
+[default] (info): direct push: received 99
+[default] (info): done: direct push bypassed concurrent fn path
+[default] (info): timer: closing mailbox while receiveResult is running
+[default] (info): inbox: .closed — Mbox.close propagated into Select
+[default] (info): done: Mbox.close propagated .closed through Select
+[default] (info): timer: canceling Select
+[default] (info): inbox: .canceled — select.cancel propagated through mailbox
+[default] (info): done: sel.cancel() propagated .canceled through matryoshka.receiveResult
+[default] (info): receive_future direct: got Event code=42
+[default] (info): receive_future timeout: got .timeout as expected
+[default] (info): receive_future after timeout: got Event code=5
+[default] (info): receive_future: ConcurrencyUnavailable on single-threaded backend as expected
+[default] (info): synchronous receive still works: code=1
+[default] (info): pool_ev: filled container with cycle=0
+[default] (info): pool_ev: filled container with cycle=1
+[default] (info): pool_ev: filled container with cycle=2
+[default] (info): pool_ev: filled container with cycle=3
+[default] (info): pool_ev: filled container with cycle=4
+[default] (info): pool_ev: filled container with cycle=5
+[default] (info): done: 6 cycles driven by Master counter — pool items were empty containers
+[default] (info): master: dispatching job 0 (code=10) to worker 0
+[default] (info): worker 0: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20) to worker 1
+[default] (info): worker 1: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30) to worker 2
+[default] (info): done: 3 jobs dispatched — Master queue → pool containers → worker mailboxes (pool gated)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): pool_ev: Event code=0 (1/1)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=1, ticks=0
+[default] (info): getWaitFuture direct: got Event code=0 (reset by on_put)
+[default] (info): master: filled container with job code=10, sending to worker 0
+[default] (info): master: filled container with job code=20, sending to worker 1
+[default] (info): master: filled container with job code=30, sending to worker 2
+[default] (info): worker: processed job, result code=20
+[default] (info): worker: processed job, result code=40
+[default] (info): worker: processed job, result code=60
+[default] (info): master: result code=20
+[default] (info): master: result code=40
+[default] (info): master: result code=60
+[default] (info): fan-in: 3 results — Master jobs → pool → worker mailboxes → results array → master
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): fan-out: 1 pool seeded with 3 outers → 3 workers each got 1
+[default] (info): producer: get from pool, fill code=1
+[default] (info): consumer: received code=1, same pointer=true
+[default] (info): recycled outer: code=0 (reset by on_put) — pool → producer → mailbox → consumer → pool cycle complete
+[default] (info): worker: cycle 1 — wrote counter into empty container (code=0)
+[default] (info): worker: cycle 2 — wrote counter into empty container (code=1)
+[default] (info): worker: cycle 3 — wrote counter into empty container (code=2)
+[default] (info): done: worker completed 3 cycles — counter=3, pool outer was an empty container, no mailbox needed
+[default] (info): worker 0: wrote task index into empty container (code=0)
+[default] (info): worker 1: wrote task index into empty container (code=1)
+[default] (info): master: 3 workers running, 3 empty containers in pool
+[default] (info): master: all workers stopped via group.cancel
+[default] (info): pool closed: on_close freed any remaining containers — no mailbox needed
+[default] (info): log master: event code=7
+[default] (info): log master: sensor value=2.71
+[default] (info): log master: timer
+[default] (info): log master: 3 lines. count master: 1 events, 1 sensors, 1 unhandled
+[default] (info): master: sent 3 Events + ShutdownCommand to worker
+[default] (info): worker processed Event code=1
+[default] (info): worker processed Event code=2
+[default] (info): worker processed Event code=3
+[default] (info): master: received worker_mbx back — worker finished (processed=3)
+[default] (info): stored inner pool 1 in carrier
+[default] (info): stored inner pool 2 in carrier
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 2 inner pool(s)
+[default] (info): carrier closed: 2 inner pool(s) cleaned up
+[default] (info): channel: received code=103, one still queued for finish
+[default] (info): master: dispatching job 0 (code=10)
+[default] (info): worker: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20)
+[default] (info): worker: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30)
+[default] (info): worker: processed job, result code=60
+[default] (info): master: last result code=0, all 3 jobs complete
+[default] (info): done: 3 jobs — Master list → pool container → mailbox → worker → pool (circular)
+[default] (info): pool_ev: filled container with cycle index=0 (1/6)
+[default] (info): pool_ev: filled container with cycle index=1 (2/6)
+[default] (info): pool_ev: filled container with cycle index=2 (3/6)
+[default] (info): pool_ev: filled container with cycle index=3 (4/6)
+[default] (info): pool_ev: filled container with cycle index=4 (5/6)
+[default] (info): pool_ev: filled container with cycle index=5 (6/6)
+[default] (info): done: 6 cycles scheduled by Master counter, 0 timer ticks — Pool+Select, no mailbox
+[default] (info): pool_ev: processed code=10 (1/2)
+[default] (info): pool_ev: processed code=10 (2/2)
+[default] (info): network: 64 bytes received (1/2)
+[default] (info): network: 64 bytes received (2/2)
+[default] (info): done: pool=2 net=2 — Pool+Select+Network, no mailbox
+[default] (info): pool_ev: processed code=1 (1/2)
+[default] (info): pool_ev: processed code=1 (2/2)
+[default] (info): client 2: sending to mailbox
+[default] (info): client 3: sending to mailbox
+[default] (info): inbox: client item code=2 (1/3)
+[default] (info): client 1: sending to mailbox
+[default] (info): inbox: client item code=3 (2/3)
+[default] (info): inbox: client item code=1 (3/3)
+[default] (info): done: 3 clients → mailbox fan-in; 2 pool items — mailbox needed for independent senders
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+failed command: ./.zig-cache/o/7a41ff00b9d7695de8357f18bf22c2fb/test --cache-dir=./.zig-cache --seed=0xd4c4f525 --listen=-
+
+Build Summary: 5/5 steps succeeded; 201/202 tests passed (1 skipped)
+test success
++- run test 5 pass (5 total) 5ms MaxRSS:4M
+|  +- compile test Debug native cached 9ms MaxRSS:40M
++- run test 196 pass, 1 skip (197 total) 546ms MaxRSS:6M
+   +- compile test Debug native success 6s MaxRSS:477M
+
+Sun Sep 20 04:18:33 PM IDT 2026
+g1=0
+Sun Sep 20 04:18:33 PM IDT 2026
+Build Summary: 3/3 steps succeeded
+install cached
++- install matryoshka cached
+   +- compile lib matryoshka Debug native cached 8ms MaxRSS:41M
+
+test
++- run test w
+[default] (info): received Event code=53
+[default] (info): received Sensor value=5.3
+[default] (debug): worker: Event code=1
+[default] (info): worker loop: processed=1 remaining=4 event_sum=1 sensor_sum=0.0
+[default] (info): OOB signal value=-1.0
+[default] (info): event code=1
+[default] (info): event code=2
+[default] (info): event code=3
+[default] (info): pipeline: result=0
+[default] (info): pipeline: result=1
+[default] (info): pipeline: result=4
+[default] (info): pipeline: result=9
+[default] (info): pipeline: result=16
+[default] (info): pipeline: count=5 sum=30
+[default] (debug): worker: request code=42
+[default] (info): request_response: response code=1042
+[default] (info): fan-in: sent=14 events=7 sensors=7
+[default] (info): shutdown cleanup: freed 8 items
+[default] (info): batch: first=1 batch=9 total=10
+[default] (info): fan-out: a=3 b=1 c=1 remaining=4
+[default] (debug): worker: Event code=10
+[default] (debug): worker: Event code=20
+[default] (debug): worker: Event code=30
+[default] (info): worker: ShutdownCommand received, exiting cleanly
+[default] (info): shutdown_exit: worker processed 3 items before ShutdownCommand
+[default] (info): wake up all: worker woke on error.Wakeup, saw shutdown flag, exited
+[default] (info): send refused, the Slot still holds the outer
+[default] (info): third Event refused: limit 2 reached
+[default] (info): got fresh Event, set code=89
+[default] (info): returned Event to pool
+[default] (info): recycled Event code=0
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (debug): worker: got outer
+[default] (info): capped pool (cap=2): 0 outers remain after 4 tasks x 8 iterations
+[default] (info): seeded 5 Sensors into pool
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): pool holds 4 Events before teardown
+[default] (info): pool closed: on_close released all 4 outers
+[default] (info): one put stored the composite and both parts
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: worker done
+[default] (info): master: sending Event code=1
+[default] (info): master: sending Event code=2
+[default] (info): master: sending Event code=3
+[default] (info): master: worker stopped
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: all workers done
+[default] (info): producer: sent Event code=1
+[default] (info): producer: sent Event code=2
+[default] (info): producer: sent Event code=3
+[default] (info): producer: sent ShutdownCommand sentinel
+[default] (info): transformer: Event→Sensor value=1
+[default] (info): consumer: Sensor value=1 (total=1)
+[default] (info): transformer: Event→Sensor value=2
+[default] (info): transformer: Event→Sensor value=3
+[default] (info): transformer: forwarded ShutdownCommand, done
+[default] (info): consumer: Sensor value=2 (total=2)
+[default] (info): consumer: Sensor value=3 (total=3)
+[default] (info): consumer: ShutdownCommand received, done
+[default] (info): pipeline done: consumer received 3 items
+[default] (info): master A: sent Event code=42 request to B
+[default] (info): master B: received Event code=42, computing response
+[default] (info): master B: sent Sensor response value=42
+[default] (info): master A: received Sensor response value=42
+[default] (info): request-response done: both masters completed
+[default] (info): worker: Event code=1 (event 1)
+[default] (info): worker: Event code=2 (event 2)
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 2 events, 2 timer ticks — id dispatch via single mailbox
+[default] (info): sent 3 Events (regular) + 1 ShutdownCommand (OOB)
+[default] (info): received OOB ShutdownCommand (first, as expected)
+[default] (info): received Event code=1 (event 1/3)
+[default] (info): received Event code=2 (event 2/3)
+[default] (info): received Event code=3 (event 3/3)
+[default] (info): OOB ordering verified: shutdown came first, then 3 events
+[default] (info): worker: Event code=1
+[default] (info): worker: Event code=2
+[default] (info): worker: Event code=3
+[default] (info): worker: ShutdownCommand signal
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 3 events, 2 timer ticks, 1 signals — fan-in to one mailbox
+[default] (info): timer: triggered — seeding both mailboxes and re-spawning longer timer
+[default] (info): inbox1: Event code=1
+[default] (info): inbox2: Event code=2
+[default] (info): done: timer triggered first; then received from both mailboxes
+[default] (info): timer: canceling both inbox sources
+[default] (info): inbox2: .canceled
+[default] (info): inbox1: .canceled
+[default] (info): done: timer triggered, sel.cancel() stopped both inbox sources
+[default] (info): timer: making per-source decisions
+[default] (info): inbox2: canceled — master will continue using mbx2
+[default] (info): inbox1: stopped — master closes mbx1
+[default] (info): inbox2 phase2: item code=10
+[default] (info): inbox2 phase2: item code=11
+[default] (info): done: mbx1 closed; mbx2 continued with 2 items in phase 2
+[default] (info): receive: .Timeout (retry 1)
+[default] (info): receive: .Timeout (retry 2)
+[default] (info): receive after send: code=9
+[default] (info): done: 2 timeouts then 1 successful receive
+[default] (info): Pool.get: code=42 ptr=items.Event@7fc2eb480020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): pool_ev: Sensor value=0 (1/2)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): pool_ev: Sensor value=0 (2/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=2, ticks=0
+[default] (info): pool_ev: item received
+[default] (info): inbox: Event code=1
+[default] (info): pool_ev: item received
+[default] (info): inbox: Event code=2
+[default] (info): pool_ev: item received
+[default] (info): inbox: ShutdownCommand — initiating graceful shutdown
+[default] (info): graceful cancel: recycled pool item
+[default] (info): done: events=2, freed_inbox=0, recycled_pool=1
+[default] (info): Pool.get: code=42 ptr=items.Event@7fc2eb440020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): on_get: created Event code=1
+[default] (info): on_put: count<cap → keeping Event code=1
+[default] (info): on_get: created fresh Event code=2
+[default] (info): on_put: count>=cap → releasing Event code=2
+[default] (info): recycled outer: code=0 (reset by on_put) — hooks decided keep/release correctly
+[default] (info): before close: 2 in pool, 1 in mailbox
+[default] (info): Pool.close: on_close released 2 pool outers
+[default] (info): Mbox.close: walked queue, released 1 mailbox outers
+[default] (info): done: close pool-then-mailbox — 2+1 outers cleaned up, no leaks
+[default] (info): before close: 1 outer in pool, 1 outer in mailbox
+[default] (info): mailbox close queue: returning outer to pool (code=2)
+[default] (info): pool now has 2 outers — Pool.close will release all via on_close
+[default] (info): Pool.get: code=7
+[default] (info): Mbox.receive: code=7 — pool→mailbox→pool flow complete
+[default] (info): before collect: 2 in mailbox_a, 3 in mailbox_b
+[default] (info): concat: combined queue has 5 outers
+[default] (info): done: 5 items from 2 mailboxes — Queue.concat + popFirst walk
+[default] (info): inbox: Event code=1 (1/3)
+[default] (info): inbox: Event code=2 (2/3)
+[default] (info): inbox: Event code=3 (3/3)
+[default] (info): done: 3 items, 0 timer ticks
+[default] (info): direct push: received 99
+[default] (info): done: direct push bypassed concurrent fn path
+[default] (info): timer: closing mailbox while receiveResult is running
+[default] (info): inbox: .closed — Mbox.close propagated into Select
+[default] (info): done: Mbox.close propagated .closed through Select
+[default] (info): timer: canceling Select
+[default] (info): inbox: .canceled — select.cancel propagated through mailbox
+[default] (info): done: sel.cancel() propagated .canceled through matryoshka.receiveResult
+[default] (info): receive_future direct: got Event code=42
+[default] (info): receive_future timeout: got .timeout as expected
+[default] (info): receive_future after timeout: got Event code=5
+[default] (info): receive_future: ConcurrencyUnavailable on single-threaded backend as expected
+[default] (info): synchronous receive still works: code=1
+[default] (info): pool_ev: filled container with cycle=0
+[default] (info): pool_ev: filled container with cycle=1
+[default] (info): pool_ev: filled container with cycle=2
+[default] (info): pool_ev: filled container with cycle=3
+[default] (info): pool_ev: filled container with cycle=4
+[default] (info): pool_ev: filled container with cycle=5
+[default] (info): done: 6 cycles driven by Master counter — pool items were empty containers
+[default] (info): master: dispatching job 0 (code=10) to worker 0
+[default] (info): worker 0: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20) to worker 1
+[default] (info): worker 1: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30) to worker 2
+[default] (info): done: 3 jobs dispatched — Master queue → pool containers → worker mailboxes (pool gated)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): pool_ev: Event code=0 (1/1)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=1, ticks=0
+[default] (info): getWaitFuture direct: got Event code=0 (reset by on_put)
+[default] (info): master: filled container with job code=10, sending to worker 0
+[default] (info): master: filled container with job code=20, sending to worker 1
+[default] (info): master: filled container with job code=30, sending to worker 2
+[default] (info): worker: processed job, result code=20
+[default] (info): worker: processed job, result code=40
+[default] (info): worker: processed job, result code=60
+[default] (info): master: result code=20
+[default] (info): master: result code=40
+[default] (info): master: result code=60
+[default] (info): fan-in: 3 results — Master jobs → pool → worker mailboxes → results array → master
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): fan-out: 1 pool seeded with 3 outers → 3 workers each got 1
+[default] (info): producer: get from pool, fill code=1
+[default] (info): consumer: received code=1, same pointer=true
+[default] (info): recycled outer: code=0 (reset by on_put) — pool → producer → mailbox → consumer → pool cycle complete
+[default] (info): worker: cycle 1 — wrote counter into empty container (code=0)
+[default] (info): worker: cycle 2 — wrote counter into empty container (code=1)
+[default] (info): worker: cycle 3 — wrote counter into empty container (code=2)
+[default] (info): done: worker completed 3 cycles — counter=3, pool outer was an empty container, no mailbox needed
+[default] (info): worker 0: wrote task index into empty container (code=0)
+[default] (info): worker 1: wrote task index into empty container (code=1)
+[default] (info): master: 3 workers running, 3 empty containers in pool
+[default] (info): master: all workers stopped via group.cancel
+[default] (info): pool closed: on_close freed any remaining containers — no mailbox needed
+[default] (info): log master: event code=7
+[default] (info): log master: sensor value=2.71
+[default] (info): log master: timer
+[default] (info): log master: 3 lines. count master: 1 events, 1 sensors, 1 unhandled
+[default] (info): master: sent 3 Events + ShutdownCommand to worker
+[default] (info): worker processed Event code=1
+[default] (info): worker processed Event code=2
+[default] (info): worker processed Event code=3
+[default] (info): master: received worker_mbx back — worker finished (processed=3)
+[default] (info): stored inner pool 1 in carrier
+[default] (info): stored inner pool 2 in carrier
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 2 inner pool(s)
+[default] (info): carrier closed: 2 inner pool(s) cleaned up
+[default] (info): channel: received code=103, one still queued for finish
+[default] (info): master: dispatching job 0 (code=10)
+[default] (info): worker: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20)
+[default] (info): worker: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30)
+[default] (info): worker: processed job, result code=60
+[default] (info): master: last result code=0, all 3 jobs complete
+[default] (info): done: 3 jobs — Master list → pool container → mailbox → worker → pool (circular)
+[default] (info): pool_ev: filled container with cycle index=0 (1/6)
+[default] (info): pool_ev: filled container with cycle index=1 (2/6)
+[default] (info): pool_ev: filled container with cycle index=2 (3/6)
+[default] (info): pool_ev: filled container with cycle index=3 (4/6)
+[default] (info): pool_ev: filled container with cycle index=4 (5/6)
+[default] (info): pool_ev: filled container with cycle index=5 (6/6)
+[default] (info): done: 6 cycles scheduled by Master counter, 0 timer ticks — Pool+Select, no mailbox
+[default] (info): pool_ev: processed code=10 (1/2)
+[default] (info): pool_ev: processed code=10 (2/2)
+[default] (info): network: 64 bytes received (1/2)
+[default] (info): network: 64 bytes received (2/2)
+[default] (info): done: pool=2 net=2 — Pool+Select+Network, no mailbox
+[default] (info): pool_ev: processed code=1 (1/2)
+[default] (info): pool_ev: processed code=1 (2/2)
+[default] (info): client 2: sending to mailbox
+[default] (info): client 3: sending to mailbox
+[default] (info): inbox: client item code=2 (1/3)
+[default] (info): inbox: client item code=3 (2/3)
+[default] (info): client 1: sending to mailbox
+[default] (info): inbox: client item code=1 (3/3)
+[default] (info): done: 3 clients → mailbox fan-in; 2 pool items — mailbox needed for independent senders
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+failed command: ./.zig-cache/o/7a41ff00b9d7695de8357f18bf22c2fb/test --cache-dir=./.zig-cache --seed=0xee3aa4a2 --listen=-
+
+Build Summary: 5/5 steps succeeded; 201/202 tests passed (1 skipped)
+test success
++- run test 5 pass (5 total) 5ms MaxRSS:5M
+|  +- compile test Debug native cached 10ms MaxRSS:40M
++- run test 196 pass, 1 skip (197 total) 547ms MaxRSS:6M
+   +- compile test Debug native cached 10ms MaxRSS:40M
+
+test
++- run test w
+[default] (info): received Event code=53
+[default] (info): received Sensor value=5.3
+[default] (info): worker loop: processed=1 remaining=4 event_sum=1 sensor_sum=0.0
+[default] (info): OOB signal value=-1.0
+[default] (info): event code=1
+[default] (info): event code=2
+[default] (info): event code=3
+[default] (info): pipeline: result=0
+[default] (info): pipeline: result=1
+[default] (info): pipeline: result=4
+[default] (info): pipeline: result=9
+[default] (info): pipeline: result=16
+[default] (info): pipeline: count=5 sum=30
+[default] (info): request_response: response code=1042
+[default] (info): fan-in: sent=14 events=7 sensors=7
+[default] (info): shutdown cleanup: freed 8 items
+[default] (info): batch: first=1 batch=9 total=10
+[default] (info): fan-out: a=1 b=1 c=1 remaining=6
+[default] (info): worker: ShutdownCommand received, exiting cleanly
+[default] (info): shutdown_exit: worker processed 3 items before ShutdownCommand
+[default] (info): wake up all: worker woke on error.Wakeup, saw shutdown flag, exited
+[default] (info): send refused, the Slot still holds the outer
+[default] (info): third Event refused: limit 2 reached
+[default] (info): got fresh Event, set code=89
+[default] (info): returned Event to pool
+[default] (info): recycled Event code=0
+[default] (info): capped pool (cap=2): 0 outers remain after 4 tasks x 8 iterations
+[default] (info): seeded 5 Sensors into pool
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): pool holds 4 Events before teardown
+[default] (info): pool closed: on_close released all 4 outers
+[default] (info): one put stored the composite and both parts
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: worker done
+[default] (info): master: sending Event code=1
+[default] (info): master: sending Event code=2
+[default] (info): master: sending Event code=3
+[default] (info): master: worker stopped
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: all workers done
+[default] (info): producer: sent Event code=1
+[default] (info): producer: sent Event code=2
+[default] (info): producer: sent Event code=3
+[default] (info): producer: sent ShutdownCommand sentinel
+[default] (info): transformer: Event→Sensor value=1
+[default] (info): transformer: Event→Sensor value=2
+[default] (info): consumer: Sensor value=1 (total=1)
+[default] (info): transformer: Event→Sensor value=3
+[default] (info): transformer: forwarded ShutdownCommand, done
+[default] (info): consumer: Sensor value=2 (total=2)
+[default] (info): consumer: Sensor value=3 (total=3)
+[default] (info): consumer: ShutdownCommand received, done
+[default] (info): pipeline done: consumer received 3 items
+[default] (info): master A: sent Event code=42 request to B
+[default] (info): master B: received Event code=42, computing response
+[default] (info): master B: sent Sensor response value=42
+[default] (info): master A: received Sensor response value=42
+[default] (info): request-response done: both masters completed
+[default] (info): worker: Event code=1 (event 1)
+[default] (info): worker: Event code=2 (event 2)
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 2 events, 2 timer ticks — id dispatch via single mailbox
+[default] (info): sent 3 Events (regular) + 1 ShutdownCommand (OOB)
+[default] (info): received OOB ShutdownCommand (first, as expected)
+[default] (info): received Event code=1 (event 1/3)
+[default] (info): received Event code=2 (event 2/3)
+[default] (info): received Event code=3 (event 3/3)
+[default] (info): OOB ordering verified: shutdown came first, then 3 events
+[default] (info): worker: ShutdownCommand signal
+[default] (info): worker: Event code=1
+[default] (info): worker: Event code=2
+[default] (info): worker: Event code=3
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 3 events, 2 timer ticks, 1 signals — fan-in to one mailbox
+[default] (info): timer: triggered — seeding both mailboxes and re-spawning longer timer
+[default] (info): inbox1: Event code=1
+[default] (info): inbox2: Event code=2
+[default] (info): done: timer triggered first; then received from both mailboxes
+[default] (info): timer: canceling both inbox sources
+[default] (info): inbox1: .canceled
+[default] (info): inbox2: .canceled
+[default] (info): done: timer triggered, sel.cancel() stopped both inbox sources
+[default] (info): timer: making per-source decisions
+[default] (info): inbox1: stopped — master closes mbx1
+[default] (info): inbox2: canceled — master will continue using mbx2
+[default] (info): inbox2 phase2: item code=10
+[default] (info): inbox2 phase2: item code=11
+[default] (info): done: mbx1 closed; mbx2 continued with 2 items in phase 2
+[default] (info): receive: .Timeout (retry 1)
+[default] (info): receive: .Timeout (retry 2)
+[default] (info): receive after send: code=9
+[default] (info): done: 2 timeouts then 1 successful receive
+[default] (info): Pool.get: code=42 ptr=items.Event@7ffa188a0020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): pool_ev: Sensor value=0 (1/2)
+[default] (info): pool_ev: Sensor value=0 (2/2)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=2, ticks=0
+[default] (info): pool_ev: item received
+[default] (info): pool_ev: item received
+[default] (info): pool_ev: item received
+[default] (info): inbox: Event code=1
+[default] (info): pool_ev: item received
+[default] (info): pool_ev: item received
+[default] (info): inbox: Event code=2
+[default] (info): pool_ev: item received
+[default] (info): pool_ev: item received
+[default] (info): inbox: ShutdownCommand — initiating graceful shutdown
+[default] (info): graceful cancel: recycled pool item
+[default] (info): done: events=2, freed_inbox=0, recycled_pool=1
+[default] (info): Pool.get: code=42 ptr=items.Event@7ffa1aa80020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): on_get: created Event code=1
+[default] (info): on_put: count<cap → keeping Event code=1
+[default] (info): on_get: created fresh Event code=2
+[default] (info): on_put: count>=cap → releasing Event code=2
+[default] (info): recycled outer: code=0 (reset by on_put) — hooks decided keep/release correctly
+[default] (info): before close: 2 in pool, 1 in mailbox
+[default] (info): Pool.close: on_close released 2 pool outers
+[default] (info): Mbox.close: walked queue, released 1 mailbox outers
+[default] (info): done: close pool-then-mailbox — 2+1 outers cleaned up, no leaks
+[default] (info): before close: 1 outer in pool, 1 outer in mailbox
+[default] (info): mailbox close queue: returning outer to pool (code=2)
+[default] (info): pool now has 2 outers — Pool.close will release all via on_close
+[default] (info): Pool.get: code=7
+[default] (info): Mbox.receive: code=7 — pool→mailbox→pool flow complete
+[default] (info): before collect: 2 in mailbox_a, 3 in mailbox_b
+[default] (info): concat: combined queue has 5 outers
+[default] (info): done: 5 items from 2 mailboxes — Queue.concat + popFirst walk
+[default] (info): inbox: Event code=1 (1/3)
+[default] (info): inbox: Event code=2 (2/3)
+[default] (info): inbox: Event code=3 (3/3)
+[default] (info): done: 3 items, 0 timer ticks
+[default] (info): direct push: received 99
+[default] (info): done: direct push bypassed concurrent fn path
+[default] (info): timer: closing mailbox while receiveResult is running
+[default] (info): inbox: .closed — Mbox.close propagated into Select
+[default] (info): done: Mbox.close propagated .closed through Select
+[default] (info): timer: canceling Select
+[default] (info): inbox: .canceled — select.cancel propagated through mailbox
+[default] (info): done: sel.cancel() propagated .canceled through matryoshka.receiveResult
+[default] (info): receive_future direct: got Event code=42
+[default] (info): receive_future timeout: got .timeout as expected
+[default] (info): receive_future after timeout: got Event code=5
+[default] (info): receive_future: ConcurrencyUnavailable on single-threaded backend as expected
+[default] (info): synchronous receive still works: code=1
+[default] (info): pool_ev: filled container with cycle=0
+[default] (info): pool_ev: filled container with cycle=1
+[default] (info): pool_ev: filled container with cycle=2
+[default] (info): pool_ev: filled container with cycle=3
+[default] (info): pool_ev: filled container with cycle=4
+[default] (info): pool_ev: filled container with cycle=5
+[default] (info): done: 6 cycles driven by Master counter — pool items were empty containers
+[default] (info): master: dispatching job 0 (code=10) to worker 0
+[default] (info): worker 0: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20) to worker 1
+[default] (info): worker 1: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30) to worker 2
+[default] (info): done: 3 jobs dispatched — Master queue → pool containers → worker mailboxes (pool gated)
+[default] (info): pool_ev: Event code=0 (1/1)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=1, ticks=0
+[default] (info): getWaitFuture direct: got Event code=0 (reset by on_put)
+[default] (info): master: filled container with job code=10, sending to worker 0
+[default] (info): master: filled container with job code=20, sending to worker 1
+[default] (info): master: filled container with job code=30, sending to worker 2
+[default] (info): worker: processed job, result code=40
+[default] (info): worker: processed job, result code=20
+[default] (info): worker: processed job, result code=60
+[default] (info): master: result code=20
+[default] (info): master: result code=40
+[default] (info): master: result code=60
+[default] (info): fan-in: 3 results — Master jobs → pool → worker mailboxes → results array → master
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): fan-out: 1 pool seeded with 3 outers → 3 workers each got 1
+[default] (info): producer: get from pool, fill code=1
+[default] (info): consumer: received code=1, same pointer=true
+[default] (info): recycled outer: code=0 (reset by on_put) — pool → producer → mailbox → consumer → pool cycle complete
+[default] (info): worker: cycle 1 — wrote counter into empty container (code=0)
+[default] (info): worker: cycle 2 — wrote counter into empty container (code=1)
+[default] (info): worker: cycle 3 — wrote counter into empty container (code=2)
+[default] (info): done: worker completed 3 cycles — counter=3, pool outer was an empty container, no mailbox needed
+[default] (info): master: 3 workers running, 3 empty containers in pool
+[default] (info): master: all workers stopped via group.cancel
+[default] (info): pool closed: on_close freed any remaining containers — no mailbox needed
+[default] (info): log master: event code=7
+[default] (info): log master: sensor value=2.71
+[default] (info): log master: timer
+[default] (info): log master: 3 lines. count master: 1 events, 1 sensors, 1 unhandled
+[default] (info): master: sent 3 Events + ShutdownCommand to worker
+[default] (info): worker processed Event code=1
+[default] (info): worker processed Event code=2
+[default] (info): worker processed Event code=3
+[default] (info): master: received worker_mbx back — worker finished (processed=3)
+[default] (info): stored inner pool 1 in carrier
+[default] (info): stored inner pool 2 in carrier
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 2 inner pool(s)
+[default] (info): carrier closed: 2 inner pool(s) cleaned up
+[default] (info): channel: received code=103, one still queued for finish
+[default] (info): master: dispatching job 0 (code=10)
+[default] (info): worker: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20)
+[default] (info): worker: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30)
+[default] (info): worker: processed job, result code=60
+[default] (info): master: last result code=0, all 3 jobs complete
+[default] (info): done: 3 jobs — Master list → pool container → mailbox → worker → pool (circular)
+[default] (info): pool_ev: filled container with cycle index=0 (1/6)
+[default] (info): pool_ev: filled container with cycle index=1 (2/6)
+[default] (info): pool_ev: filled container with cycle index=2 (3/6)
+[default] (info): pool_ev: filled container with cycle index=3 (4/6)
+[default] (info): pool_ev: filled container with cycle index=4 (5/6)
+[default] (info): pool_ev: filled container with cycle index=5 (6/6)
+[default] (info): done: 6 cycles scheduled by Master counter, 0 timer ticks — Pool+Select, no mailbox
+[default] (info): pool_ev: processed code=10 (1/2)
+[default] (info): pool_ev: processed code=10 (2/2)
+[default] (info): network: 64 bytes received (1/2)
+[default] (info): network: 64 bytes received (2/2)
+[default] (info): done: pool=2 net=2 — Pool+Select+Network, no mailbox
+[default] (info): pool_ev: processed code=1 (1/2)
+[default] (info): pool_ev: processed code=1 (2/2)
+[default] (info): client 3: sending to mailbox
+[default] (info): client 1: sending to mailbox
+[default] (info): client 2: sending to mailbox
+[default] (info): inbox: client item code=3 (1/3)
+[default] (info): inbox: client item code=1 (2/3)
+[default] (info): inbox: client item code=2 (3/3)
+[default] (info): done: 3 clients → mailbox fan-in; 2 pool items — mailbox needed for independent senders
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+failed command: ./.zig-cache/o/fc962393af9ad95d02baa7f6cb266c7d/test --cache-dir=./.zig-cache --seed=0xd49fb818 --listen=-
+
+Build Summary: 5/5 steps succeeded; 201/202 tests passed (1 skipped)
+test success
++- run test 5 pass (5 total) 4ms MaxRSS:4M
+|  +- compile test ReleaseSafe native cached 9ms MaxRSS:41M
++- run test 196 pass, 1 skip (197 total) 536ms MaxRSS:5M
+   +- compile test ReleaseSafe native success 26s MaxRSS:626M
+
+test
++- run test w
+[default] (info): received Event code=53
+[default] (info): received Sensor value=5.3
+[default] (info): worker loop: processed=0 remaining=5 event_sum=0 sensor_sum=0.0
+[default] (info): OOB signal value=-1.0
+[default] (info): event code=1
+[default] (info): event code=2
+[default] (info): event code=3
+[default] (info): pipeline: result=0
+[default] (info): pipeline: result=1
+[default] (info): pipeline: result=4
+[default] (info): pipeline: result=9
+[default] (info): pipeline: result=16
+[default] (info): pipeline: count=5 sum=30
+[default] (info): request_response: response code=1042
+[default] (info): fan-in: sent=14 events=7 sensors=7
+[default] (info): shutdown cleanup: freed 8 items
+[default] (info): batch: first=1 batch=9 total=10
+[default] (info): fan-out: a=1 b=0 c=7 remaining=1
+[default] (info): worker: ShutdownCommand received, exiting cleanly
+[default] (info): shutdown_exit: worker processed 3 items before ShutdownCommand
+[default] (info): wake up all: worker woke on error.Wakeup, saw shutdown flag, exited
+[default] (info): send refused, the Slot still holds the outer
+[default] (info): third Event refused: limit 2 reached
+[default] (info): got fresh Event, set code=89
+[default] (info): returned Event to pool
+[default] (info): recycled Event code=0
+[default] (info): capped pool (cap=2): 0 outers remain after 4 tasks x 8 iterations
+[default] (info): seeded 5 Sensors into pool
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): pool holds 4 Events before teardown
+[default] (info): pool closed: on_close released all 4 outers
+[default] (info): one put stored the composite and both parts
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: worker done
+[default] (info): master: sending Event code=1
+[default] (info): master: sending Event code=2
+[default] (info): master: sending Event code=3
+[default] (info): master: worker stopped
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: all workers done
+[default] (info): producer: sent Event code=1
+[default] (info): producer: sent Event code=2
+[default] (info): producer: sent Event code=3
+[default] (info): producer: sent ShutdownCommand sentinel
+[default] (info): transformer: Event→Sensor value=1
+[default] (info): transformer: Event→Sensor value=2
+[default] (info): transformer: Event→Sensor value=3
+[default] (info): consumer: Sensor value=1 (total=1)
+[default] (info): consumer: Sensor value=2 (total=2)
+[default] (info): consumer: Sensor value=3 (total=3)
+[default] (info): consumer: ShutdownCommand received, done
+[default] (info): transformer: forwarded ShutdownCommand, done
+[default] (info): pipeline done: consumer received 3 items
+[default] (info): master A: sent Event code=42 request to B
+[default] (info): master B: received Event code=42, computing response
+[default] (info): master B: sent Sensor response value=42
+[default] (info): master A: received Sensor response value=42
+[default] (info): request-response done: both masters completed
+[default] (info): worker: Event code=1 (event 1)
+[default] (info): worker: Event code=2 (event 2)
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 2 events, 2 timer ticks — id dispatch via single mailbox
+[default] (info): sent 3 Events (regular) + 1 ShutdownCommand (OOB)
+[default] (info): received OOB ShutdownCommand (first, as expected)
+[default] (info): received Event code=1 (event 1/3)
+[default] (info): received Event code=2 (event 2/3)
+[default] (info): received Event code=3 (event 3/3)
+[default] (info): OOB ordering verified: shutdown came first, then 3 events
+[default] (info): worker: ShutdownCommand signal
+[default] (info): worker: Event code=1
+[default] (info): worker: Event code=2
+[default] (info): worker: Event code=3
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 3 events, 2 timer ticks, 1 signals — fan-in to one mailbox
+[default] (info): timer: triggered — seeding both mailboxes and re-spawning longer timer
+[default] (info): inbox2: Event code=2
+[default] (info): inbox1: Event code=1
+[default] (info): done: timer triggered first; then received from both mailboxes
+[default] (info): timer: canceling both inbox sources
+[default] (info): inbox2: .canceled
+[default] (info): inbox1: .canceled
+[default] (info): done: timer triggered, sel.cancel() stopped both inbox sources
+[default] (info): timer: making per-source decisions
+[default] (info): inbox2: canceled — master will continue using mbx2
+[default] (info): inbox1: stopped — master closes mbx1
+[default] (info): inbox2 phase2: item code=10
+[default] (info): inbox2 phase2: item code=11
+[default] (info): done: mbx1 closed; mbx2 continued with 2 items in phase 2
+[default] (info): receive: .Timeout (retry 1)
+[default] (info): receive: .Timeout (retry 2)
+[default] (info): receive after send: code=9
+[default] (info): done: 2 timeouts then 1 successful receive
+[default] (info): Pool.get: code=42 ptr=items.Event@7fc6530c0020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): pool_ev: Sensor value=0 (1/2)
+[default] (info): pool_ev: Sensor value=0 (2/2)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=2, ticks=0
+[default] (info): pool_ev: item received
+[default] (info): pool_ev: item received
+[default] (info): inbox: Event code=1
+[default] (info): inbox: Event code=2
+[default] (info): pool_ev: item received
+[default] (info): pool_ev: item received
+[default] (info): inbox: ShutdownCommand — initiating graceful shutdown
+[default] (info): graceful cancel: recycled pool item
+[default] (info): done: events=2, freed_inbox=0, recycled_pool=1
+[default] (info): Pool.get: code=42 ptr=items.Event@7fc6530a0020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): on_get: created Event code=1
+[default] (info): on_put: count<cap → keeping Event code=1
+[default] (info): on_get: created fresh Event code=2
+[default] (info): on_put: count>=cap → releasing Event code=2
+[default] (info): recycled outer: code=0 (reset by on_put) — hooks decided keep/release correctly
+[default] (info): before close: 2 in pool, 1 in mailbox
+[default] (info): Pool.close: on_close released 2 pool outers
+[default] (info): Mbox.close: walked queue, released 1 mailbox outers
+[default] (info): done: close pool-then-mailbox — 2+1 outers cleaned up, no leaks
+[default] (info): before close: 1 outer in pool, 1 outer in mailbox
+[default] (info): mailbox close queue: returning outer to pool (code=2)
+[default] (info): pool now has 2 outers — Pool.close will release all via on_close
+[default] (info): Pool.get: code=7
+[default] (info): Mbox.receive: code=7 — pool→mailbox→pool flow complete
+[default] (info): before collect: 2 in mailbox_a, 3 in mailbox_b
+[default] (info): concat: combined queue has 5 outers
+[default] (info): done: 5 items from 2 mailboxes — Queue.concat + popFirst walk
+[default] (info): inbox: Event code=1 (1/3)
+[default] (info): inbox: Event code=2 (2/3)
+[default] (info): inbox: Event code=3 (3/3)
+[default] (info): done: 3 items, 0 timer ticks
+[default] (info): direct push: received 99
+[default] (info): done: direct push bypassed concurrent fn path
+[default] (info): timer: closing mailbox while receiveResult is running
+[default] (info): inbox: .closed — Mbox.close propagated into Select
+[default] (info): done: Mbox.close propagated .closed through Select
+[default] (info): timer: canceling Select
+[default] (info): inbox: .canceled — select.cancel propagated through mailbox
+[default] (info): done: sel.cancel() propagated .canceled through matryoshka.receiveResult
+[default] (info): receive_future direct: got Event code=42
+[default] (info): receive_future timeout: got .timeout as expected
+[default] (info): receive_future after timeout: got Event code=5
+[default] (info): receive_future: ConcurrencyUnavailable on single-threaded backend as expected
+[default] (info): synchronous receive still works: code=1
+[default] (info): pool_ev: filled container with cycle=0
+[default] (info): pool_ev: filled container with cycle=1
+[default] (info): pool_ev: filled container with cycle=2
+[default] (info): pool_ev: filled container with cycle=3
+[default] (info): pool_ev: filled container with cycle=4
+[default] (info): pool_ev: filled container with cycle=5
+[default] (info): done: 6 cycles driven by Master counter — pool items were empty containers
+[default] (info): master: dispatching job 0 (code=10) to worker 0
+[default] (info): worker 0: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20) to worker 1
+[default] (info): worker 1: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30) to worker 2
+[default] (info): done: 3 jobs dispatched — Master queue → pool containers → worker mailboxes (pool gated)
+[default] (info): pool_ev: Event code=0 (1/1)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=1, ticks=0
+[default] (info): getWaitFuture direct: got Event code=0 (reset by on_put)
+[default] (info): master: filled container with job code=10, sending to worker 0
+[default] (info): master: filled container with job code=20, sending to worker 1
+[default] (info): master: filled container with job code=30, sending to worker 2
+[default] (info): worker: processed job, result code=60
+[default] (info): worker: processed job, result code=40
+[default] (info): worker: processed job, result code=20
+[default] (info): master: result code=20
+[default] (info): master: result code=40
+[default] (info): master: result code=60
+[default] (info): fan-in: 3 results — Master jobs → pool → worker mailboxes → results array → master
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): fan-out: 1 pool seeded with 3 outers → 3 workers each got 1
+[default] (info): producer: get from pool, fill code=1
+[default] (info): consumer: received code=1, same pointer=true
+[default] (info): recycled outer: code=0 (reset by on_put) — pool → producer → mailbox → consumer → pool cycle complete
+[default] (info): worker: cycle 1 — wrote counter into empty container (code=0)
+[default] (info): worker: cycle 2 — wrote counter into empty container (code=1)
+[default] (info): worker: cycle 3 — wrote counter into empty container (code=2)
+[default] (info): done: worker completed 3 cycles — counter=3, pool outer was an empty container, no mailbox needed
+[default] (info): master: 3 workers running, 3 empty containers in pool
+[default] (info): master: all workers stopped via group.cancel
+[default] (info): pool closed: on_close freed any remaining containers — no mailbox needed
+[default] (info): log master: event code=7
+[default] (info): log master: sensor value=2.71
+[default] (info): log master: timer
+[default] (info): log master: 3 lines. count master: 1 events, 1 sensors, 1 unhandled
+[default] (info): master: sent 3 Events + ShutdownCommand to worker
+[default] (info): worker processed Event code=1
+[default] (info): worker processed Event code=2
+[default] (info): worker processed Event code=3
+[default] (info): master: received worker_mbx back — worker finished (processed=3)
+[default] (info): stored inner pool 1 in carrier
+[default] (info): stored inner pool 2 in carrier
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 2 inner pool(s)
+[default] (info): carrier closed: 2 inner pool(s) cleaned up
+[default] (info): channel: received code=103, one still queued for finish
+[default] (info): master: dispatching job 0 (code=10)
+[default] (info): worker: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20)
+[default] (info): worker: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30)
+[default] (info): worker: processed job, result code=60
+[default] (info): master: last result code=0, all 3 jobs complete
+[default] (info): done: 3 jobs — Master list → pool container → mailbox → worker → pool (circular)
+[default] (info): pool_ev: filled container with cycle index=0 (1/6)
+[default] (info): pool_ev: filled container with cycle index=1 (2/6)
+[default] (info): pool_ev: filled container with cycle index=2 (3/6)
+[default] (info): pool_ev: filled container with cycle index=3 (4/6)
+[default] (info): pool_ev: filled container with cycle index=4 (5/6)
+[default] (info): pool_ev: filled container with cycle index=5 (6/6)
+[default] (info): done: 6 cycles scheduled by Master counter, 0 timer ticks — Pool+Select, no mailbox
+[default] (info): pool_ev: processed code=10 (1/2)
+[default] (info): pool_ev: processed code=10 (2/2)
+[default] (info): network: 64 bytes received (1/2)
+[default] (info): network: 64 bytes received (2/2)
+[default] (info): done: pool=2 net=2 — Pool+Select+Network, no mailbox
+[default] (info): pool_ev: processed code=1 (1/2)
+[default] (info): pool_ev: processed code=1 (2/2)
+[default] (info): client 3: sending to mailbox
+[default] (info): client 2: sending to mailbox
+[default] (info): client 1: sending to mailbox
+[default] (info): inbox: client item code=3 (1/3)
+[default] (info): inbox: client item code=2 (2/3)
+[default] (info): inbox: client item code=1 (3/3)
+[default] (info): done: 3 clients → mailbox fan-in; 2 pool items — mailbox needed for independent senders
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+failed command: ./.zig-cache/o/a387e568462e8940feb018737ca445ca/test --cache-dir=./.zig-cache --seed=0x88f5722a --listen=-
+
+Build Summary: 5/5 steps succeeded; 201/202 tests passed (1 skipped)
+test success
++- run test 5 pass (5 total) 2ms MaxRSS:5M
+|  +- compile test ReleaseFast native cached 9ms MaxRSS:41M
++- run test 196 pass, 1 skip (197 total) 534ms MaxRSS:5M
+   +- compile test ReleaseFast native success 31s MaxRSS:644M
+
+test
++- run test w
+[default] (info): received Event code=53
+[default] (info): received Sensor value=5.3
+[default] (info): worker loop: processed=0 remaining=5 event_sum=0 sensor_sum=0.0
+[default] (info): OOB signal value=-1.0
+[default] (info): event code=1
+[default] (info): event code=2
+[default] (info): event code=3
+[default] (info): pipeline: result=0
+[default] (info): pipeline: result=1
+[default] (info): pipeline: result=4
+[default] (info): pipeline: result=9
+[default] (info): pipeline: result=16
+[default] (info): pipeline: count=5 sum=30
+[default] (info): request_response: response code=1042
+[default] (info): fan-in: sent=14 events=7 sensors=7
+[default] (info): shutdown cleanup: freed 8 items
+[default] (info): batch: first=1 batch=9 total=10
+[default] (info): fan-out: a=0 b=0 c=0 remaining=9
+[default] (info): worker: ShutdownCommand received, exiting cleanly
+[default] (info): shutdown_exit: worker processed 3 items before ShutdownCommand
+[default] (info): wake up all: worker woke on error.Wakeup, saw shutdown flag, exited
+[default] (info): send refused, the Slot still holds the outer
+[default] (info): third Event refused: limit 2 reached
+[default] (info): got fresh Event, set code=89
+[default] (info): returned Event to pool
+[default] (info): recycled Event code=0
+[default] (info): capped pool (cap=2): 0 outers remain after 4 tasks x 8 iterations
+[default] (info): seeded 5 Sensors into pool
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): consumed Sensor
+[default] (info): pool holds 4 Events before teardown
+[default] (info): pool closed: on_close released all 4 outers
+[default] (info): one put stored the composite and both parts
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: worker done
+[default] (info): master: sending Event code=1
+[default] (info): master: sending Event code=2
+[default] (info): master: sending Event code=3
+[default] (info): master: worker stopped
+[default] (info): master: sent Event code=1
+[default] (info): master: sent Event code=2
+[default] (info): master: sent Event code=3
+[default] (info): master: all workers done
+[default] (info): producer: sent Event code=1
+[default] (info): producer: sent Event code=2
+[default] (info): producer: sent Event code=3
+[default] (info): producer: sent ShutdownCommand sentinel
+[default] (info): transformer: Event→Sensor value=1
+[default] (info): consumer: Sensor value=1 (total=1)
+[default] (info): consumer: Sensor value=2 (total=2)
+[default] (info): transformer: Event→Sensor value=2
+[default] (info): transformer: Event→Sensor value=3
+[default] (info): transformer: forwarded ShutdownCommand, done
+[default] (info): consumer: Sensor value=3 (total=3)
+[default] (info): consumer: ShutdownCommand received, done
+[default] (info): pipeline done: consumer received 3 items
+[default] (info): master A: sent Event code=42 request to B
+[default] (info): master B: received Event code=42, computing response
+[default] (info): master B: sent Sensor response value=42
+[default] (info): master A: received Sensor response value=42
+[default] (info): request-response done: both masters completed
+[default] (info): worker: Event code=1 (event 1)
+[default] (info): worker: Event code=2 (event 2)
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 2 events, 2 timer ticks — id dispatch via single mailbox
+[default] (info): sent 3 Events (regular) + 1 ShutdownCommand (OOB)
+[default] (info): received OOB ShutdownCommand (first, as expected)
+[default] (info): received Event code=1 (event 1/3)
+[default] (info): received Event code=2 (event 2/3)
+[default] (info): received Event code=3 (event 3/3)
+[default] (info): OOB ordering verified: shutdown came first, then 3 events
+[default] (info): worker: ShutdownCommand signal
+[default] (info): worker: Event code=1
+[default] (info): worker: Event code=2
+[default] (info): worker: Event code=3
+[default] (info): worker: timer tick 1
+[default] (info): worker: timer tick 2
+[default] (info): done: 3 events, 2 timer ticks, 1 signals — fan-in to one mailbox
+[default] (info): timer: triggered — seeding both mailboxes and re-spawning longer timer
+[default] (info): inbox1: Event code=1
+[default] (info): inbox2: Event code=2
+[default] (info): done: timer triggered first; then received from both mailboxes
+[default] (info): timer: canceling both inbox sources
+[default] (info): inbox2: .canceled
+[default] (info): inbox1: .canceled
+[default] (info): done: timer triggered, sel.cancel() stopped both inbox sources
+[default] (info): timer: making per-source decisions
+[default] (info): inbox1: stopped — master closes mbx1
+[default] (info): inbox2: canceled — master will continue using mbx2
+[default] (info): inbox2 phase2: item code=10
+[default] (info): inbox2 phase2: item code=11
+[default] (info): done: mbx1 closed; mbx2 continued with 2 items in phase 2
+[default] (info): receive: .Timeout (retry 1)
+[default] (info): receive: .Timeout (retry 2)
+[default] (info): receive after send: code=9
+[default] (info): done: 2 timeouts then 1 successful receive
+[default] (info): Pool.get: code=42 ptr=items.Event@7f7d685e0020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): pool_ev: Sensor value=0 (1/2)
+[default] (info): pool_ev: Sensor value=0 (2/2)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=2, ticks=0
+[default] (info): pool_ev: item received
+[default] (info): inbox: Event code=1
+[default] (info): inbox: Event code=2
+[default] (info): pool_ev: item received
+[default] (info): inbox: ShutdownCommand — initiating graceful shutdown
+[default] (info): graceful cancel: recycled pool item
+[default] (info): done: events=2, freed_inbox=0, recycled_pool=1
+[default] (info): Pool.get: code=42 ptr=items.Event@7f7d68480020
+[default] (info): Mbox.receive: code=42 same_ptr=true
+[default] (info): Pool.get (recycled): same_ptr=true — pool→mailbox→pool roundtrip complete
+[default] (info): send: Event code=10
+[default] (info): send: Sensor value=3.14
+[default] (info): received: Event code=10
+[default] (info): received: Sensor value=3.14
+[default] (info): done: Event + Sensor through shared mailbox, dispatched on the id
+[default] (info): on_get: created Event code=1
+[default] (info): on_put: count<cap → keeping Event code=1
+[default] (info): on_get: created fresh Event code=2
+[default] (info): on_put: count>=cap → releasing Event code=2
+[default] (info): recycled outer: code=0 (reset by on_put) — hooks decided keep/release correctly
+[default] (info): before close: 2 in pool, 1 in mailbox
+[default] (info): Pool.close: on_close released 2 pool outers
+[default] (info): Mbox.close: walked queue, released 1 mailbox outers
+[default] (info): done: close pool-then-mailbox — 2+1 outers cleaned up, no leaks
+[default] (info): before close: 1 outer in pool, 1 outer in mailbox
+[default] (info): mailbox close queue: returning outer to pool (code=2)
+[default] (info): pool now has 2 outers — Pool.close will release all via on_close
+[default] (info): Pool.get: code=7
+[default] (info): Mbox.receive: code=7 — pool→mailbox→pool flow complete
+[default] (info): before collect: 2 in mailbox_a, 3 in mailbox_b
+[default] (info): concat: combined queue has 5 outers
+[default] (info): done: 5 items from 2 mailboxes — Queue.concat + popFirst walk
+[default] (info): inbox: Event code=1 (1/3)
+[default] (info): inbox: Event code=2 (2/3)
+[default] (info): inbox: Event code=3 (3/3)
+[default] (info): done: 3 items, 0 timer ticks
+[default] (info): direct push: received 99
+[default] (info): done: direct push bypassed concurrent fn path
+[default] (info): timer: closing mailbox while receiveResult is running
+[default] (info): inbox: .closed — Mbox.close propagated into Select
+[default] (info): done: Mbox.close propagated .closed through Select
+[default] (info): timer: canceling Select
+[default] (info): inbox: .canceled — select.cancel propagated through mailbox
+[default] (info): done: sel.cancel() propagated .canceled through matryoshka.receiveResult
+[default] (info): receive_future direct: got Event code=42
+[default] (info): receive_future timeout: got .timeout as expected
+[default] (info): receive_future after timeout: got Event code=5
+[default] (info): receive_future: ConcurrencyUnavailable on single-threaded backend as expected
+[default] (info): synchronous receive still works: code=1
+[default] (info): pool_ev: filled container with cycle=0
+[default] (info): pool_ev: filled container with cycle=1
+[default] (info): pool_ev: filled container with cycle=2
+[default] (info): pool_ev: filled container with cycle=3
+[default] (info): pool_ev: filled container with cycle=4
+[default] (info): pool_ev: filled container with cycle=5
+[default] (info): done: 6 cycles driven by Master counter — pool items were empty containers
+[default] (info): master: dispatching job 0 (code=10) to worker 0
+[default] (info): worker 0: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20) to worker 1
+[default] (info): worker 1: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30) to worker 2
+[default] (info): done: 3 jobs dispatched — Master queue → pool containers → worker mailboxes (pool gated)
+[default] (info): pool_ev: Event code=0 (1/1)
+[default] (info): inbox: Event code=1 (1/2)
+[default] (info): inbox: Event code=2 (2/2)
+[default] (info): done: inbox=2, pool=1, ticks=0
+[default] (info): getWaitFuture direct: got Event code=0 (reset by on_put)
+[default] (info): master: filled container with job code=10, sending to worker 0
+[default] (info): master: filled container with job code=20, sending to worker 1
+[default] (info): master: filled container with job code=30, sending to worker 2
+[default] (info): worker: processed job, result code=40
+[default] (info): worker: processed job, result code=20
+[default] (info): worker: processed job, result code=60
+[default] (info): master: result code=20
+[default] (info): master: result code=40
+[default] (info): master: result code=60
+[default] (info): fan-in: 3 results — Master jobs → pool → worker mailboxes → results array → master
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): worker: got Event code=0
+[default] (info): fan-out: 1 pool seeded with 3 outers → 3 workers each got 1
+[default] (info): producer: get from pool, fill code=1
+[default] (info): consumer: received code=1, same pointer=true
+[default] (info): recycled outer: code=0 (reset by on_put) — pool → producer → mailbox → consumer → pool cycle complete
+[default] (info): worker: cycle 1 — wrote counter into empty container (code=0)
+[default] (info): worker: cycle 2 — wrote counter into empty container (code=1)
+[default] (info): worker: cycle 3 — wrote counter into empty container (code=2)
+[default] (info): done: worker completed 3 cycles — counter=3, pool outer was an empty container, no mailbox needed
+[default] (info): master: 3 workers running, 3 empty containers in pool
+[default] (info): master: all workers stopped via group.cancel
+[default] (info): pool closed: on_close freed any remaining containers — no mailbox needed
+[default] (info): log master: event code=7
+[default] (info): log master: sensor value=2.71
+[default] (info): log master: timer
+[default] (info): log master: 3 lines. count master: 1 events, 1 sensors, 1 unhandled
+[default] (info): master: sent 3 Events + ShutdownCommand to worker
+[default] (info): worker processed Event code=1
+[default] (info): worker processed Event code=2
+[default] (info): worker processed Event code=3
+[default] (info): master: received worker_mbx back — worker finished (processed=3)
+[default] (info): stored inner pool 1 in carrier
+[default] (info): stored inner pool 2 in carrier
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 0 inner pool(s)
+[default] (info): on_close: closed and destroyed 2 inner pool(s)
+[default] (info): carrier closed: 2 inner pool(s) cleaned up
+[default] (info): channel: received code=103, one still queued for finish
+[default] (info): master: dispatching job 0 (code=10)
+[default] (info): worker: processed job, result code=20
+[default] (info): master: dispatching job 1 (code=20)
+[default] (info): worker: processed job, result code=40
+[default] (info): master: dispatching job 2 (code=30)
+[default] (info): worker: processed job, result code=60
+[default] (info): master: last result code=0, all 3 jobs complete
+[default] (info): done: 3 jobs — Master list → pool container → mailbox → worker → pool (circular)
+[default] (info): pool_ev: filled container with cycle index=0 (1/6)
+[default] (info): pool_ev: filled container with cycle index=1 (2/6)
+[default] (info): pool_ev: filled container with cycle index=2 (3/6)
+[default] (info): pool_ev: filled container with cycle index=3 (4/6)
+[default] (info): pool_ev: filled container with cycle index=4 (5/6)
+[default] (info): pool_ev: filled container with cycle index=5 (6/6)
+[default] (info): done: 6 cycles scheduled by Master counter, 0 timer ticks — Pool+Select, no mailbox
+[default] (info): pool_ev: processed code=10 (1/2)
+[default] (info): pool_ev: processed code=10 (2/2)
+[default] (info): network: 64 bytes received (1/2)
+[default] (info): network: 64 bytes received (2/2)
+[default] (info): done: pool=2 net=2 — Pool+Select+Network, no mailbox
+[default] (info): pool_ev: processed code=1 (1/2)
+[default] (info): pool_ev: processed code=1 (2/2)
+[default] (info): client 3: sending to mailbox
+[default] (info): client 2: sending to mailbox
+[default] (info): client 1: sending to mailbox
+[default] (info): inbox: client item code=3 (1/3)
+[default] (info): inbox: client item code=2 (2/3)
+[default] (info): inbox: client item code=1 (3/3)
+[default] (info): done: 3 clients → mailbox fan-in; 2 pool items — mailbox needed for independent senders
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+[default] (info): io side received: Hello, Io
+failed command: ./.zig-cache/o/7d7d113b3e86f4e48e6bf90caa7edf69/test --cache-dir=./.zig-cache --seed=0xbbbd8171 --listen=-
+
+Build Summary: 5/5 steps succeeded; 201/202 tests passed (1 skipped)
+test success
++- run test 5 pass (5 total) 1ms MaxRSS:5M
+|  +- compile test ReleaseSmall native cached 9ms MaxRSS:40M
++- run test 196 pass, 1 skip (197 total) 526ms MaxRSS:5M
+   +- compile test ReleaseSmall native success 7s MaxRSS:228M
+
+Sun Sep 20 04:19:41 PM IDT 2026
+g2=0
+Sun Sep 20 04:19:41 PM IDT 2026
+Build Summary: 3/3 steps succeeded
+install success
++- install matryoshka success
+   +- compile lib matryoshka Debug x86_64-macos cached 9ms MaxRSS:41M
+
+Build Summary: 3/3 steps succeeded
+install success
++- install matryoshka success
+   +- compile lib matryoshka Debug aarch64-macos cached 8ms MaxRSS:41M
+
+Build Summary: 3/3 steps succeeded
+install cached
++- install matryoshka cached
+   +- compile lib matryoshka Debug x86_64-windows cached 9ms MaxRSS:41M
+
+Sun Sep 20 04:19:41 PM IDT 2026
+g3=0
+== 1. dead cross-references ==
+== 2. retired vocabulary ==
+== 3. banned and AI-sh words ==
+== 4. the staging plan keeps up with the log ==
+  plan version 12, 11 stage(s) in the log
+
+clean
+g4=0
+g5=0
+g6-Debug=0
+g6-ReleaseSafe=0
+g6-ReleaseFast=0
+g6-ReleaseSmall=0

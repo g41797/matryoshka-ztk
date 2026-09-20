@@ -1,4 +1,18 @@
-# Matryoshka Zig — Implementation Plan (074)
+# Matryoshka Zig — Implementation Plan (077)
+
+Change from -076: BKP 2 is done, 2026-09-20, and collapses to one line in  
+Completed stages. The owner ruled on every survey row. The BKP section now  
+carries the apply groups, BKP 3 to BKP 11, derived from those rulings. BKP 3 is  
+next. The subject document is now 3tk-to-ztk-004.md. Nothing else changed.
+
+Change from -075: BKP 1 is done, 2026-09-19, and collapses to one line in  
+Completed stages. BKP 2 is next. The subject document is now  
+3tk-to-ztk-003.md. Nothing else changed.
+
+Change from -074: BKP is added and named by the owner, 2026-09-19. It backports  
+3tk to ztk. BKP 0 is done and collapses to one line in Completed stages. The  
+stage menu is in the new BKP section below. The detail lives in the subject  
+document, not here. Nothing else changed.
 
 Change from -073: RENAME is done and collapses to one line in Completed stages.  
 The file name moves to `matryoshka-ztk-`. The "How to start" and RENAME  
@@ -39,7 +53,7 @@ the orphan gate passes without deleting either. That section is the standing
 resolution of Open Item 14 — it breaks no rule and needs no deletion. `-069` was  
 deleted against Part 0 and is unrecoverable — see STATUS-LOG.md, 2026-08-13.
 
-Last completed stage: RENAME, 2026-09-14.
+Last completed stage: BKP 2, 2026-09-20.
 
 **The tree builds.** All four modes 195/195, three cross targets green,  
 `zig build stories` green. The `tests/zig_mechanisms.zig` breakage that blocked  
@@ -47,7 +61,9 @@ INTR 8-1 was fixed on 2026-08-14 with the owner's approval; see STATUS-LOG.md.
 
 INTR 8 is closed. All three sub-stages are done, 2026-08-14.
 
-RENAME is done, 2026-09-14. Nothing is authorized; the owner names the next stage.
+RENAME is done, 2026-09-14.
+
+BKP is named, 2026-09-19. BKP 0, BKP 1 and BKP 2 are done. BKP 3 is next.
 
 ---
 
@@ -297,6 +313,12 @@ One line each. Full account: `STATUS-LOG.md`, by date.
 
 - **RENAME** — repo and root folder `matryoshka-tk` → `matryoshka-ztk`. Code names unchanged. Site config, site text, README, nine `src/` URL lines, `design/` edited in place by owner ruling, four files moved. `check_design.sh` skips `secondary/lang/`; ten missing superseded entries removed. DONE 2026-09-14 (195/195).
 
+- **BKP 0** — the 3tk backport set up. Subject document, method, stage menu, continue prompts. The outside meta-plan kept as frozen input. No code. DONE 2026-09-19.
+
+- **BKP 1** — the 3tk backport survey, read-only. Public surfaces compared row by row, examples paired, six ztk findings. Written as 3tk-to-ztk-003.md. No code. DONE 2026-09-19.
+
+- **BKP 2** — the owner ruled on every survey row, seven groups. Identity becomes a descriptor (IT5), the node becomes singly linked, the vocabulary becomes Outer and Inner. Apply groups BKP 3 to BKP 11 derived and approved. Written as 3tk-to-ztk-004.md. No code. DONE 2026-09-20.
+
 CANDIDATES was dropped, owner's decision. It carried from plan-043 through  
 plan-046 without starting, and `design/candidates/` does not exist on disk.
 
@@ -304,9 +326,14 @@ plan-046 without starting, and `design/candidates/` does not exist on disk.
 
 ## Next
 
-**Nothing is authorized.** The owner names the stage.
+**BKP 3 is next.** The first apply group: the loose ends — Z6, Z4, TK3, LS4,  
+and the -073 line in [context.md](context.md), whose successor the owner  
+deleted. See the BKP section below.
 
-**The recommended next step is the audit that ranks the parked work.** Owner's  
+The parked-work audit below is still on record. Its order against BKP is an open  
+question in the subject document.
+
+**The audit that ranks the parked work.** Owner's  
 ruling, 2026-08-14: INTR 8 runs first, and the whole parked list is re-ranked  
 after it. INTR 8 is now closed, so the audit is unblocked.
 
@@ -345,6 +372,52 @@ stage.
 call, 2026-08-13. Their scope is unchanged and below.
 
 ---
+
+## BKP — 3tk backported to ztk
+
+Named by the owner, 2026-09-19.
+
+**Subject document:**
+3tk-to-ztk-004.md, which this version named and which is now in that folder's backup/ — superseded by -005.  
+It carries the method, the survey, the rulings, the apply groups and the  
+prompts. This section carries only the menu.
+
+| stage | what it does | model |
+|---|---|---|
+| BKP 0 | Setup. DONE 2026-09-19. | Opus 5 |
+| BKP 1 | Survey, read-only. DONE 2026-09-19. | Opus 5 |
+| BKP 2 | Owner rulings, seven groups. Apply groups derived. DONE 2026-09-20. | Opus 5 |
+| BKP 3 | Loose ends: Z6, Z4, TK3, LS4, and the -073 line in context.md. | Sonnet 5 |
+| BKP 4 | `check()`, compiled out of fast builds: TK2. | Opus 5 designing, Sonnet 5 applying |
+| BKP 5 | Identity as a descriptor: IT5, IT3, IT4. | Opus 5 |
+| BKP 6 | The list: IT1, LS1, LS2. | Opus 5 |
+| BKP 7 | The helper: HP1, HP3, HP6. | Opus 5 for the shape, Sonnet 5 for the item types |
+| BKP 8 | The mailbox: MB2, MB3, MB4, MB5, MB12. | Opus 5 |
+| BKP 9 | The pool: PL1, PL2, PL3, PL4, PL6, PL7, PL8, Z2. | Opus 5 |
+| BKP 10 | The words: vocabulary in `design/`, the camelCase rename across every caller, `check_design.sh`. | Opus 5 for the glossary, Sonnet 5 for the renames |
+| BKP 11 | The names in code: `PolyNode` → `Inner`, `Item*` → `Outer*`. | Sonnet 5 |
+| BKP AUDIT | Big-bang audit, from time to time. | Opus 5 |
+
+Each apply group splits into `.a`, implementation and tests, and `.b`,  
+examples. Each ends green in all four modes with `check_design.sh` at 0, and  
+each ends with a `lang/common` spec update. What every group contains, and why  
+it sits where it does, is in the subject document under **The apply groups**.
+
+A group is a menu entry, not a queue. Finishing one does not roll into the  
+next — stop and ask.
+
+**How to start BKP 3 — Sonnet 5, after `/clear`:**
+
+```
+Read design/STATUS.md, then
+design/secondary/lang/port/3tk-to-ztk/3tk-to-ztk-004.md in full, then the
+BKP section of design/matryoshka-ztk-implementation-plan-077.md.
+Read design/rules-049.md Part 0 and matryoshka-3tk/design/3tk-rules-007.md Part 2.
+Sources are the truth: ztk src/, 3tk design/secondary/lang/c3/3tk/src/.
+Git is disabled. Run BKP 3, the loose ends: Z6, Z4, TK3, LS4, and the
+-073 line in context.md.
+Show intent before code. The gates are the four modes plus check_design.sh.
+```
 
 ---
 

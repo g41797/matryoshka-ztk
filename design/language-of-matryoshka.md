@@ -238,7 +238,7 @@ the analog of.
 * `ItemHandle` is Matryoshka. It is a `*PolyNode`, so it carries a tag, and the
   cast back is checked.
 
-The term appears in Part 2 of [matryoshka-api-reference-042.md](matryoshka-api-reference-042.md),  
+The term appears in Part 2 of [matryoshka-api-reference-043.md](matryoshka-api-reference-043.md),  
 and in `tests/zig_mechanisms.zig`. It is not used in `src/`.
 
 ---
