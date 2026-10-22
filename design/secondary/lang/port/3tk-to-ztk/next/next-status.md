@@ -2,6 +2,16 @@
 
 The current state of the rewritten toolkit. This tree, not the old one.
 
+## ztk on paternitas — worked on in the paternitas repo
+
+Owner's ruling, 2026-10-22.
+
+- Moving ztk onto paternitas is done in the paternitas repo, as the ZTK stages.
+- The state: `paternitas/design/STATUS.md`. The intent: `paternitas/design/ztk-00-intent-003.md`.
+- The base there is the ztk copy in `paternitas/design/source/paternitas-and-ztk/ztk`.
+- This tree is not changed by that work. ZTK 00 compares the two.
+- When ztk is green on paternitas, it comes back to this repo and is merged here.
+
 ## Which tree am I in
 
 Two trees live in this repo, and a session works in exactly one.
@@ -18,7 +28,7 @@ plan, and nothing at the repo root except `design/rules-050.md`.
 ## Start here — every session
 
 1. Read this file in full.
-2. Read [next-staging-plan-018.md](next-staging-plan-018.md) for the stage the
+2. Read [next-staging-plan-019.md](next-staging-plan-019.md) for the stage the
    owner names. Not before they name it.
 3. Read Part 0 of `../../../../rules-050.md`. It governs both trees.
 4. The rulings this tree implements are in
@@ -69,7 +79,7 @@ touch is a reference.
 | what | where |
 |---|---|
 | this file | `next/next-status.md` |
-| the stage menu | `next/next-staging-plan-018.md` |
+| the stage menu | `next/next-staging-plan-019.md` |
 | the narrative | `next/next-log.md` |
 | superseded versions of the three above | `next/backup/` |
 | the code | `next/ztk/` — `build.zig`, `src/`, `tests/`, `negative/`, `kitchen/` |
@@ -174,6 +184,35 @@ nothing in them reaches above `next/ztk/`.
 - Claude: implementation, tests
 
 ## Current state
+
+**README is done, 2026-09-21, and the draft awaits the owner.** The entry to the
+project exists as a draft. No code changed.
+
+- **`ztk/design/README-001.md` is the first full draft.** 823 lines that carry
+  text, against 3tk's 746 by the same script. The required order is 3tk's, and
+  every section 3tk has is there.
+- **The stage ran unattended.** Ruling 7 gives the drafting to the owner or
+  another model; with nobody to draft, this side drafted. **So the five open
+  questions are answered by the draft as proposals, not as rulings.** Each one
+  is in `ztk/design/readme-creation-002.md` under **What the draft took**, with
+  the reason and with what the owner may prefer instead. **All five are still
+  open.**
+- **`ztk/README.md` was not touched.** Ruling 5 makes the approved text the
+  README, and nothing is approved yet. That file still holds the bridge context.
+- **Every snippet compiles.** The six of them were built in one file against the
+  real module.
+- **The two numbers are computed, not typed.** `count_src_loc.sh` answers 841,
+  so 3tk's *800+ lines of code* carries unchanged. `count_readme_loc.sh` answers
+  823 on the draft, so the page's claim about itself is **800+**.
+- **The futures stayed off the page** — `P-27`. Cancellation is on it twice, as
+  an outcome of a wait. `receiveFuture`, `getWaitFuture` and the two `Result`
+  unions are not, because the required order has no step for them.
+- **`readme-creation-002.md` replaces `001`.** `001`'s inventory predated
+  SURFACE and every line number in it had moved. Ten files now, 2,218 lines. The
+  module mapping table is filled against the draft.
+- `src/`, `tests/`, `examples/`, `negative/` and `build.zig` were not touched.
+  Gates 1, 4 and 5 were run and are clean — 194 pass, 1 skips. Gates 2, 3 and 6
+  were not re-run, since no code changed.
 
 **SURFACE is done, 2026-09-20.** The module root is short, the way the old tree's
 is, and every file has a page of its own.
@@ -407,14 +446,19 @@ pool, and `ztk/design/task2-tests-002.md`, 25 for Layer 4 and cross-layer.
 
 ## Next
 
-**README is next.** It is the most important stage in the plan, and SURFACE
-cleared its way: the per-module pages it assumes now exist. The charter is in
-[next-staging-plan-018.md](next-staging-plan-018.md), and the work is in
-`ztk/design/readme-creation-001.md`. Opus 5.
+**COMMENTS is next.** The doc comments, whose input is the README document's
+module mapping table — now filled. The charter is in
+[next-staging-plan-019.md](next-staging-plan-019.md), and the work is in
+`ztk/design/comments-creation-002.md`. Opus 5.
 
-**No question is open.** The one SURFACE stored was ruled the same day: the three
-internals left the site. The ruling and what it cost are in
-`../3tk-to-ztk-007.md` under **The module surface**, ruling 5.
+**But the README draft comes first if the owner wants it approved before the
+comments are written from it.** COMMENTS reads the mapping table, and the table
+points at passages of a draft nobody has ruled on. A passage the owner cuts is a
+`//!` block written twice.
+
+**Five questions are open, all of them the README's.** `O-1` through `O-5`, plus
+`P-27` and the debt `B-1`. The draft answered each as a proposal and closed none.
+They are in `ztk/design/readme-creation-002.md` under **What the draft took**.
 
 **PREVIEW was where SURFACE came from.** The first local build showed the flat
 root, and the stage that fixed it is done. The site has not been rebuilt and
@@ -433,8 +477,8 @@ pages are frozen and unreachable — the landing page's picture stops being a li
 and that picture was the only way in.
 
 **Each documentation stage with decisions has its own document**, and the plan
-carries only a description and a link: `ztk/design/readme-creation-001.md` and
-`ztk/design/comments-creation-001.md`. The README document holds the measured
+carries only a description and a link: `ztk/design/readme-creation-002.md` and
+`ztk/design/comments-creation-002.md`. The README document holds the measured
 inventory of `src/` and the 27-row list of 3tk facts needing a ztk answer; its
 module mapping table is what the COMMENTS stage reads.
 

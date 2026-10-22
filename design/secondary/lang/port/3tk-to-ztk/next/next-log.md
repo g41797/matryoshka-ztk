@@ -7,6 +7,98 @@ when resolving a question about a past decision. Otherwise append and move on.
 
 ---
 
+## 2026-10-22 — ztk on paternitas moves to the paternitas repo
+
+- Owner's ruling: the ZTK stages run in the paternitas repo.
+- The base: the ztk copy in `paternitas/design/source/paternitas-and-ztk/ztk`.
+  - It builds against current paternitas after one change, `AnyParent` -> `Any`.
+  - 198/199 tests pass, 1 skipped, Debug. Checked in a scratch copy.
+- This tree: unchanged. A pointer was added to `next-status.md`.
+- Written by a paternitas session, with the owner's permission.
+
+---
+
+## 2026-09-21 — README
+
+Owner named README, said they would be out, and told the session to run
+unattended with git disabled and any model. This ran on Opus 5, which the
+charter in `next-staging-plan-018.md` asked for. The plan is now 019 and 018 is
+in `backup/`.
+
+**The stage had no owner, and the charter assumes one.** Ruling 7 of the README
+document gives the drafting to the owner or another model and leaves this side
+the material and the cuts. With nobody to draft, this side drafted. That is the
+one rule bent, and it was bent deliberately rather than by being forgotten:
+running the stage without drafting would have produced a re-measured inventory
+and nothing else.
+
+**What was read before a line was written.** The 3tk README in full, 1,210
+lines, from the `matryoshka-3tk` repository — the base text, not copied in.
+`readme-creation-001.md`. Then `src/` — `matryoshka.zig`, `inner.zig`,
+`helper.zig` in full, and every published signature of `mbox.zig`, `pool.zig`
+and `queue.zig`. Then examples, for the snippets.
+
+**`001`'s inventory was stale, and every line number in it had moved.** It was
+measured on 2026-09-20 before SURFACE landed. It listed `internal_tests.zig`,
+which is gone; `helper.zig` at 323 lines, now 250; `inner.zig` at 157, now 195;
+`matryoshka.zig` at 92, now 40; 2,385 lines over ten files, now 2,218. It also
+described `OuterId` as `*const OuterInfo` with a sentinel for unstamped, which
+is the model SURFACE replaced. Re-measuring first is what kept those facts off
+the page. **The document said to re-print before trusting a line number, and
+that instruction earned its place.**
+
+**The draft.** `ztk/design/README-001.md`. 823 lines that carry text, against
+3tk's 746 by the same script. The required order is 3tk's, and every section 3tk
+has is there. What changed, beyond the mechanical swaps:
+
+- *The queue should not know your types* — the middle workaround was *an enum
+  tag plus a union*, named that way because C3 has no tagged union. Zig has
+  them, so the bullet says so and its cost is now the union changing with every
+  feature and every value being as large as the largest member.
+- *The request carries its own type* — the id is not a language type id, because
+  Zig has none. The draft says each type has one `const` description and the id
+  is its address, and never names the description's type, which is internal now.
+- *The one struct you write* — the field's name is the reader's, because the
+  helper finds it by type.
+- *The slot* — the two `defer` sketches are Zig's `defer`, and the stacked one
+  needs `catch {}` on the `put`.
+- The mailbox section gained one paragraph on `(alloc, io)`, sourced from
+  `helper.zig`, and `close` returning a `Queue` by value.
+- The family section drops *"Still in progress"*. That sentence is 3tk speaking
+  about somebody else, and on ztk's own page a reader takes it as a warning.
+
+**Every snippet compiles.** All six were put in one file against the real module
+and built, in a scratch project outside the tree. The tree was not touched to do
+it.
+
+**The two numbers are computed.** `count_src_loc.sh` answers 841, so 3tk's
+*800+ lines of code* carries unchanged. `count_readme_loc.sh` answers 823 on the
+draft, so the page's claim about itself is 800+ and not 3tk's 700+.
+
+**Five open questions were answered as proposals, and none was closed.** `O-1`
+through `O-5`, plus `P-27` and the debt `B-1`. Each is in
+`readme-creation-002.md` under **What the draft took**, with the reason and with
+what the owner may prefer instead. The two that cost the page something: `O-4`
+stayed no, so step 2 of *How to start* sends the reader to a 205-line example
+because writing a small one is a code change nobody approved; and `P-27` kept
+`receiveFuture`, `getWaitFuture` and the two `Result` unions off the page,
+because the required order has no step for them.
+
+**`ztk/README.md` was not touched.** Ruling 5 makes the approved text the
+README, and nothing is approved. That file still holds the bridge context.
+
+**`src/`, `tests/`, `examples/`, `negative/` and `build.zig` were not touched.**
+Gates 1, 4 and 5 were run anyway and are clean — 194 pass, 1 skips, and the
+document gate reports plan 019 against 18 stages. Gates 2, 3 and 6 were not
+re-run, since no code changed.
+
+**Four documents moved.** `readme-creation-001` to `002`, with the inventory
+re-read and the mapping table filled. `comments-creation-001` to `002`, for the
+re-anchoring alone. The plan to `019`. This file, appended. `next-status.md`
+updated in place.
+
+---
+
 ## 2026-09-20 — SURFACE
 
 Owner named SURFACE and asked for step 1 first, as the charter in
